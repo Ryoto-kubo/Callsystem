@@ -3757,6 +3757,7 @@ __webpack_require__.r(__webpack_exports__);
         window.location.href = "/";
       })["catch"](function (error) {
         console.log(error);
+        console.log(error);
       });
     },
     validate: function validate() {
@@ -3764,8 +3765,9 @@ __webpack_require__.r(__webpack_exports__);
         if (response.data.success) {
           this.openModal();
         } else {
-          this.errors.peoples = response.data.messages.peoples;
-          this.errors.tell_number = response.data.messages.tell_number;
+          // console.log(response.data)
+          this.errors.peoples = response.data.messages.peoples[0];
+          this.errors.tell_number = response.data.messages.tell_number[0];
         }
       }.bind(this))["catch"](function (error) {
         console.log(error);

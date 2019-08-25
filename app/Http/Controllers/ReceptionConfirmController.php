@@ -31,7 +31,8 @@ class ReceptionConfirmController extends Controller
         return $payload;
     }
 
-    public function formValidate(Request $request){
+    public function formValidate(Request $request)
+    {
 
         $rules = [
             'peoples'     => 'required|numeric',
