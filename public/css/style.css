@@ -1,9 +1,20 @@
-@import url(https://fonts.googleapis.com/css?family=Nunito);input {
+@import url(https://fonts.googleapis.com/css?family=Nunito);html {
+  background: #ffffff;
+}
+
+input {
   outline: none;
 }
 
 button {
   color: #ffffff;
+  box-shadow: 0px 5px 4px gray;
+  transition: all 0.3s;
+}
+
+button:hover {
+  box-shadow: 0px 2px 2px gray;
+  transform: translateX(2px);
 }
 
 header {
@@ -26,49 +37,84 @@ header .img-container img {
   transform: translate(-50%, -50%);
 }
 
-.number-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.top-container {
+  padding-bottom: 50px;
+  border-bottom: 1px solid #707070;
 }
 
-.number-container .peoples-group-container {
+.top-container .fade-down {
+  opacity: 0;
+  position: relative;
+  top: -50px;
+}
+
+.top-container .fade-down .number-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.top-container .fade-down .number-container .img-container {
   margin-right: 50px;
+}
+
+.top-container .fade-down .number-container .img-container .img-area img {
+  width: 250px;
+  height: 250px;
+}
+
+.top-container .fade-down .number-container .peoples-container .waiting-group {
+  font-size: 30px;
+}
+
+.top-container .fade-down .number-container .peoples-container .peoples-group-container {
   display: flex;
   align-items: flex-end;
   font-size: 40px;
   line-height: 1;
 }
 
-.number-container .peoples-group-container .peoples-group {
+.top-container .fade-down .number-container .peoples-container .peoples-group-container .peoples-group {
   margin-right: 10px;
-  font-size: 140px;
+  font-size: 120px;
   font-weight: bold;
   color: #3163ED;
-  line-height: 0.85;
+  line-height: 1.2;
 }
 
-.number-container .peoples-group-container .text-area {
-  font-size: 40px;
-  line-height: 1.5;
+.top-container .fade-down .number-container .peoples-container .peoples-group-container .text-area {
+  font-size: 30px;
+  line-height: 2.6;
 }
 
-.number-container .peoples-group-container .text-area .group {
+.top-container .fade-down .number-container .peoples-container .peoples-group-container .text-area .group {
   display: block;
 }
 
-.number-container .peoples-group-container .text-area .waiting {
+.top-container .fade-down .number-container .peoples-container .peoples-group-container .text-area .waiting {
   display: block;
 }
 
-.number-container .waiting-time-container {
+.top-container .fade-down .number-container .waiting-time-container {
   font-size: 20px;
 }
 
-.number-container .waiting-time-container .text-area .waiting-container .time {
+.top-container .fade-down .number-container .waiting-time-container .text-area .waiting-container .time {
   font-size: 60px;
   color: #3163ED;
   line-height: 1;
+}
+
+.bottom-container .fade-up {
+  opacity: 0;
+  position: relative;
+  top: 50px;
+}
+
+.bottom-container .fade-up .infomation-container {
+  margin-top: 50px;
+  text-align: center;
+  font-size: 30px;
 }
 
 .link-area {
@@ -78,14 +124,15 @@ header .img-container img {
 
 .link-area .btn-container {
   width: 100%;
-  height: 50px;
+  height: 80px;
   margin: auto;
   margin-top: 50px;
-  line-height: 50px;
-  font-size: 24px;
-  border-radius: 50px;
+  line-height: 80px;
+  font-size: 30px;
+  border-radius: 10px;
   text-align: center;
-  background-color: #6FD16F;
+  outline: none;
+  background-color: #5BCBC6;
 }
 
 .link-area .tell-notice {
@@ -166,9 +213,9 @@ a:hover {
   margin-top: 50px;
   line-height: 50px;
   font-size: 24px;
-  border-radius: 50px;
+  border-radius: 10px;
   text-align: center;
-  background-color: #6FD16F;
+  background-color: #5BCBC6;
   outline: none;
 }
 
@@ -178,9 +225,9 @@ a:hover {
   margin: auto;
   line-height: 50px;
   font-size: 24px;
-  border-radius: 50px;
+  border-radius: 10px;
   text-align: center;
-  background-color: #6FD16F;
+  background-color: #5BCBC6;
   outline: none;
 }
 

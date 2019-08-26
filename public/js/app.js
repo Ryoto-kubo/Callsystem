@@ -73617,13 +73617,18 @@ Vue.component('reception-confirm-component', __webpack_require__(/*! ./component
 
 var app = new Vue({
   el: '#app'
-}); // $(function(){
-//     var windowHerfHeight = $(window).height() / 2;
-//     console.log(windowHerfHeight);
-//     $('.container').css({
-//         height: windowHerfHeight
-//     });
-// });
+});
+$(function () {
+  var duration = 800;
+  $('.fade-down').animate({
+    opacity: '1',
+    'top': '0px'
+  }, duration);
+  $('.fade-up').animate({
+    opacity: '1',
+    'top': '0px'
+  }, duration);
+});
 
 /***/ }),
 
