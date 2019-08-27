@@ -73627,7 +73627,11 @@ $(function () {
   $('.fade-up').animate({
     opacity: '1',
     'top': '0px'
-  }, duration);
+  }, duration); // $('.btn').on('click', function(){
+  //     setTimeout(function(){
+  //         location.href = '/reception/form'
+  //     },300)
+  // });
 });
 
 /***/ }),

@@ -28,7 +28,10 @@
             </div>
         </div>
         <div class="link-area">
-            <button class="btn-container" type="button" onclick="location.href='/reception/form'">受付する</button>
+            <!-- <button class="btn" type="button" onclick="location.href='/reception/form'">受付へ進む</button> -->
+            <div class="button-back"></div>
+            <button class="btn" type="button">受付へすすむ
+            </button>
         </div>
     </div>
     <div class="bottom-container">

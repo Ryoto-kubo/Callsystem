@@ -12,11 +12,6 @@ button {
   transition: all 0.3s;
 }
 
-button:hover {
-  box-shadow: 0px 2px 2px gray;
-  transform: translateX(2px);
-}
-
 header {
   width: 95%;
   margin: auto;
@@ -120,25 +115,70 @@ header .img-container img {
 .link-area {
   width: 50%;
   margin: auto;
+  top: 0;
+  position: relative;
 }
 
-.link-area .btn-container {
+.link-area .button-back {
+  position: absolute;
+  top: 8px;
   width: 100%;
-  height: 80px;
+  height: 100px;
   margin: auto;
   margin-top: 50px;
-  line-height: 80px;
+  border-radius: 10px;
+  background: #008b8b;
+}
+
+.link-area .btn {
+  position: relative;
+  width: 100%;
+  height: 100px;
+  margin: auto;
+  margin-top: 50px;
+  line-height: 100px;
   font-size: 30px;
   border-radius: 10px;
   text-align: center;
   outline: none;
+  color: #ffffff;
+  box-shadow: 0px 2px 0px rgba(255, 255, 255, 0.5) inset, 0px -2px 0px rgba(255, 255, 255, 0.2) inset;
   background-color: #5BCBC6;
+  top: 0;
+  transition: 0.15s all ease;
+  background-image: linear-gradient(180deg, #40e0d0 0%, #5BCBC6 90%);
 }
 
-.link-area .tell-notice {
-  margin-top: 20px;
-  text-align: center;
-  font-size: 18px;
+.link-area .btn:active {
+  top: 5px;
+}
+
+@-webkit-keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(88, 120, 243, 0.4);
+  }
+
+  70% {
+    box-shadow: 0 0 0 20px rgba(88, 120, 243, 0);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgba(88, 120, 243, 0);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(88, 120, 243, 0.4);
+  }
+
+  70% {
+    box-shadow: 0 0 0 20px rgba(88, 120, 243, 0);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgba(88, 120, 243, 0);
+  }
 }
 
 a {
