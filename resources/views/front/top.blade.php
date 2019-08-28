@@ -28,9 +28,9 @@
             </div>
         </div>
         <div class="link-area">
-            <!-- <button class="btn" type="button" onclick="location.href='/reception/form'">受付へ進む</button> -->
             <div class="button-back"></div>
-            <button class="btn" type="button">受付へすすむ
+            <button class="btn ripple" type="button">受付へ進む</button>
+            <!-- <button class="btn ripple" type="button">受付へすすむ -->
             </button>
         </div>
     </div>

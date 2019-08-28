@@ -24,6 +24,7 @@ Vue.component('reception-get-component'      , require('./components/ReceptionGe
 Vue.component('reception-get-min-component'  , require('./components/ReceptionGetMinComponent.vue').default);
 Vue.component('reception-form-component'     , require('./components/ReceptionFormComponent.vue').default);
 Vue.component('reception-confirm-component'  , require('./components/ReceptionConfirmComponent.vue').default);
+Vue.component('form-input-peoples'           , require('./components/form/FormInputPeoples.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -45,10 +46,51 @@ $(function(){
         opacity: '1',
         'top': '0px'
     },duration);
+    $('.link-area').animate({
+        opacity: '1',
+    },duration);
 
-    // $('.btn').on('click', function(){
-    //     setTimeout(function(){
-    //         location.href = '/reception/form'
-    //     },300)
-    // });
+    $('.btn').on('click', function(){
+        setTimeout(function(){
+            location.href = '/form/peoples'
+        },400)
+    });
+
 });
+
+// btn波紋エフェクト
+(() => { 
+
+    const rippleEffect = (event) => { 
+  
+      let target = event.target; 
+  
+      if (!target) { 
+        return; 
+      } 
+  
+      const cover = document.createElement('span'); 
+      const coverSize = target.offsetWidth; 
+      const loc = target.getBoundingClientRect(); 
+  
+      const x = event.pageX - loc.left - window.pageXOffset - (coverSize / 2); 
+      const y = event.pageY - loc.top - window.pageYOffset - (coverSize / 2); 
+  
+      const pos = `top: ${y}px; left: ${x}px; height: ${coverSize}px; width: ${coverSize}px;`; 
+  
+      target.appendChild(cover); 
+      cover.setAttribute('style', pos); 
+      cover.setAttribute('class', 'ripple-active'); 
+  
+      setTimeout(() => { 
+        cover.remove(); 
+      }, 2000); 
+    }; 
+  
+    document.addEventListener('DOMContentLoaded', () => { 
+      Array.from(document.querySelectorAll('.ripple')).forEach((elem) => { 
+        elem.addEventListener('click', rippleEffect) 
+      }); 
+    }); 
+  
+  })();

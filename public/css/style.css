@@ -2,6 +2,10 @@
   background: #ffffff;
 }
 
+body {
+  background: #ffffff;
+}
+
 input {
   outline: none;
 }
@@ -9,18 +13,34 @@ input {
 button {
   color: #ffffff;
   box-shadow: 0px 5px 4px gray;
-  transition: all 0.3s;
+  outline: none;
 }
 
 header {
   width: 95%;
+  height: 80px;
   margin: auto;
   margin-top: 1%;
-  height: 80px;
-  line-height: 80px;
 }
 
-header .img-container img {
+header .header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #707070;
+  padding-bottom: 5px;
+}
+
+header .header-container .page-description {
+  margin-left: 10px;
+  font-size: 30px;
+}
+
+header .header-container .img-container {
+  margin-right: 10px;
+}
+
+header .header-container .img-container img {
   width: 75px;
   height: 75px;
 }
@@ -115,8 +135,8 @@ header .img-container img {
 .link-area {
   width: 50%;
   margin: auto;
-  top: 0;
   position: relative;
+  opacity: 0;
 }
 
 .link-area .button-back {
@@ -178,6 +198,36 @@ header .img-container img {
 
   100% {
     box-shadow: 0 0 0 0 rgba(88, 120, 243, 0);
+  }
+}
+
+.ripple {
+  position: relative;
+  overflow: hidden;
+}
+
+.ripple .ripple-active {
+  position: absolute;
+  pointer-events: none;
+  background: #ffffff;
+  border-radius: 50%;
+  transform: scale(0);
+  -webkit-animation: ripple 0.8s;
+          animation: ripple 0.8s;
+  opacity: 0.2;
+}
+
+@-webkit-keyframes ripple {
+  to {
+    opacity: 0;
+    transform: scale(2);
+  }
+}
+
+@keyframes ripple {
+  to {
+    opacity: 0;
+    transform: scale(2);
   }
 }
 
@@ -271,28 +321,67 @@ a:hover {
   outline: none;
 }
 
-.modal-enter-active,
-.modal-leave-active {
-  transition: opacity 0.4s;
+.form-container {
+  width: 80%;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.modal-enter-active .modal-container,
-.modal-leave-active .modal-container {
-  transition: opacity 0.4s, transform 0.4s;
+.form-container .input-container {
+  width: 80%;
+  margin-right: 60px;
 }
 
-.modal-leave-active {
-  transition: opacity 0.6s ease 0.4s;
+.form-container .input-container .input-area {
+  display: flex;
+  align-items: flex-end;
 }
 
-.modal-enter,
-.modal-leave-to {
-  opacity: 0;
+.form-container .input-container .input-area .input input {
+  width: 350px;
+  height: 200px;
+  border: 5px solid #707070;
+  border-radius: 20px;
 }
 
-.modal-enter .modal-container,
-.modal-leave-to .modal-container {
-  opacity: 0;
-  transform: translate(0px, 50px);
+.form-container .input-container .input-area .group-text {
+  margin-left: 10px;
+  font-size: 30px;
+}
+
+.form-container .input-container .input-area .group-text p {
+  margin: 0;
+}
+
+.form-container .num-button-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.form-container .num-button-container .num-button-area {
+  width: 30%;
+  margin-bottom: 15px;
+  font-size: 50px;
+}
+
+.form-container .num-button-container .num-button-area:not(:nth-child(3n)) {
+  margin-right: 15px;
+}
+
+.form-container .num-button-container .num-button-area:nth-child(11) {
+  margin-right: 0;
+  width: 65%;
+}
+
+.form-container .num-button-container .num-button-area .num-btn {
+  width: 100%;
+  height: 120px;
+  border-radius: 10px;
+  background: #f5f5f5;
+  color: #232323;
+  outline: none;
 }
 
