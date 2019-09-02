@@ -1,8 +1,7 @@
 <template>
-    <div>
+    <!-- <div>
         <div class="form-container">
             <form id="post_form">
-                <!-- @csrf -->
                 <input v-model="params.token" type="hidden" name="_token">
                 <div class="error-msg">
                     <span v-show="errors.peoples">{{errors.peoples}}</span>
@@ -98,149 +97,82 @@
                     </div>
                 </div>
             </div>
-        </transition>
+    </div> -->
+<div>
+    <header-component :propsTitle="title" />
+    <div class="progressbar-container">
+        <div class="progressbar" :style="{left: moveBarPercent + '%'}"></div>
+        <div class="progressbar-back js-progressbar"></div>
     </div>
-</template>
 
+    <div v-if="nextStepId === 1">
+        <form-input-peoples-component
+            @nextStep="nextStep"
+            @progressBarMove="progressBarMove"
+            @progressBarMoveReset="progressBarMoveReset"/>
+    </div>
+
+    <div v-else-if="nextStepId === 2">
+        <form-seat-select-component
+            v-if="nextStepId === 2"
+            />
+    </div>
+    
+    <div v-else-if="nextStepId === 3">
+        <form-seat-select-component
+            v-if="nextStepId === 3"/>
+    </div>
+
+    <div v-else-if="nextStepId === 4">
+        <form-seat-select-component
+            v-if="nextStepId === 4"/>
+    </div>
+
+</div>
+
+</template>
 <script>
 import { constants } from 'crypto';
     export default {
         data() {
-            const DEFAULT_ID = 1;
             return {
-                showModal: false,
-                params: {
-                    peoples: null,
-                    seat_id: DEFAULT_ID,
-                    smoke_id: DEFAULT_ID,
-                    tell_number: null,
-                    token: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                },
-                display: {
-                    peoples: null,
-                    seat: null,
-                    smoke: null,
-                    tell_number: null
-                },
-                errors: {
-                    peoples: '',
-                    tell_number: ''
+                moveBarPercent: '',
+                progressStep: '',
+                nextStepId: '',
+                title: '',
+            }
+        },
+        mounted() {
+            this.nextStepId = 1
+        },
+        methods: {
+            nextStep: function(nextStepId){
+                this.nextStepId = nextStepId
+            },
+            progressBarMove: function(componentName){
+            const INPUT_PEOPLES= 'inputPeoples'
+                if(componentName == INPUT_PEOPLES){
+                    this.moveBarPercent = -75
+                }
+            },
+            progressBarMoveReset: function(componentName){
+                const  INPUT_PEOPLES= 'inputPeoples'
+                if(componentName == INPUT_PEOPLES){
+                    this.moveBarPercent = -100
                 }
             }
         },
-        methods: {
-            openModal: function(){
-                this.pramsOnDisplayCast(this.params)
-                this.showModal = true;
-            },
-            closeModal: function(){
-                event.preventDefault();
-                if(this.params.seat_id == 'テーブル席'){
-                    this.params.seat_id = 1
+        watch: {
+            nextStepId: function(){
+                if(this.nextStepId === 1){
+                    this.title = '人数を入力してください'
+                }else if(this.nextStepId === 2){
+                    this.title = "希望の座席を選択してください"
                 }
-
-                this.showModal = false;
-                axios.post('/reception/formpost', this.params)
-                .then(function(response){
-                    window.location.href = "/";
-                }).catch(function(error){
-                    console.log(error)
-                    console.log(error)
-                });
-            },
-            validate: function(){
-                axios.post('/reception/validate', this.params)
-                .then(function(response){
-                    if(response.data.success){
-                        this.openModal()
-                    }else{
-                        // console.log(response.data)
-                        this.errors.peoples     = response.data.messages.peoples[0]
-                        this.errors.tell_number = response.data.messages.tell_number[0]
-                    }
-                }.bind(this))
-                .catch(function(error){
-                    console.log(error)
-                }.bind(this));
-            },
-            pramsOnDisplayCast: function(params){
-                this.display.peoples = params.peoples
-                this.display.tell_number = params.tell_number
-
-                let seat_id  = Number(params.seat_id)
-                    if(seat_id === 1){
-                        this.display.seat = 'テーブル席'
-                    }else if(seat_id === 2){
-                        this.display.seat = 'ボックス席'
-                    }else if(seat_id === 3){
-                        this.display.seat = 'カウンター席'
-                    }else if(seat_id === 4){
-                        this.display.seat = 'どこでも可'
-                    }
-
-                let smoke_id  = Number(params.smoke_id)
-                    if(smoke_id === 1){
-                        this.display.smoke = '喫煙席'
-                    }else if(smoke_id === 2){
-                        this.display.smoke = '禁煙席'
-                    }else if(smoke_id === 3){
-                        this.display.smoke = 'どちらでも可'
-                    }
             }
         }
-
     }
+
 </script>
-
 <style>
-.modal-container{
-    width: 500px;
-    height: 300px;
-    z-index:2;
-    padding: 1em;
-    background:#fff;
-    border-radius: 20px;
-}
-
-.post-confirm-container{
-    width: 60%;
-    margin: auto;
-    text-align: center;
-}
-
-.confirm-contents{
-    margin-bottom: 20px;
-    display: flex;
-    border-bottom: 1px solid #000;
-}
-
-.confirm-tiile{
-    width: 100px;
-    margin-right: 30px;
-    font-size: 20px;
-    text-align: left;
-}
-
-.confirm-content{
-    font-size: 20px;
-}
-
-#overlay{
-    /*　要素を重ねた時の順番　*/
-    z-index:1;
-
-    /*　画面全体を覆う設定　*/
-    position:fixed;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-    background-color:rgba(0,0,0,0.5);
-
-    /*　画面の中央に要素を表示させる設定　*/
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-}
 </style>
