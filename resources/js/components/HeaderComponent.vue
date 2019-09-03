@@ -14,11 +14,6 @@
 <script>
 import { maxHeaderSize } from 'http';
 export default {
-    data: {
-        return: {
-
-        }
-    },
     props: {
         propsTitle: ''
     }

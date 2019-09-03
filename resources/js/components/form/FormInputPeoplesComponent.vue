@@ -36,12 +36,13 @@
 
 <script>
 import { finished } from 'stream';
+import { setTimeout } from 'timers';
     export default {
         data() {
             return {
                 peopleNum: '',
                 time: 0,
-                isActive: '',
+                isActive: true,
                 active: 'active',
                 reactive: 'reactive',
                 nextBtnAppearrance: false,
@@ -51,7 +52,7 @@ import { finished } from 'stream';
             }
         },
         mounted() {
-            this.isActive = true
+            // this.isActive = true
             this.time = 0
         },
         methods: {
@@ -63,7 +64,8 @@ import { finished } from 'stream';
             },
             nextStep: function(){
                 this.isActive = false
-                setInterval(() => { this.time++ }, 1000)
+                this.$emit('getPeopleNum', this.peopleNum)
+                setTimeout(() => {this.time++ }, 1000)
             }
         },
         watch: {

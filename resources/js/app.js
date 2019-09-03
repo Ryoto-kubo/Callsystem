@@ -63,14 +63,6 @@ $(function(){
     },1300);
     // =======================================
 
-    // $('.form-container').addClass('active');
-    
-    $('#js-next-btn').on('click', function(){
-      $('.form-container').removeClass('active');
-      $('.form-container').addClass('reactive');
-    });
-
-
     $('.next-form-btn').on('click', function(){
       $('.container').delay(200).animate({
         opacity: '0',

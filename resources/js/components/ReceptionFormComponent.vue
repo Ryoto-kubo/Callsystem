@@ -108,17 +108,21 @@
     <div v-if="nextStepId === 1">
         <form-input-peoples-component
             @nextStep="nextStep"
+            @getPeopleNum="getPeopleNum"
             @progressBarMove="progressBarMove"
             @progressBarMoveReset="progressBarMoveReset"/>
     </div>
 
     <div v-else-if="nextStepId === 2">
         <form-seat-select-component
-            v-if="nextStepId === 2"
+            @nextStep="nextStep"
+            @getSelectSeat="getSelectSeat"
+            @progressBarMove="progressBarMove"
+            @progressBarMoveReset="progressBarMoveReset"
             />
     </div>
     
-    <div v-else-if="nextStepId === 3">
+    <!-- <div v-else-if="nextStepId === 3">
         <form-seat-select-component
             v-if="nextStepId === 3"/>
     </div>
@@ -126,7 +130,7 @@
     <div v-else-if="nextStepId === 4">
         <form-seat-select-component
             v-if="nextStepId === 4"/>
-    </div>
+    </div> -->
 
 </div>
 
@@ -137,9 +141,10 @@ import { constants } from 'crypto';
         data() {
             return {
                 moveBarPercent: '',
-                progressStep: '',
                 nextStepId: '',
                 title: '',
+                peopleNum: null,
+                selectSeat: null,
             }
         },
         mounted() {
@@ -150,9 +155,12 @@ import { constants } from 'crypto';
                 this.nextStepId = nextStepId
             },
             progressBarMove: function(componentName){
-            const INPUT_PEOPLES= 'inputPeoples'
+            const INPUT_PEOPLES = 'inputPeoples'
+            const SELECT_SEAT   = 'selectSeat'
                 if(componentName == INPUT_PEOPLES){
                     this.moveBarPercent = -75
+                } else if (componentName == SELECT_SEAT){
+                    this.moveBarPercent = -50
                 }
             },
             progressBarMoveReset: function(componentName){
@@ -160,6 +168,12 @@ import { constants } from 'crypto';
                 if(componentName == INPUT_PEOPLES){
                     this.moveBarPercent = -100
                 }
+            },
+            getPeopleNum(inputPeopleNum){
+                this.peopleNum = inputPeopleNum
+            },
+            getSelectSeat(selectSeat){
+                this.selectSeat = selectSeat
             }
         },
         watch: {

@@ -21,7 +21,7 @@ input{
 
 button{
     color: $white;
-    box-shadow: 0px 5px 4px gray;
+    // box-shadow: 0px 5px 4px gray;
     outline: none;
 }
 
@@ -314,11 +314,11 @@ header{
 @keyframes fadeMove{
     0%{
         opacity: 0;
-        top: 40%;
+        left: 60%;
     }
     100%{
         opacity: 1;
-        top: 50%;
+        left: 50%;
     }
 }
 
@@ -328,11 +328,11 @@ header{
 @keyframes fadeReMove{
     0%{
         opacity: 1;
-        top: 50%;
+        left: 50%;
     }
     100%{
         opacity: 0;
-        top: 70%;
+        left: 30%;
     }
 }
 
