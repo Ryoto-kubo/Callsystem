@@ -1,5 +1,5 @@
 <template>
-<div class="form-container" :class="[isActive ? active : reactive]">
+<div class="form-container" :class="classSwitch">
     <div class="flex-container">
         <div class="input-container">
             <div class="input-area">
@@ -25,7 +25,7 @@
     </div>
     <div v-if="nextBtnAppearrance" class="link-area">
         <div class="button-back background-blue"></div>
-        <button id="js-next-btn" class="btn next-btn ripple" onfocus="this.blur();" @click="nextStep">次へ</button>
+        <button id="js-next-btn" class="btn next-btn ripple" onfocus="this.blur();" @click="nextStep" style="padding: 0;">次へ</button>
     </div>
     <div v-else class="link-area">
         <div class="button-back" style="background: #8b0000;"></div>
@@ -43,17 +43,36 @@ import { setTimeout } from 'timers';
                 peopleNum: '',
                 time: 0,
                 isActive: true,
+                prevTrigger: this.propsPrevTrigger,
                 active: 'active',
-                reactive: 'reactive',
+                reActive: 'reactive',
+                prevActive: 'prev-active',
                 nextBtnAppearrance: false,
                 numBtnAppearrance: true,
                 number: null,
                 nums: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'],
             }
         },
+        props: {
+            propsPrevTrigger: '',
+        },
         mounted() {
             // this.isActive = true
             this.time = 0
+        },
+        computed: {
+            classSwitch: function(){
+                if(this.prevTrigger){
+                    this.isActive = false
+                    return this.prevActive
+                } else if(!this.prevTrigger){
+                    if(this.isActive){
+                        return this.active
+                    }else{
+                        return this.reActive
+                    }
+                } 
+            }
         },
         methods: {
             numInput: function(item){
@@ -63,7 +82,8 @@ import { setTimeout } from 'timers';
                 this.peopleNum = ''
             },
             nextStep: function(){
-                this.isActive = false
+                this.isActive    = false
+                this.prevTrigger = false
                 this.$emit('getPeopleNum', this.peopleNum)
                 setTimeout(() => {this.time++ }, 1000)
             }

@@ -12,6 +12,7 @@ input {
 
 button {
   color: #ffffff;
+  padding: 0;
   outline: none;
 }
 
@@ -193,8 +194,8 @@ header .header-container .img-container img {
 }
 
 .active {
-  -webkit-animation: fadeMove 1.5s ease;
-          animation: fadeMove 1.5s ease;
+  -webkit-animation: fadeMove 1s ease;
+          animation: fadeMove 1s ease;
 }
 
 @-webkit-keyframes fadeMove {
@@ -222,8 +223,8 @@ header .header-container .img-container img {
 }
 
 .reactive {
-  -webkit-animation: fadeReMove 1.5s ease;
-          animation: fadeReMove 1.5s ease;
+  -webkit-animation: fadeReMove 1s ease;
+          animation: fadeReMove 1s ease;
 }
 
 @-webkit-keyframes fadeReMove {
@@ -234,7 +235,7 @@ header .header-container .img-container img {
 
   100% {
     opacity: 0;
-    left: 30%;
+    left: 40%;
   }
 }
 
@@ -246,7 +247,65 @@ header .header-container .img-container img {
 
   100% {
     opacity: 0;
-    left: 30%;
+    left: 40%;
+  }
+}
+
+.prev-active {
+  -webkit-animation: prevFadeMove 1s ease;
+          animation: prevFadeMove 1s ease;
+}
+
+@-webkit-keyframes prevFadeMove {
+  0% {
+    opacity: 0;
+    left: 40%;
+  }
+
+  100% {
+    opacity: 1;
+    left: 50%;
+  }
+}
+
+@keyframes prevFadeMove {
+  0% {
+    opacity: 0;
+    left: 40%;
+  }
+
+  100% {
+    opacity: 1;
+    left: 50%;
+  }
+}
+
+.prev-reactive {
+  -webkit-animation: prevFadeReMove 1s ease;
+          animation: prevFadeReMove 1s ease;
+}
+
+@-webkit-keyframes prevFadeReMove {
+  0% {
+    opacity: 1;
+    left: 50%;
+  }
+
+  100% {
+    opacity: 0;
+    left: 60%;
+  }
+}
+
+@keyframes prevFadeReMove {
+  0% {
+    opacity: 1;
+    left: 50%;
+  }
+
+  100% {
+    opacity: 0;
+    left: 60%;
   }
 }
 

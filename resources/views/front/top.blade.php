@@ -27,7 +27,7 @@
         </div>
         <div class="link-area js-fade-in-out">
             <div class="button-back next-form-btn background-blue"></div>
-            <button class="btn next-form-btn ripple" type="button" onfocus="this.blur();">受付へ進む</button>
+            <button class="btn next-form-btn ripple" type="button" onfocus="this.blur();" style="padding: 0;">受付へ進む</button>
             </button>
         </div>
     </div>

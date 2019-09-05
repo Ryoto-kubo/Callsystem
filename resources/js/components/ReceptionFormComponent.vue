@@ -107,6 +107,7 @@
 
     <div v-if="nextStepId === 1">
         <form-input-peoples-component
+            :propsPrevTrigger="prevTrigger"
             @nextStep="nextStep"
             @getPeopleNum="getPeopleNum"
             @progressBarMove="progressBarMove"
@@ -115,19 +116,26 @@
 
     <div v-else-if="nextStepId === 2">
         <form-seat-select-component
+            :propsPrevStepState="prevStepState"
             @nextStep="nextStep"
-            @getSelectSeat="getSelectSeat"
+            @prevStep="prevStep"
+            @getSelectSeatType="getSelectSeatType"
             @progressBarMove="progressBarMove"
             @progressBarMoveReset="progressBarMoveReset"
             />
     </div>
     
-    <!-- <div v-else-if="nextStepId === 3">
-        <form-seat-select-component
-            v-if="nextStepId === 3"/>
+    <div v-else-if="nextStepId === 3">
+        <form-tobacco-select-component
+            @nextStep="nextStep"
+            @prevStep="prevStep"
+            @getSelectTobaccoType="getSelectTobaccoType"
+            @progressBarMove="progressBarMove"
+            @progressBarMoveReset="progressBarMoveReset"
+            />
     </div>
 
-    <div v-else-if="nextStepId === 4">
+    <!-- <div v-else-if="nextStepId === 4">
         <form-seat-select-component
             v-if="nextStepId === 4"/>
     </div> -->
@@ -145,6 +153,9 @@ import { constants } from 'crypto';
                 title: '',
                 peopleNum: null,
                 selectSeat: null,
+                selectTobacco: null,
+                prevTrigger: null,
+                prevStepState: null,
             }
         },
         mounted() {
@@ -154,26 +165,41 @@ import { constants } from 'crypto';
             nextStep: function(nextStepId){
                 this.nextStepId = nextStepId
             },
+            prevStep(prevStepId, prevComponentName, prevStepState){
+                this.prevTrigger   = true
+                this.prevStepState = prevStepState
+                this.nextStepId    = prevStepId
+                this.progressBarMoveReset(prevComponentName)
+            },
             progressBarMove: function(componentName){
-            const INPUT_PEOPLES = 'inputPeoples'
-            const SELECT_SEAT   = 'selectSeat'
+                const INPUT_PEOPLES  = 'inputPeoples'
+                const SELECT_SEAT    = 'selectSeat'
+                const SELECT_TOBACCO = 'selectTobacco'
                 if(componentName == INPUT_PEOPLES){
                     this.moveBarPercent = -75
                 } else if (componentName == SELECT_SEAT){
                     this.moveBarPercent = -50
+                } else if (componentName == SELECT_TOBACCO){
+                    this.moveBarPercent = -25
                 }
             },
             progressBarMoveReset: function(componentName){
-                const  INPUT_PEOPLES= 'inputPeoples'
+                const INPUT_PEOPLES = 'inputPeoples'
+                const SELECT_SEAT   = 'selectSeat'
                 if(componentName == INPUT_PEOPLES){
                     this.moveBarPercent = -100
+                } else if (componentName == SELECT_SEAT){
+                    this.moveBarPercent = -75
                 }
             },
             getPeopleNum(inputPeopleNum){
                 this.peopleNum = inputPeopleNum
             },
-            getSelectSeat(selectSeat){
+            getSelectSeatType(selectSeat){
                 this.selectSeat = selectSeat
+            },
+            getSelectTobaccoType(tobaccoType){
+                this.selectTobacco = tobaccoType
             }
         },
         watch: {
@@ -181,7 +207,9 @@ import { constants } from 'crypto';
                 if(this.nextStepId === 1){
                     this.title = '人数を入力してください'
                 }else if(this.nextStepId === 2){
-                    this.title = "希望の座席を選択してください"
+                    this.title = '希望の座席を選択してください'
+                }else if(this.nextStepId === 3){
+                    this.title = '喫煙席又は禁煙席を選択してください'
                 }
             }
         }

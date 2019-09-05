@@ -15,18 +15,25 @@ window.Vue = require('vue');
  *
  * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
  */
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { fas } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
+library.add(fas)
+ 
 // const files = require.context('./', true, /\.vue$/i);
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
 
-Vue.component('example-component'            , require('./components/ExampleComponent.vue').default);
-Vue.component('header-component'             , require('./components/HeaderComponent.vue').default);
-Vue.component('reception-get-component'      , require('./components/ReceptionGetComponent.vue').default);
-Vue.component('reception-get-min-component'  , require('./components/ReceptionGetMinComponent.vue').default);
-Vue.component('reception-form-component'     , require('./components/ReceptionFormComponent.vue').default);
-Vue.component('reception-confirm-component'  , require('./components/ReceptionConfirmComponent.vue').default);
-Vue.component('form-input-peoples-component' , require('./components/form/FormInputPeoplesComponent.vue').default);
-Vue.component('form-seat-select-component'   , require('./components/form/FormSeatSelectComponent.vue').default);
+Vue.component('font-awesome-icon', FontAwesomeIcon)
+Vue.component('example-component'               , require('./components/ExampleComponent.vue').default);
+Vue.component('header-component'                , require('./components/HeaderComponent.vue').default);
+Vue.component('reception-get-component'         , require('./components/ReceptionGetComponent.vue').default);
+Vue.component('reception-get-min-component'     , require('./components/ReceptionGetMinComponent.vue').default);
+Vue.component('reception-form-component'        , require('./components/ReceptionFormComponent.vue').default);
+Vue.component('reception-confirm-component'     , require('./components/ReceptionConfirmComponent.vue').default);
+Vue.component('form-input-peoples-component'    , require('./components/form/FormInputPeoplesComponent.vue').default);
+Vue.component('form-seat-select-component'      , require('./components/form/FormSeatSelectComponent.vue').default);
+Vue.component('form-tobacco-select-component'   , require('./components/form/FormTobaccoSelectComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

@@ -1,10 +1,10 @@
 <template>
     <div>
         <div class="form-container" :class="classSwitch">
-            <div class="flex-container seat-flex">
-                <div class="seat-btn-container" v-for="seatType in seatTypes" :key="seatType.index">
-                    <div class="button-back seat-btn-back"></div>
-                    <button class="btn seat-btn" onfocus="this.blur();" @click="nextStep(seatType)">{{seatType}}</button>
+            <div class="flex-container tobacco-flex">
+                <div class="tobacco-btn-container" v-for="tobaccoType in tobaccoTypes" :key="tobaccoType.index">
+                    <div class="button-back tobacco-btn-back"></div>
+                    <button class="btn tobacco-btn" onfocus="this.blur();" @click="nextStep(tobaccoType)">{{tobaccoType}}</button>
                 </div>
             </div>
             <div class="prev-btn-container">
@@ -24,19 +24,15 @@
             return {
                 prevDelayTime: 0,
                 nextDelayTime: 0,
+                isActive: true,
                 active: 'active',
                 reActive: 'reactive',
                 prevActive: 'prev-active',
                 prevReActive: 'prev-reactive',
-                isActive: true,
                 prevTrigger: false,
-                prevStepState: this.propsPrevStepState,
-                selectSeatType: null,
-                seatTypes: ['テーブル席', 'ボックス席', 'カウンター席', 'どこでも可']
+                selectTobaccoType: null,
+                tobaccoTypes: ['禁煙席', '喫煙席', 'どちらでも可']
             }
-        },
-        props: {
-            propsPrevStepState: '',
         },
         mounted() {
             // this.isActive = true
@@ -45,51 +41,44 @@
         },
         computed: {
             classSwitch: function(){
-                if(this.prevStepState){
-                    return this.prevActive
-
-                } else if (this.prevTrigger){
+                if(this.prevTrigger){
                     this.isActive = false
                     return this.prevReActive
-
-                } else if (!this.prevTrigger){
+                } else if(!this.prevTrigger){
                     if(this.isActive){
                         return this.active
-
                     }else{
                         return this.reActive
-
                     }
                 }
             }
         },
         methods: {
-            nextStep: function(seatType){
-                this.isActive       = false
-                this.prevStepState  = false
-                this.selectSeatType = seatType
-                this.$emit('getSelectSeatType', seatType)
+            nextStep: function(tobaccoType){
+                this.isActive = false
+                this.selectTobaccoType = tobaccoType
+                this.$emit('getSelectTobaccoType', tobaccoType)
 
-                let componentName = 'selectSeat'
+                let componentName = 'selectTobacco'
                 this.$emit('progressBarMove', componentName)
                 
                 setTimeout(() => {this.nextDelayTime++ }, 1000)
 
             },
             prevStep: function(){
-                this.prevTrigger   = true
-                this.prevStepState = false
+                this.prevTrigger = true
                 setTimeout(() => {this.prevDelayTime++ }, 1000)
             }
         },
         watch: {
             prevDelayTime: function(){
-                let prevComponentName = 'inputPeoples'
-                let prevStepId = 1
-                this.$emit('prevStep', prevStepId, prevComponentName)
+                let prevComponentName = 'selectSeat'
+                let prevStepState = true
+                let prevStepId = 2
+                this.$emit('prevStep', prevStepId, prevComponentName, prevStepState)
             },
             nextDelayTime: function(){
-                let nextStepId = 3
+                let nextStepId = 4
                 this.$emit('nextStep', nextStepId)
             }
         }
@@ -97,16 +86,16 @@
     }
 </script>
 <style>
-.seat-flex{
+.tobacco-flex{
     flex-wrap: wrap;
 }
-.seat-btn-container{
+.tobacco-btn-container{
     width: 48%;
     margin-bottom: 60px;
     text-align: center;
     position: relative;
 }
-.seat-btn{
+.tobacco-btn{
     width: 90%;
     height: 200px;
     color: #232323;
@@ -115,7 +104,7 @@
     font-size: 40px;
     outline: none;
 }
-.seat-btn-back{
+.tobacco-btn-back{
     width: 90%;
     height: 200px;
     position: absolute;
@@ -169,12 +158,12 @@
 
 @media screen and (max-width: 1024px) {
 
-.seat-btn{
+.tobacco-btn{
     width: 80%;
     height: 150px;
     font-size: 32px;
 }
-.seat-btn:active{
+.tobacco-btn:active{
     top: 5px;
 }
 .button-back{
