@@ -13815,11 +13815,14 @@ __webpack_require__.r(__webpack_exports__);
   computed: {
     classSwitch: function classSwitch() {
       if (this.prevStepState) {
+        // 前の画面から戻ってきたかどうかの判断
         return this.prevActive;
       } else if (this.prevTrigger) {
+        // 今の画面から前の画面に戻るかどうかの判断
         this.isActive = false;
         return this.prevReActive;
       } else if (!this.prevTrigger) {
+        // 
         if (this.isActive) {
           return this.active;
         } else {
@@ -26404,7 +26407,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.tobacco-flex{\n    flex-wrap: wrap;\n}\n.tobacco-btn-container{\n    width: 48%;\n    margin-bottom: 60px;\n    text-align: center;\n    position: relative;\n}\n.tobacco-btn{\n    width: 90%;\n    height: 200px;\n    color: #232323;\n    background: #f5f5f5;\n    border-radius: 10px;\n    font-size: 40px;\n    outline: none;\n}\n.tobacco-btn-back{\n    width: 90%;\n    height: 200px;\n    position: absolute;\n    top: 8px;\n    left: 50%;\n    transform: translate(-50%, 0);\n    z-index: -1;\n    border-radius: 10px;\n    background: #696969;\n}\n.prev-btn-container{\n    width: 87%;\n    margin: auto;\n    position: absolute;\n    top: 120%;\n    left: -5%;\n}\n.prev-btn-area{\n    width: 23%;\n    position: relative;\n    display: flex;\n    align-items: center;\n}\n.prev-btn{\n    width: 100%;\n    height: 85px;\n    background: #f5f5f5;\n    position: absolute;\n    top: 0;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    transition: .1s all ease;\n    color: #232323;\n    font-size: 32px;\n    z-index: 1;\n    border-radius: 10px;\n}\n.prev-btn:active{\n    top: 5px;\n}\n.prev-button-back{\n    width: 100%;\n    height: 85px;\n    position: absolute;\n    top: 8px;\n    background: #696969;\n    border-radius: 10px;\n}\n@media screen and (max-width: 1024px) {\n.tobacco-btn{\n    width: 80%;\n    height: 150px;\n    font-size: 32px;\n}\n.tobacco-btn:active{\n    top: 5px;\n}\n.button-back{\n    width: 80%;\n    height: 150px;\n}\n.prev-btn-container{\n    width: 85%;\n    top: 105%;\n    left: -7%;\n}\n.prev-btn{\n    height: 70px;\n    font-size: 25px;\n}\n.prev-button-back{\n    height: 70px;\n}\n}\n", ""]);
+exports.push([module.i, "\n.tobacco-flex{\n    flex-wrap: wrap;\n}\n.tobacco-btn-container{\n    width: 33%;\n    margin-bottom: 60px;\n    text-align: center;\n    position: relative;\n}\n.tobacco-btn{\n    width: 90%;\n    height: 200px;\n    color: #232323;\n    background: #f5f5f5;\n    border-radius: 10px;\n    font-size: 40px;\n    outline: none;\n}\n.tobacco-btn-back{\n    width: 90%;\n    height: 200px;\n    position: absolute;\n    top: 8px;\n    left: 50%;\n    transform: translate(-50%, 0);\n    z-index: -1;\n    border-radius: 10px;\n    background: #696969;\n}\n.prev-btn-container{\n    width: 87%;\n    margin: auto;\n    position: absolute;\n    top: 120%;\n    left: -5%;\n}\n.prev-btn-area{\n    width: 23%;\n    position: relative;\n    display: flex;\n    align-items: center;\n}\n.prev-btn{\n    width: 100%;\n    height: 85px;\n    background: #f5f5f5;\n    position: absolute;\n    top: 0;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    transition: .1s all ease;\n    color: #232323;\n    font-size: 32px;\n    z-index: 1;\n    border-radius: 10px;\n}\n.prev-btn:active{\n    top: 5px;\n}\n.prev-button-back{\n    width: 100%;\n    height: 85px;\n    position: absolute;\n    top: 8px;\n    background: #696969;\n    border-radius: 10px;\n}\n@media screen and (max-width: 1024px) {\n.tobacco-btn{\n    width: 80%;\n    height: 150px;\n    font-size: 32px;\n}\n.tobacco-btn:active{\n    top: 5px;\n}\n.button-back{\n    width: 80%;\n    height: 150px;\n}\n.prev-btn-container{\n    width: 85%;\n    top: 105%;\n    left: -7%;\n}\n.prev-btn{\n    height: 70px;\n    font-size: 25px;\n}\n.prev-button-back{\n    height: 70px;\n}\n}\n", ""]);
 
 // exports
 

@@ -45,14 +45,14 @@
         },
         computed: {
             classSwitch: function(){
-                if(this.prevStepState){
+                if(this.prevStepState){ // 前の画面から戻ってきたかどうかの判断
                     return this.prevActive
 
-                } else if (this.prevTrigger){
+                } else if (this.prevTrigger){ // 今の画面から前の画面に戻るかどうかの判断
                     this.isActive = false
                     return this.prevReActive
 
-                } else if (!this.prevTrigger){
+                } else if (!this.prevTrigger){ // 
                     if(this.isActive){
                         return this.active
 
