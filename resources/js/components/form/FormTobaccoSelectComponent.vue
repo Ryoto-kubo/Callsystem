@@ -161,7 +161,7 @@
 .tobacco-btn{
     width: 80%;
     height: 150px;
-    font-size: 32px;
+    font-size: 30px;
 }
 .tobacco-btn:active{
     top: 5px;
