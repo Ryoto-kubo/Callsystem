@@ -90,7 +90,7 @@
     flex-wrap: wrap;
 }
 .tobacco-btn-container{
-    width: 48%;
+    width: 33%;
     margin-bottom: 60px;
     text-align: center;
     position: relative;
