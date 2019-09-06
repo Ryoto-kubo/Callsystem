@@ -16,8 +16,15 @@
 // });
 Route::get('/'                    ,'TopController@getIndex');
 Route::get('/manage'              ,'ManageController@index');
-Route::get('/reception/count'     ,'ReceptionIndexController@index');
-Route::get('/reception/min'       ,'ReceptionIndexController@getWaitingMin');
-Route::get('/reception/form'      ,'ReceptionFormController@index');
-Route::post('/reception/validate' ,'ReceptionConfirmController@formValidate');
-Route::post('/reception/formpost' ,'ReceptionConfirmController@formpost');
+
+Route::prefix('reception')->group(function () {
+    Route::get('/count'     ,'ReceptionIndexController@index');
+    Route::get('/min'       ,'ReceptionIndexController@getWaitingMin');
+    Route::get('/form'      ,'ReceptionFormController@index');
+    Route::post('/validate' ,'ReceptionConfirmController@formValidate');
+    Route::post('/formpost' ,'ReceptionConfirmController@formpost');
+});
+
+Route::prefix('form')->group(function () {
+    Route::view('/peoples', 'front/formpeople');
+});
