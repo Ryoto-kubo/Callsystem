@@ -34,6 +34,7 @@ Vue.component('reception-confirm-component'     , require('./components/Receptio
 Vue.component('form-input-peoples-component'    , require('./components/form/FormInputPeoplesComponent.vue').default);
 Vue.component('form-seat-select-component'      , require('./components/form/FormSeatSelectComponent.vue').default);
 Vue.component('form-tobacco-select-component'   , require('./components/form/FormTobaccoSelectComponent.vue').default);
+Vue.component('form-input-tell-component'       , require('./components/form/FormInputTellComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

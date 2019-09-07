@@ -450,6 +450,40 @@ header{
                     width: 92%;
                 }
             }
+            .tell-num-button-area{
+                position: relative;
+                width: 33%;
+                font-size: 50px;
+                .button-back{
+                    position: absolute;
+                    top: 8px;
+                    z-index: -1;
+                    width: 85%;
+                    height: 110px;
+                    border-radius: 10px;
+                    background: #696969;
+                    outline: none;
+                }
+                .tell-num-btn{
+                    width: 85%;
+                    height: 110px;
+                    border-radius: 10px;
+                    border: 0.5px solid #808080;
+                    background: #f5f5f5;
+                    color: #232323;
+                    font-size: 40px;
+                    outline: none;
+                    transition: 0.05s all ease;
+                }
+                .gray{
+                    top: 5px;
+                    color: #808080;
+                    background: #dcdcdc;
+                }
+                .clear-btn{
+                    width: 85%;
+                }
+            }
         }
     }
 }

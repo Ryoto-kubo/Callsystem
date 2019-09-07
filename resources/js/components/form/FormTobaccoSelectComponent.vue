@@ -7,7 +7,7 @@
                     <button class="btn tobacco-btn" onfocus="this.blur();" @click="nextStep(tobaccoType)">{{tobaccoType}}</button>
                 </div>
             </div>
-            <div class="prev-btn-container">
+            <div class="prev-btn-container top-postion">
                 <div class="prev-btn-area">
                     <div class="prev-button-back"></div>
                     <button class="prev-btn" type="button" onfocus="this.blur();" @click="prevStep">
@@ -122,6 +122,9 @@
     top: 120%;
     left: -5%;
 }
+.top-postion{
+    top: 190%;
+}
 .prev-btn-area{
     width: 23%;
     position: relative;
@@ -174,6 +177,9 @@
     width: 85%;
     top: 105%;
     left: -7%;
+}
+.top-postion{
+    top: 155%;
 }
 .prev-btn{
     height: 70px;

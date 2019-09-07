@@ -135,10 +135,15 @@
             />
     </div>
 
-    <!-- <div v-else-if="nextStepId === 4">
-        <form-seat-select-component
-            v-if="nextStepId === 4"/>
-    </div> -->
+    <div v-else-if="nextStepId === 4">
+        <form-input-tell-component
+            @nextStep="nextStep"
+            @prevStep="prevStep"
+            @getSelectTobaccoType="getSelectTobaccoType"
+            @progressBarMove="progressBarMove"
+            @progressBarMoveReset="progressBarMoveReset"
+            />
+    </div>
 
 </div>
 
@@ -204,12 +209,14 @@ import { constants } from 'crypto';
         },
         watch: {
             nextStepId: function(){
-                if(this.nextStepId === 1){
+                if (this.nextStepId === 1){
                     this.title = '人数を入力してください'
-                }else if(this.nextStepId === 2){
+                } else if (this.nextStepId === 2){
                     this.title = '希望の座席を選択してください'
-                }else if(this.nextStepId === 3){
+                } else if (this.nextStepId === 3){
                     this.title = '喫煙席又は禁煙席を選択してください'
+                } else if (this.nextStepId === 4){
+                    this.title = '電話番号でのお呼び出しも可能です'
                 }
             }
         }
