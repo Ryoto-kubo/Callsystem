@@ -13459,6 +13459,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -13527,6 +13532,8 @@ __webpack_require__.r(__webpack_exports__);
         this.title = '希望の座席を選択してください';
       } else if (this.nextStepId === 3) {
         this.title = '喫煙席又は禁煙席を選択してください';
+      } else if (this.nextStepId === 4) {
+        this.title = '電話番号でのお呼び出しも可能です';
       }
     }
   }
@@ -13752,6 +13759,124 @@ __webpack_require__.r(__webpack_exports__);
     },
     time: function time() {
       var nextStepId = 2;
+      this.$emit('nextStep', nextStepId);
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/form/FormInputTellComponent.vue?vue&type=script&lang=js&":
+/*!**************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/form/FormInputTellComponent.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      prevDelayTime: 0,
+      nextDelayTime: 0,
+      isActive: true,
+      active: 'active',
+      reActive: 'reactive',
+      prevActive: 'prev-active',
+      prevReActive: 'prev-reactive',
+      prevTrigger: false,
+      selectTobaccoType: null,
+      nums: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-']
+    };
+  },
+  mounted: function mounted() {
+    // this.isActive = true
+    this.prevDelayTime = 0;
+    this.nextDelayTime = 0;
+  },
+  computed: {
+    classSwitch: function classSwitch() {
+      if (this.prevTrigger) {
+        this.isActive = false;
+        return this.prevReActive;
+      } else if (!this.prevTrigger) {
+        if (this.isActive) {
+          return this.active;
+        } else {
+          return this.reActive;
+        }
+      }
+    }
+  },
+  methods: {
+    nextStep: function nextStep(tobaccoType) {
+      var _this = this;
+
+      this.isActive = false;
+      this.selectTobaccoType = tobaccoType;
+      this.$emit('getSelectTobaccoType', tobaccoType);
+      var componentName = 'selectTobacco';
+      this.$emit('progressBarMove', componentName);
+      setTimeout(function () {
+        _this.nextDelayTime++;
+      }, 1000);
+    },
+    prevStep: function prevStep() {
+      var _this2 = this;
+
+      this.prevTrigger = true;
+      setTimeout(function () {
+        _this2.prevDelayTime++;
+      }, 1000);
+    }
+  },
+  watch: {
+    prevDelayTime: function prevDelayTime() {
+      var prevComponentName = 'selectSeat';
+      var prevStepState = true;
+      var prevStepId = 2;
+      this.$emit('prevStep', prevStepId, prevComponentName, prevStepState);
+    },
+    nextDelayTime: function nextDelayTime() {
+      var nextStepId = 4;
       this.$emit('nextStep', nextStepId);
     }
   }
@@ -26407,7 +26532,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.tobacco-flex{\n    flex-wrap: wrap;\n}\n.tobacco-btn-container{\n    width: 33%;\n    margin-bottom: 60px;\n    text-align: center;\n    position: relative;\n}\n.tobacco-btn{\n    width: 90%;\n    height: 200px;\n    color: #232323;\n    background: #f5f5f5;\n    border-radius: 10px;\n    font-size: 40px;\n    outline: none;\n}\n.tobacco-btn-back{\n    width: 90%;\n    height: 200px;\n    position: absolute;\n    top: 8px;\n    left: 50%;\n    transform: translate(-50%, 0);\n    z-index: -1;\n    border-radius: 10px;\n    background: #696969;\n}\n.prev-btn-container{\n    width: 87%;\n    margin: auto;\n    position: absolute;\n    top: 120%;\n    left: -5%;\n}\n.prev-btn-area{\n    width: 23%;\n    position: relative;\n    display: flex;\n    align-items: center;\n}\n.prev-btn{\n    width: 100%;\n    height: 85px;\n    background: #f5f5f5;\n    position: absolute;\n    top: 0;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    transition: .1s all ease;\n    color: #232323;\n    font-size: 32px;\n    z-index: 1;\n    border-radius: 10px;\n}\n.prev-btn:active{\n    top: 5px;\n}\n.prev-button-back{\n    width: 100%;\n    height: 85px;\n    position: absolute;\n    top: 8px;\n    background: #696969;\n    border-radius: 10px;\n}\n@media screen and (max-width: 1024px) {\n.tobacco-btn{\n    width: 80%;\n    height: 150px;\n    font-size: 30px;\n}\n.tobacco-btn:active{\n    top: 5px;\n}\n.button-back{\n    width: 80%;\n    height: 150px;\n}\n.prev-btn-container{\n    width: 85%;\n    top: 105%;\n    left: -7%;\n}\n.prev-btn{\n    height: 70px;\n    font-size: 25px;\n}\n.prev-button-back{\n    height: 70px;\n}\n}\n", ""]);
+exports.push([module.i, "\n.tobacco-flex{\n    flex-wrap: wrap;\n}\n.tobacco-btn-container{\n    width: 33%;\n    margin-bottom: 60px;\n    text-align: center;\n    position: relative;\n}\n.tobacco-btn{\n    width: 90%;\n    height: 200px;\n    color: #232323;\n    background: #f5f5f5;\n    border-radius: 10px;\n    font-size: 40px;\n    outline: none;\n}\n.tobacco-btn-back{\n    width: 90%;\n    height: 200px;\n    position: absolute;\n    top: 8px;\n    left: 50%;\n    transform: translate(-50%, 0);\n    z-index: -1;\n    border-radius: 10px;\n    background: #696969;\n}\n.prev-btn-container{\n    width: 87%;\n    margin: auto;\n    position: absolute;\n    top: 120%;\n    left: -5%;\n}\n.top-postion{\n    top: 190%;\n}\n.prev-btn-area{\n    width: 23%;\n    position: relative;\n    display: flex;\n    align-items: center;\n}\n.prev-btn{\n    width: 100%;\n    height: 85px;\n    background: #f5f5f5;\n    position: absolute;\n    top: 0;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    transition: .1s all ease;\n    color: #232323;\n    font-size: 32px;\n    z-index: 1;\n    border-radius: 10px;\n}\n.prev-btn:active{\n    top: 5px;\n}\n.prev-button-back{\n    width: 100%;\n    height: 85px;\n    position: absolute;\n    top: 8px;\n    background: #696969;\n    border-radius: 10px;\n}\n@media screen and (max-width: 1024px) {\n.tobacco-btn{\n    width: 80%;\n    height: 150px;\n    font-size: 30px;\n}\n.tobacco-btn:active{\n    top: 5px;\n}\n.button-back{\n    width: 80%;\n    height: 150px;\n}\n.prev-btn-container{\n    width: 85%;\n    top: 105%;\n    left: -7%;\n}\n.top-postion{\n    top: 155%;\n}\n.prev-btn{\n    height: 70px;\n    font-size: 25px;\n}\n.prev-button-back{\n    height: 70px;\n}\n}\n", ""]);
 
 // exports
 
@@ -73617,6 +73742,22 @@ var render = function() {
             ],
             1
           )
+        : _vm.nextStepId === 4
+        ? _c(
+            "div",
+            [
+              _c("form-input-tell-component", {
+                on: {
+                  nextStep: _vm.nextStep,
+                  prevStep: _vm.prevStep,
+                  getSelectTobaccoType: _vm.getSelectTobaccoType,
+                  progressBarMove: _vm.progressBarMove,
+                  progressBarMoveReset: _vm.progressBarMoveReset
+                }
+              })
+            ],
+            1
+          )
         : _vm._e()
     ],
     1
@@ -73826,6 +73967,149 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/form/FormInputTellComponent.vue?vue&type=template&id=4a3d4254&":
+/*!******************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/form/FormInputTellComponent.vue?vue&type=template&id=4a3d4254& ***!
+  \******************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "form-container", class: _vm.classSwitch }, [
+    _c("div", { staticClass: "flex-container" }, [
+      _c("div", { staticClass: "input-container" }, [
+        _c("div", { staticClass: "input-area" }, [
+          _c("div", { staticClass: "input" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.peopleNum,
+                  expression: "peopleNum"
+                }
+              ],
+              attrs: { id: "num-input", type: "num", readonly: "readonly" },
+              domProps: { value: _vm.peopleNum },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.peopleNum = $event.target.value
+                }
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _vm._m(0)
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "flex-container" }, [
+        _c(
+          "div",
+          { staticClass: "num-button-container" },
+          [
+            _vm._l(_vm.nums, function(item) {
+              return _c(
+                "div",
+                { key: item.index, staticClass: "tell-num-button-area" },
+                [
+                  _c("div", { staticClass: "button-back next-btn" }),
+                  _vm._v(" "),
+                  _vm.numBtnAppearrance
+                    ? _c(
+                        "button",
+                        {
+                          staticClass: "btn tell-num-btn",
+                          attrs: { onfocus: "this.blur();" },
+                          on: {
+                            click: function($event) {
+                              return _vm.numInput(item)
+                            }
+                          }
+                        },
+                        [_vm._v(_vm._s(item))]
+                      )
+                    : _c(
+                        "button",
+                        {
+                          staticClass: "btn tell-num-btn gray",
+                          attrs: { onfocus: "this.blur();" }
+                        },
+                        [_vm._v(_vm._s(item))]
+                      )
+                ]
+              )
+            }),
+            _vm._v(" "),
+            _c("div", { staticClass: "tell-num-button-area" }, [
+              _c("div", {
+                staticClass: "button-back clear-button-back next-btn"
+              }),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "btn tell-num-btn clear-btn",
+                  attrs: { type: "button", onfocus: "this.blur();" },
+                  on: { click: _vm.numClear }
+                },
+                [_vm._v("←")]
+              )
+            ])
+          ],
+          2
+        )
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "prev-btn-container" }, [
+        _c("div", { staticClass: "prev-btn-area" }, [
+          _c("div", { staticClass: "prev-button-back" }),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              staticClass: "prev-btn",
+              attrs: { type: "button", onfocus: "this.blur();" },
+              on: { click: _vm.prevStep }
+            },
+            [
+              _c("font-awesome-icon", {
+                staticStyle: { width: "40px", height: "40px" },
+                attrs: { icon: "angle-left" }
+              }),
+              _vm._v("前に戻る\n                ")
+            ],
+            1
+          )
+        ])
+      ])
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "group-text" }, [_c("p", [_vm._v("名様")])])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/form/FormSeatSelectComponent.vue?vue&type=template&id=4e1a0e18&":
 /*!*******************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/form/FormSeatSelectComponent.vue?vue&type=template&id=4e1a0e18& ***!
@@ -73950,7 +74234,7 @@ var render = function() {
         0
       ),
       _vm._v(" "),
-      _c("div", { staticClass: "prev-btn-container" }, [
+      _c("div", { staticClass: "prev-btn-container top-postion" }, [
         _c("div", { staticClass: "prev-btn-area" }, [
           _c("div", { staticClass: "prev-button-back" }),
           _vm._v(" "),
@@ -86192,6 +86476,7 @@ Vue.component('reception-confirm-component', __webpack_require__(/*! ./component
 Vue.component('form-input-peoples-component', __webpack_require__(/*! ./components/form/FormInputPeoplesComponent.vue */ "./resources/js/components/form/FormInputPeoplesComponent.vue")["default"]);
 Vue.component('form-seat-select-component', __webpack_require__(/*! ./components/form/FormSeatSelectComponent.vue */ "./resources/js/components/form/FormSeatSelectComponent.vue")["default"]);
 Vue.component('form-tobacco-select-component', __webpack_require__(/*! ./components/form/FormTobaccoSelectComponent.vue */ "./resources/js/components/form/FormTobaccoSelectComponent.vue")["default"]);
+Vue.component('form-input-tell-component', __webpack_require__(/*! ./components/form/FormInputTellComponent.vue */ "./resources/js/components/form/FormInputTellComponent.vue")["default"]);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -86798,6 +87083,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_FormInputPeoplesComponent_vue_vue_type_template_id_b55dcf02___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_FormInputPeoplesComponent_vue_vue_type_template_id_b55dcf02___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/form/FormInputTellComponent.vue":
+/*!*****************************************************************!*\
+  !*** ./resources/js/components/form/FormInputTellComponent.vue ***!
+  \*****************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _FormInputTellComponent_vue_vue_type_template_id_4a3d4254___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./FormInputTellComponent.vue?vue&type=template&id=4a3d4254& */ "./resources/js/components/form/FormInputTellComponent.vue?vue&type=template&id=4a3d4254&");
+/* harmony import */ var _FormInputTellComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./FormInputTellComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/form/FormInputTellComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _FormInputTellComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _FormInputTellComponent_vue_vue_type_template_id_4a3d4254___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _FormInputTellComponent_vue_vue_type_template_id_4a3d4254___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/form/FormInputTellComponent.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/form/FormInputTellComponent.vue?vue&type=script&lang=js&":
+/*!******************************************************************************************!*\
+  !*** ./resources/js/components/form/FormInputTellComponent.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_FormInputTellComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./FormInputTellComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/form/FormInputTellComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_FormInputTellComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/form/FormInputTellComponent.vue?vue&type=template&id=4a3d4254&":
+/*!************************************************************************************************!*\
+  !*** ./resources/js/components/form/FormInputTellComponent.vue?vue&type=template&id=4a3d4254& ***!
+  \************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_FormInputTellComponent_vue_vue_type_template_id_4a3d4254___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./FormInputTellComponent.vue?vue&type=template&id=4a3d4254& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/form/FormInputTellComponent.vue?vue&type=template&id=4a3d4254&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_FormInputTellComponent_vue_vue_type_template_id_4a3d4254___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_FormInputTellComponent_vue_vue_type_template_id_4a3d4254___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
