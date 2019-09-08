@@ -49,9 +49,45 @@ a{
     }
 }
 
-// .js-fade-in-out{
-//     opacity: 0;
-// }
+.prev-btn-container{
+    width: 87%;
+    margin: auto;
+    position: absolute;
+    top: 120%;
+    left: -5%;
+    .prev-btn-area{
+        width: 23%;
+        position: relative;
+        display: flex;
+        align-items: center;
+        .prev-btn{
+            width: 100%;
+            height: 85px;
+            background: #f5f5f5;
+            position: absolute;
+            top: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: .1s all ease;
+            color: #232323;
+            font-size: 32px;
+            z-index: 1;
+            border-radius: 10px;
+            &:active{
+                top: 5px;
+            }        
+        }
+        .prev-button-back{
+            width: 100%;
+            height: 85px;
+            position: absolute;
+            top: 8px;
+            background: #696969;
+            border-radius: 10px;
+        }
+    }
+}
 
 .link-area{
     position: relative;
@@ -364,23 +400,23 @@ header{
     }
 }
 
-// .form-container{
-//     width: 80%;
-//     margin: auto;
-//     position: absolute;
-//     top: 50%;
-//     left: 50%;
-//     transform: translate(-50%, -50%);
-//     .flex-container{
-//         display: flex;
-//         justify-content: space-between;
-//         align-items: center;
-//         .input-container{
-//             width: 80%;
-//             margin-right: 60px;
-//             .input-area{
-//                 display: flex;
-//                 align-items: flex-end;
+.form-container{
+    width: 80%;
+    margin: auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    .flex-container{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .input-container{
+            width: 80%;
+            margin-right: 60px;
+            .input-area{
+                display: flex;
+                align-items: flex-end;
 //                 .input{
 //                     input{
 //                         width: 350px;
@@ -399,8 +435,8 @@ header{
 //                         margin: 0;
 //                     }
 //                 }
-//             }
-//         }
+            }
+        }
 //         .num-button-container{
 //             display: flex;
 //             flex-wrap: wrap;
@@ -484,8 +520,8 @@ header{
 //                 }
 //             }
 //         }
-//     }
-// }
+    }
+}
 // .progressbar-container{
 //     width: 95%;
 //     margin: auto;
@@ -582,6 +618,21 @@ header{
                         
                     }
                 }
+            }
+        }
+    }
+    .prev-btn-container{
+        width: 85%;
+        top: 105%;
+        left: -7%;
+        .prev-btn-area{
+            width: 24%;
+            .prev-button-back{
+                height: 70px;
+            }
+            .prev-btn{
+                height: 70px;
+                font-size: 25px;
             }
         }
     }

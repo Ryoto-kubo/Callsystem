@@ -10,7 +10,7 @@
             <div class="prev-btn-container">
                 <div class="prev-btn-area">
                     <div class="prev-button-back"></div>
-                    <button class="prev-btn" type="button" onfocus="this.blur();" @click="prevStep">
+                    <button class="btn prev-btn" type="button" onfocus="this.blur();" @click="prevStep">
                         <font-awesome-icon icon="angle-left" style="width: 40px; height: 40px;" />前に戻る
                     </button>
                 </div>
@@ -96,102 +96,53 @@
 
     }
 </script>
-<style>
+<style lang="scss" scoped>
+@import '../../../sass/variables';
+
 .seat-flex{
     flex-wrap: wrap;
+    .seat-btn-container{
+        width: 48%;
+        margin-bottom: 60px;
+        text-align: center;
+        position: relative;
+        .seat-btn{
+            width: 90%;
+            height: 200px;
+            color: #232323;
+            background: #f5f5f5;
+            border-radius: 10px;
+            font-size: 40px;
+            outline: none;
+        }
+        .seat-btn-back{
+            width: 90%;
+            height: 200px;
+            position: absolute;
+            top: 8px;
+            left: 50%;
+            transform: translate(-50%, 0);
+            z-index: -1;
+            border-radius: 10px;
+            background: #696969;
+        }
+    }
 }
-.seat-btn-container{
-    width: 48%;
-    margin-bottom: 60px;
-    text-align: center;
-    position: relative;
-}
-.seat-btn{
-    width: 90%;
-    height: 200px;
-    color: #232323;
-    background: #f5f5f5;
-    border-radius: 10px;
-    font-size: 40px;
-    outline: none;
-}
-.seat-btn-back{
-    width: 90%;
-    height: 200px;
-    position: absolute;
-    top: 8px;
-    left: 50%;
-    transform: translate(-50%, 0);
-    z-index: -1;
-    border-radius: 10px;
-    background: #696969;
-}
-.prev-btn-container{
-    width: 87%;
-    margin: auto;
-    position: absolute;
-    top: 120%;
-    left: -5%;
-}
-.prev-btn-area{
-    width: 23%;
-    position: relative;
-    display: flex;
-    align-items: center;
-}
-.prev-btn{
-    width: 100%;
-    height: 85px;
-    background: #f5f5f5;
-    position: absolute;
-    top: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: .1s all ease;
-    color: #232323;
-    font-size: 32px;
-    z-index: 1;
-    border-radius: 10px;
-}
-.prev-btn:active{
-    top: 5px;
-}
-.prev-button-back{
-    width: 100%;
-    height: 85px;
-    position: absolute;
-    top: 8px;
-    background: #696969;
-    border-radius: 10px;
-}
-
-
 @media screen and (max-width: 1024px) {
 
-.seat-btn{
-    width: 80%;
-    height: 150px;
-    font-size: 32px;
-}
-.seat-btn:active{
-    top: 5px;
-}
-.button-back{
-    width: 80%;
-    height: 150px;
-}
-.prev-btn-container{
-    width: 85%;
-    top: 105%;
-    left: -7%;
-}
-.prev-btn{
-    height: 70px;
-    font-size: 25px;
-}
-.prev-button-back{
-    height: 70px;
-}
+    .seat-flex{
+        .seat-btn-container{
+            .seat-btn{
+                width: 80%;
+                height: 150px;
+                font-size: 32px;
+            }
+            .seat-btn-back{
+                width: 80%;
+                height: 150px;
+            }
+        }
+    }
+
 }
 </style>

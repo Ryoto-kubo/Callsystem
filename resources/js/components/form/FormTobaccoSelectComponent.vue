@@ -85,7 +85,9 @@
 
     }
 </script>
-<style>
+<style　lang='scss' scoped>
+@import '../../../sass/variables';
+
 .tobacco-flex{
     flex-wrap: wrap;
 }
