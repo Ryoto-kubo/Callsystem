@@ -223,5 +223,30 @@ import { constants } from 'crypto';
     }
 
 </script>
-<style>
+<style lang="scss" scoped>
+@import '../../sass/variables';
+.progressbar-container{
+    width: 95%;
+    margin: auto;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    justify-content: space-between;
+    .progressbar{
+        width: 100%;
+        height: 15px;
+        left: -100%;
+        background: linear-gradient(-90deg, $btn_color, #1e90ff);
+        position: absolute;
+        transition: all .8s ease-in-out;
+    }
+    .move{
+        left: 0;
+        transition: all .8s ease-in-out;
+    }
+    .progressbar-back{
+        width: 100%;
+        background: #808080;
+    }
+}
 </style>

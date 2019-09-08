@@ -111,3 +111,129 @@ import { setTimeout } from 'timers';
         }
     }
 </script>
+<style lang="scss" scoped>
+@import '../../../sass/variables';
+
+.form-container{
+    width: 80%;
+    margin: auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    .flex-container{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .input-container{
+            width: 80%;
+            margin-right: 60px;
+            .input-area{
+                display: flex;
+                align-items: flex-end;
+                .input{
+                    input{
+                        width: 350px;
+                        height: 170px;
+                        text-align: center;
+                        border: 5px solid #707070;
+                        border-radius: 20px;
+                        font-size: 70px;
+                        color: #696969;
+                    }
+                }
+                .group-text{
+                    margin-left: 10px;
+                    font-size: 30px;
+                    p{
+                        margin: 0;
+                    }
+                }
+            }
+        }
+        .num-button-container{
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            .num-button-area{
+                position: relative;
+                width: 33%;
+                font-size: 50px;
+                &:nth-child(n+1):nth-child(-n+9){
+                    margin-bottom: 25px;
+                }
+                &:nth-child(11){
+                    margin-right: 0;
+                    width: 65%;
+                }
+                .button-back{
+                    position: absolute;
+                    top: 8px;
+                    z-index: -1;
+                    width: 85%;
+                    height: 110px;
+                    border-radius: 10px;
+                    background: #696969;
+                    outline: none;
+                }
+                .input-btn{
+                    width: 85%;
+                    height: 110px;
+                    border-radius: 10px;
+                    border: 0.5px solid #808080;
+                    background: #f5f5f5;
+                    color: #232323;
+                    font-size: 40px;
+                    outline: none;
+                    transition: 0.05s all ease;
+                }
+                .gray{
+                    top: 5px;
+                    color: #808080;
+                    background: #dcdcdc;
+                }
+                .clear-btn{
+                    width: 92%;
+                }
+                .clear-button-back{
+                    width: 92%;
+                }
+            }
+            .tell-num-button-area{
+                position: relative;
+                width: 33%;
+                font-size: 50px;
+                .button-back{
+                    position: absolute;
+                    top: 8px;
+                    z-index: -1;
+                    width: 85%;
+                    height: 110px;
+                    border-radius: 10px;
+                    background: #696969;
+                    outline: none;
+                }
+                .tell-num-btn{
+                    width: 85%;
+                    height: 110px;
+                    border-radius: 10px;
+                    border: 0.5px solid #808080;
+                    background: #f5f5f5;
+                    color: #232323;
+                    font-size: 40px;
+                    outline: none;
+                    transition: 0.05s all ease;
+                }
+                .gray{
+                    top: 5px;
+                    color: #808080;
+                    background: #dcdcdc;
+                }
+                .clear-btn{
+                    width: 85%;
+                }
+            }
+        }
+    }
+}
+</style>
