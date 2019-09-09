@@ -107,7 +107,7 @@
         text-align: center;
         position: relative;
         .seat-btn{
-            width: 90%;
+            width: 80%;
             height: 200px;
             color: #232323;
             background: #f5f5f5;
@@ -116,7 +116,7 @@
             outline: none;
         }
         .seat-btn-back{
-            width: 90%;
+            width: 80%;
             height: 200px;
             position: absolute;
             top: 8px;
@@ -128,6 +128,10 @@
         }
     }
 }
+.prev-btn-container{
+    left: -6%;
+}
+
 @media screen and (max-width: 1024px) {
 
     .seat-flex{
@@ -143,6 +147,8 @@
             }
         }
     }
-
+    .prev-btn-container{
+        left: -7%;
+    }
 }
 </style>

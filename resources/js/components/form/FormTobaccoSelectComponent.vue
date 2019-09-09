@@ -82,113 +82,64 @@
                 this.$emit('nextStep', nextStepId)
             }
         }
-
     }
 </script>
-<style　lang='scss' scoped>
+<style lang='scss' scoped>
 @import '../../../sass/variables';
 
-.tobacco-flex{
+.tobacco-flex {
     flex-wrap: wrap;
-}
-.tobacco-btn-container{
-    width: 33%;
-    margin-bottom: 60px;
-    text-align: center;
-    position: relative;
-}
-.tobacco-btn{
-    width: 90%;
-    height: 200px;
-    color: #232323;
-    background: #f5f5f5;
-    border-radius: 10px;
-    font-size: 40px;
-    outline: none;
-}
-.tobacco-btn-back{
-    width: 90%;
-    height: 200px;
-    position: absolute;
-    top: 8px;
-    left: 50%;
-    transform: translate(-50%, 0);
-    z-index: -1;
-    border-radius: 10px;
-    background: #696969;
+    .tobacco-btn-container{
+        width: 33%;
+        margin-bottom: 60px;
+        text-align: center;
+        position: relative;
+        .tobacco-btn{
+            width: 90%;
+            height: 200px;
+            color: #232323;
+            background: #f5f5f5;
+            border-radius: 10px;
+            font-size: 40px;
+            outline: none;
+        }
+        .tobacco-btn-back{
+            width: 90%;
+            height: 200px;
+            position: absolute;
+            top: 8px;
+            left: 50%;
+            transform: translate(-50%, 0);
+            z-index: -1;
+            border-radius: 10px;
+            background: #696969;
+        }
+    }
 }
 .prev-btn-container{
-    width: 87%;
-    margin: auto;
-    position: absolute;
-    top: 120%;
-    left: -5%;
-}
-.top-postion{
     top: 190%;
+    left: -6%;
 }
-.prev-btn-area{
-    width: 23%;
-    position: relative;
-    display: flex;
-    align-items: center;
-}
-.prev-btn{
-    width: 100%;
-    height: 85px;
-    background: #f5f5f5;
-    position: absolute;
-    top: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: .1s all ease;
-    color: #232323;
-    font-size: 32px;
-    z-index: 1;
-    border-radius: 10px;
-}
-.prev-btn:active{
-    top: 5px;
-}
-.prev-button-back{
-    width: 100%;
-    height: 85px;
-    position: absolute;
-    top: 8px;
-    background: #696969;
-    border-radius: 10px;
-}
-
 
 @media screen and (max-width: 1024px) {
 
-.tobacco-btn{
-    width: 80%;
-    height: 150px;
-    font-size: 30px;
-}
-.tobacco-btn:active{
-    top: 5px;
-}
-.button-back{
-    width: 80%;
-    height: 150px;
-}
-.prev-btn-container{
-    width: 85%;
-    top: 105%;
-    left: -7%;
-}
-.top-postion{
-    top: 155%;
-}
-.prev-btn{
-    height: 70px;
-    font-size: 25px;
-}
-.prev-button-back{
-    height: 70px;
-}
+    .tobacco-flex{
+        .tobacco-btn-container{
+            .tobacco-btn{
+                width: 80%;
+                height: 150px;
+                font-size: 30px;
+            }
+            .button-back{
+                width: 80%;
+                height: 150px;
+            }
+        }
+    }
+    .prev-btn-container{
+        top: 160%;
+        left: -7%;
+    }
+
 }
 </style>
