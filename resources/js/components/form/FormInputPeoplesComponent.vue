@@ -1,37 +1,37 @@
 <template>
-<div class="form-container" :class="classSwitch">
-    <div class="flex-container">
-        <div class="input-container">
-            <div class="input-area">
-                <div class="input">
-                    <input id="num-input" v-model="peopleNum" type="num" readonly="readonly">
+    <div class="form-container" :class="classSwitch">
+        <div class="flex-container">
+            <div class="input-container">
+                <div class="input-area">
+                    <div class="input">
+                        <input id="num-input" v-model="peopleNum" type="num" readonly="readonly">
+                    </div>
+                    <div class="group-text">
+                        <p>名様</p>
+                    </div>
                 </div>
-                <div class="group-text">
-                    <p>名様</p>
+            </div>
+            <div class="num-button-container">
+                <div class="num-button-area" v-for="item in nums" :key="item.index">
+                    <div class="button-back next-btn"></div>
+                    <button v-if="numBtnAppearrance" class="btn input-btn" @click="numInput(item)" onfocus="this.blur();">{{ item }}</button>
+                    <button v-else class="btn input-btn gray" onfocus="this.blur();">{{ item }}</button>
+                </div>
+                <div class="num-button-area">
+                    <div class="button-back clear-button-back next-btn"></div>
+                    <button class="btn input-btn clear-btn" type="button" @click="numClear" onfocus="this.blur();">クリア</button>
                 </div>
             </div>
         </div>
-        <div class="num-button-container">
-            <div class="num-button-area" v-for="item in nums" :key="item.index">
-                <div class="button-back next-btn"></div>
-                <button v-if="numBtnAppearrance" class="btn input-btn" @click="numInput(item)" onfocus="this.blur();">{{ item }}</button>
-                <button v-else class="btn input-btn gray" onfocus="this.blur();">{{ item }}</button>
-            </div>
-            <div class="num-button-area">
-                <div class="button-back clear-button-back next-btn"></div>
-                <button class="btn input-btn clear-btn" type="button" @click="numClear" onfocus="this.blur();">クリア</button>
-            </div>
+        <div v-if="nextBtnAppearrance" class="link-area">
+            <div class="button-back background-blue"></div>
+            <button id="js-next-btn" class="btn next-btn ripple" onfocus="this.blur();" @click="nextStep" style="padding: 0;">次へ</button>
+        </div>
+        <div v-else class="link-area">
+            <div class="button-back" style="background: #8b0000;"></div>
+            <button class="btn waiting-btn ripple" onfocus="this.blur();"></button>
         </div>
     </div>
-    <div v-if="nextBtnAppearrance" class="link-area">
-        <div class="button-back background-blue"></div>
-        <button id="js-next-btn" class="btn next-btn ripple" onfocus="this.blur();" @click="nextStep" style="padding: 0;">次へ</button>
-    </div>
-    <div v-else class="link-area">
-        <div class="button-back" style="background: #8b0000;"></div>
-        <button class="btn waiting-btn ripple" onfocus="this.blur();"></button>
-    </div>
-</div>
 </template>
 
 <script>
@@ -134,45 +134,11 @@ import { setTimeout } from 'timers';
 }
 
 .num-button-container{
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
+    width: 60%;
     .num-button-area{
-        position: relative;
-        width: 33%;
-        font-size: 50px;
-        &:nth-child(n+1):nth-child(-n+9){
-            margin-bottom: 25px;
-        }
         &:nth-child(11){
             margin-right: 0;
             width: 65%;
-        }
-        .button-back{
-            position: absolute;
-            top: 8px;
-            z-index: -1;
-            width: 85%;
-            height: 110px;
-            border-radius: 10px;
-            background: #696969;
-            outline: none;
-        }
-        .input-btn{
-            width: 85%;
-            height: 110px;
-            border-radius: 10px;
-            border: 0.5px solid #808080;
-            background: #f5f5f5;
-            color: #232323;
-            font-size: 40px;
-            outline: none;
-            transition: 0.05s all ease;
-        }
-        .gray{
-            top: 5px;
-            color: #808080;
-            background: #dcdcdc;
         }
         .clear-btn{
             width: 92%;
@@ -183,4 +149,24 @@ import { setTimeout } from 'timers';
     }
 }
 
+@media screen and (max-width: 1024px) {
+    
+    .form-container{
+        .flex-container{
+            .num-button-container{
+                width: 70%;
+                .num-button-area{
+                    .button-back{
+                        height: 80px;
+                        top: 11px;
+                    }    
+                    .input-btn{
+                        height: 80px;
+                    }
+                }
+            }
+        }
+    }
+
+}
 </style>

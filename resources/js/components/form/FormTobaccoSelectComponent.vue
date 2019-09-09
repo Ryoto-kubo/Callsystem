@@ -102,6 +102,7 @@
             border-radius: 10px;
             font-size: 40px;
             outline: none;
+            border: 0.5px solid #808080;
         }
         .tobacco-btn-back{
             width: 90%;

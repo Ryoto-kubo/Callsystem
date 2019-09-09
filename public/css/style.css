@@ -35,6 +35,7 @@ a:hover {
   background-color: #53c9c5;
   top: 0;
   transition: .1s all ease;
+  padding: 0 !important;
 }
 
 .btn:active {
@@ -374,6 +375,69 @@ header .header-container .img-container img {
   align-items: flex-end;
 }
 
+.form-container .flex-container .input-container .input-area .input input {
+  width: 350px;
+  height: 170px;
+  text-align: center;
+  border: 5px solid #707070;
+  border-radius: 20px;
+  font-size: 70px;
+  color: #696969;
+}
+
+.form-container .flex-container .num-button-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.form-container .flex-container .num-button-container .num-button-area {
+  position: relative;
+  width: 33%;
+  font-size: 50px;
+}
+
+.form-container .flex-container .num-button-container .num-button-area:nth-child(n+1):nth-child(-n+9) {
+  margin-bottom: 25px;
+}
+
+.form-container .flex-container .num-button-container .num-button-area .button-back {
+  position: absolute;
+  top: 8px;
+  z-index: -1;
+  width: 85%;
+  height: 110px;
+  border-radius: 10px;
+  background: #696969;
+  outline: none;
+}
+
+.form-container .flex-container .num-button-container .num-button-area .input-btn {
+  width: 85%;
+  height: 110px;
+  border-radius: 10px;
+  border: 0.5px solid #808080;
+  background: #f5f5f5;
+  color: #232323;
+  font-size: 40px;
+  outline: none;
+  transition: 0.05s all ease;
+}
+
+.form-container .flex-container .num-button-container .num-button-area .gray {
+  top: 5px;
+  color: #808080;
+  background: #dcdcdc;
+}
+
+.form-container .flex-container .num-button-container .num-button-area .clear-btn {
+  width: 92%;
+}
+
+.form-container .flex-container .num-button-container .num-button-area .clear-button-back {
+  width: 92%;
+}
+
 .ripple {
   position: relative;
   overflow: hidden;
@@ -455,11 +519,11 @@ header .header-container .img-container img {
   }
 
   .prev-btn-container .prev-btn-area .prev-button-back {
-    height: 70px;
+    height: 60px;
   }
 
   .prev-btn-container .prev-btn-area .prev-btn {
-    height: 70px;
+    height: 60px;
     font-size: 25px;
   }
 }
