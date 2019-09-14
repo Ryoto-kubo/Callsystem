@@ -292,7 +292,7 @@ header .header-container .img-container img {
   }
 }
 
-.prev-active {
+.passive-active {
   -webkit-animation: prevFadeMove 1s ease;
           animation: prevFadeMove 1s ease;
 }

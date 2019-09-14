@@ -22,75 +22,51 @@
     export default {
         data() {
             return {
-                prevDelayTime: 0,
-                nextDelayTime: 0,
-                active: 'active',
-                reActive: 'reactive',
-                prevActive: 'prev-active',
-                prevReActive: 'prev-reactive',
+                time: 0,
+                classSwitch: null,
                 isActive: true,
-                prevTrigger: false,
-                prevStepState: this.propsPrevStepState,
                 selectSeatType: null,
                 seatTypes: ['テーブル席', 'ボックス席', 'カウンター席', 'どこでも可']
             }
         },
         props: {
-            propsPrevStepState: '',
+            currentId: Number,
         },
         mounted() {
-            // this.isActive = true
-            this.prevDelayTime = 0
-            this.nextDelayTime = 0
-        },
-        computed: {
-            classSwitch: function(){
-                if(this.prevStepState){ // 前の画面から戻ってきたかどうかの判断
-                    return this.prevActive
-
-                } else if (this.prevTrigger){ // 今の画面から前の画面に戻るかどうかの判断
-                    this.isActive = false
-                    return this.prevReActive
-
-                } else if (!this.prevTrigger){ // 
-                    if(this.isActive){
-                        return this.active
-
-                    }else{
-                        return this.reActive
-
-                    }
-                }
+            // 「受付へ進む」からの表示なのか、「前に戻る」からの表示なのかを判定しclassを切り替える
+            this.passiveState = this.$store.state.status.prevState
+            if (this.passiveState) {
+                this.classSwitch = 'passive-active'
+                this.$store.dispatch('status/prevForm', { prevState: false })
+            } else {
+                this.classSwitch = 'active'
             }
+            this.time = 0
         },
         methods: {
-            nextStep: function(seatType){
-                this.isActive       = false
-                this.prevStepState  = false
+            nextStep(seatType){
+                this.classSwitch    = 'reactive'
                 this.selectSeatType = seatType
                 this.$emit('getSelectSeatType', seatType)
-
-                let componentName = 'selectSeat'
-                this.$emit('progressBarMove', componentName)
-                
-                setTimeout(() => {this.nextDelayTime++ }, 1000)
-
+                this.$emit('progressBarMove', this.currentId)
+                this.$store.dispatch('status/nextStep', { currentId: this.currentId })
+                setTimeout(() => {this.time++ }, 1000)
             },
-            prevStep: function(){
-                this.prevTrigger   = true
-                this.prevStepState = false
-                setTimeout(() => {this.prevDelayTime++ }, 1000)
-            }
+            prevStep(){
+                this.classSwitch = 'prev-reactive'
+                this.$store.dispatch('status/prevForm', { prevState: true })
+                this.$emit('progressBarMove', this.currentId)
+                setTimeout(() => {this.time++ }, 1000)
+            },
         },
         watch: {
-            prevDelayTime: function(){
-                let prevComponentName = 'inputPeoples'
-                let prevStepId = 1
-                this.$emit('prevStep', prevStepId, prevComponentName)
-            },
-            nextDelayTime: function(){
-                let nextStepId = 3
-                this.$emit('nextStep', nextStepId)
+            time(){
+                let passiveState = this.$store.state.status.prevState
+                if (passiveState) {
+                    this.$emit('prevStep')
+                } else {
+                    this.$emit('nextStep')
+                }
             }
         }
 

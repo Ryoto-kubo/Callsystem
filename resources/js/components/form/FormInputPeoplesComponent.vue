@@ -37,16 +37,15 @@
 <script>
 import { finished } from 'stream';
 import { setTimeout } from 'timers';
+import { mapGetters } from 'vuex'
     export default {
         data() {
             return {
                 peopleNum: '',
                 time: 0,
-                isActive: true,
-                prevTrigger: this.propsPrevTrigger,
-                active: 'active',
-                reActive: 'reactive',
-                prevActive: 'prev-active',
+                isActive: null,
+                classSwitch: null,
+                passiveState: null,
                 nextBtnAppearrance: false,
                 numBtnAppearrance: true,
                 number: null,
@@ -54,59 +53,48 @@ import { setTimeout } from 'timers';
             }
         },
         props: {
-            propsPrevTrigger: '',
+            currentId: Number,
         },
         mounted() {
-            // this.isActive = true
-            this.time = 0
-        },
-        computed: {
-            classSwitch: function(){
-                if(this.prevTrigger){
-                    this.isActive = false
-                    return this.prevActive
-                } else if(!this.prevTrigger){
-                    if(this.isActive){
-                        return this.active
-                    }else{
-                        return this.reActive
-                    }
-                } 
+            // 「受付へ進む」からの表示なのか、「前に戻る」からの表示なのかを判定しclassを切り替える
+            this.passiveState = this.$store.state.status.prevState
+            if (this.passiveState) {
+                this.classSwitch = 'passive-active'
+                this.$store.dispatch('status/prevForm', { prevState: false })
+            } else {
+                this.classSwitch = 'active'
             }
         },
         methods: {
-            numInput: function(item){
+            numInput(item){
                 this.peopleNum += item
             },
-            numClear: function(){
+            numClear(){
                 this.peopleNum = ''
             },
-            nextStep: function(){
-                this.isActive    = false
-                this.prevTrigger = false
+            nextStep(){
+                this.classSwitch = 'reactive'
+                this.$store.dispatch('status/nextStep', { currentId: this.currentId })
                 this.$emit('getPeopleNum', this.peopleNum)
                 setTimeout(() => {this.time++ }, 1000)
             }
         },
         watch: {
-            peopleNum: function(){
-                let componentName = 'inputPeoples'
+            peopleNum(){
                 if(this.peopleNum.length <= 2){
                     this.nextBtnAppearrance = true
-                    this.$emit('progressBarMove', componentName)
+                    this.$emit('progressBarMove', this.currentId)
                     if(this.peopleNum.length === 2){
                         this.numBtnAppearrance = false
-                        this.$emit('progressBarMove', componentName)
                     }else if(this.peopleNum.length === 0){
                         this.nextBtnAppearrance = false
                         this.numBtnAppearrance  = true
-                        this.$emit('progressBarMoveReset', componentName)
+                        this.$emit('progressBarMoveReset')
                     }
                 }
             },
-            time: function(){
-                let nextStepId = 2
-                this.$emit('nextStep', nextStepId)
+            time(){
+                this.$emit('nextStep')
             }
         }
     }
