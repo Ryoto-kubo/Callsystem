@@ -22,27 +22,26 @@
             @prevStep="prevStep"
             @getSelectSeatType="getSelectSeatType"
             @progressBarMove="progressBarMove"
-            @progressBarMoveReset="progressBarMoveReset"
             />
     </div>
     
     <div v-else-if="nextStepId === 3">
         <form-tobacco-select-component
+            :currentId="nextStepId"
             @nextStep="nextStep"
             @prevStep="prevStep"
             @getSelectTobaccoType="getSelectTobaccoType"
             @progressBarMove="progressBarMove"
-            @progressBarMoveReset="progressBarMoveReset"
             />
     </div>
 
     <div v-else-if="nextStepId === 4">
         <form-input-tell-component
+            :currentId="nextStepId"
             @nextStep="nextStep"
             @prevStep="prevStep"
             @getSelectTobaccoType="getSelectTobaccoType"
             @progressBarMove="progressBarMove"
-            @progressBarMoveReset="progressBarMoveReset"
             />
     </div>
 </div>
@@ -59,18 +58,18 @@ import { constants } from 'crypto';
                 peopleNum: null,
                 selectSeat: null,
                 selectTobacco: null,
-                prevStepState: null,
+                tellNum: null,
             }
         },
         mounted() {
-            this.nextStepId = 1
+            this.nextStepId = 4
         },
         methods: {
             nextStep(){
                 this.nextStepId = this.$store.state.status.nextStepId
             },
             prevStep(){
-                this.nextStepId = this.$store.state.status.nextStepId - 1
+                this.nextStepId = this.$store.state.status.prevStepId
             },
             progressBarMove(currentId){
                 const entiretyNum          = -100
@@ -80,7 +79,7 @@ import { constants } from 'crypto';
                 if (!passiveState) {
                     this.moveBarPercent = entiretyNum - divisionNum * currentId
                 } else {
-                    this.moveBarPercent = this.moveBarPercent + divisionNum * currentId
+                    this.moveBarPercent = this.moveBarPercent + divisionNum
                 }
             },
             progressBarMoveReset(){
@@ -94,7 +93,10 @@ import { constants } from 'crypto';
             },
             getSelectTobaccoType(tobaccoType){
                 this.selectTobacco = tobaccoType
-            }
+            },
+            getTellNum(inputTellNum){
+                this.tellNum = inputTellNum
+            },
         },
         watch: {
             nextStepId(){

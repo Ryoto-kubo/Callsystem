@@ -11,7 +11,7 @@
                 <div class="prev-btn-area">
                     <div class="prev-button-back"></div>
                     <button class="btn prev-btn" type="button" onfocus="this.blur();" @click="prevStep">
-                        <font-awesome-icon icon="angle-left" style="width: 40px; height: 40px;" />前に戻る
+                        <font-awesome-icon icon="angle-left" style="width: 40px; height: 40px;" />
                     </button>
                 </div>
             </div>
@@ -24,7 +24,6 @@
             return {
                 time: 0,
                 classSwitch: null,
-                isActive: true,
                 selectSeatType: null,
                 seatTypes: ['テーブル席', 'ボックス席', 'カウンター席', 'どこでも可']
             }
@@ -34,8 +33,8 @@
         },
         mounted() {
             // 「受付へ進む」からの表示なのか、「前に戻る」からの表示なのかを判定しclassを切り替える
-            this.passiveState = this.$store.state.status.prevState
-            if (this.passiveState) {
+            let passiveState = this.$store.state.status.prevState
+            if (passiveState) {
                 this.classSwitch = 'passive-active'
                 this.$store.dispatch('status/prevForm', { prevState: false })
             } else {
@@ -53,9 +52,10 @@
                 setTimeout(() => {this.time++ }, 1000)
             },
             prevStep(){
-                this.classSwitch = 'prev-reactive'
                 this.$store.dispatch('status/prevForm', { prevState: true })
+                this.classSwitch = 'prev-reactive'
                 this.$emit('progressBarMove', this.currentId)
+                this.$store.dispatch('status/prevStep', { currentId: this.currentId })
                 setTimeout(() => {this.time++ }, 1000)
             },
         },

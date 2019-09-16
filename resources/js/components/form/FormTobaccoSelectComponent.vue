@@ -11,7 +11,7 @@
                 <div class="prev-btn-area">
                     <div class="prev-button-back"></div>
                     <button class="prev-btn" type="button" onfocus="this.blur();" @click="prevStep">
-                        <font-awesome-icon icon="angle-left" style="width: 40px; height: 40px;" />前に戻る
+                        <font-awesome-icon icon="angle-left" style="width: 40px; height: 40px;" />
                     </button>
                 </div>
             </div>
@@ -22,64 +22,51 @@
     export default {
         data() {
             return {
-                prevDelayTime: 0,
-                nextDelayTime: 0,
-                isActive: true,
-                active: 'active',
-                reActive: 'reactive',
-                prevActive: 'prev-active',
-                prevReActive: 'prev-reactive',
-                prevTrigger: false,
+                time: 0,
+                classSwitch: null,
                 selectTobaccoType: null,
                 tobaccoTypes: ['禁煙席', '喫煙席', 'どちらでも可']
             }
         },
-        mounted() {
-            // this.isActive = true
-            this.prevDelayTime = 0
-            this.nextDelayTime = 0
+        props: {
+            currentId: Number,
         },
-        computed: {
-            classSwitch: function(){
-                if(this.prevTrigger){
-                    this.isActive = false
-                    return this.prevReActive
-                } else if(!this.prevTrigger){
-                    if(this.isActive){
-                        return this.active
-                    }else{
-                        return this.reActive
-                    }
-                }
+        mounted() {
+            // 「受付へ進む」からの表示なのか、「前に戻る」からの表示なのかを判定しclassを切り替える
+            let passiveState = this.$store.state.status.prevState
+            if (passiveState) {
+                this.classSwitch = 'passive-active'
+                this.$store.dispatch('status/prevForm', { prevState: false })
+            } else {
+                this.classSwitch = 'active'
             }
+            this.time = 0
         },
         methods: {
-            nextStep: function(tobaccoType){
-                this.isActive = false
+            nextStep(tobaccoType){
+                this.classSwitch       = 'reactive'
                 this.selectTobaccoType = tobaccoType
                 this.$emit('getSelectTobaccoType', tobaccoType)
-
-                let componentName = 'selectTobacco'
-                this.$emit('progressBarMove', componentName)
-                
-                setTimeout(() => {this.nextDelayTime++ }, 1000)
-
+                this.$emit('progressBarMove', this.currentId)
+                this.$store.dispatch('status/nextStep', { currentId: this.currentId })
+                setTimeout(() => {this.time++ }, 1000)
             },
-            prevStep: function(){
-                this.prevTrigger = true
-                setTimeout(() => {this.prevDelayTime++ }, 1000)
+            prevStep(){
+                this.$store.dispatch('status/prevForm', { prevState: true });
+                this.classSwitch = 'prev-reactive'
+                this.$emit('progressBarMove', this.currentId)
+                this.$store.dispatch('status/prevStep', { currentId: this.currentId });
+                setTimeout(() => {this.time++ }, 1000)
             }
         },
         watch: {
-            prevDelayTime: function(){
-                let prevComponentName = 'selectSeat'
-                let prevStepState = true
-                let prevStepId = 2
-                this.$emit('prevStep', prevStepId, prevComponentName, prevStepState)
-            },
-            nextDelayTime: function(){
-                let nextStepId = 4
-                this.$emit('nextStep', nextStepId)
+            time(){
+                let passiveState = this.$store.state.status.prevState
+                if (passiveState) {
+                    this.$emit('prevStep')
+                } else {
+                    this.$emit('nextStep')
+                }
             }
         }
     }

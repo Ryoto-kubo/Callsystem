@@ -3,11 +3,11 @@
         <div class="flex-container tell-container">
             <div class="input-container">
                 <div>
-                    <p>※任意</p>
+                    <p>※任意（ハイフン有り）</p>
                 </div>
                 <div class="input-area">
                     <div class="input">
-                        <input id="num-input" v-model="tellNum" type="num" readonly="readonly">
+                        <input id="num-input" v-model="tellNum" type="num" readonly="readonly" placeholder="090-1234-5678">
                     </div>
                 </div>
             </div>
@@ -23,16 +23,24 @@
             </div>
         </div>
         <div class="link-area">
-            <div class="button-back skip-button-back"></div>
-            <button class="btn skip-btn" onfocus="this.blur();">スキップ</button>
-            <div class="button-back background-blue"></div>
-            <button id="js-next-btn" class="btn next-btn ripple" onfocus="this.blur();" @click="nextStep" style="padding: 0;">確認</button>
+            <div class="btn-container" style="margin-left: 80px;">
+                <div class="button-back skip-button-back"></div>
+                <button class="btn skip-btn" onfocus="this.blur();">スキップ</button>
+            </div>
+            <div v-if="nextBtnAppearrance" class="btn-container" style="margin-right: 80px;">
+                <div class="button-back background-blue"></div>
+                <button id="js-next-btn" class="btn next-btn ripple" onfocus="this.blur();" @click="nextStep" style="padding: 0;">確認</button>
+            </div>
+            <div v-else class="btn-container" style="margin-right: 80px;">
+                <div class="button-back" style="background: #8b0000;"></div>
+                <button class="btn waiting-btn ripple" style="background: #f08080;" onfocus="this.blur();"></button>
+            </div>
         </div>
         <div class="prev-btn-container">
             <div class="prev-btn-area">
                 <div class="prev-button-back"></div>
                 <button class="prev-btn" type="button" onfocus="this.blur();" @click="prevStep">
-                    <font-awesome-icon icon="angle-left" style="width: 40px; height: 40px;" />前に戻る
+                    <font-awesome-icon icon="angle-left" style="width: 40px; height: 40px;" />
                 </button>
             </div>
         </div>
@@ -43,71 +51,66 @@
         data() {
             return {
                 tellNum: '',
-                prevDelayTime: 0,
-                nextDelayTime: 0,
-                isActive: true,
-                active: 'active',
-                reActive: 'reactive',
-                prevActive: 'prev-active',
-                prevReActive: 'prev-reactive',
+                time: 0,
+                classSwitch: null,
                 nextBtnAppearrance: true,
-                prevTrigger: false,
                 selectTobaccoType: null,
                 nums: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '-', '0'],
             }
         },
-        mounted() {
-            // this.isActive = true
-            this.prevDelayTime = 0
-            this.nextDelayTime = 0
+        props: {
+            currentId: Number,
         },
-        computed: {
-            classSwitch: function(){
-                if(this.prevTrigger){
-                    this.isActive = false
-                    return this.prevReActive
-                } else if(!this.prevTrigger){
-                    if(this.isActive){
-                        return this.active
-                    }else{
-                        return this.reActive
-                    }
-                }
+        mounted() {
+            // 「受付へ進む」からの表示なのか、「前に戻る」からの表示なのかを判定しclassを切り替える
+            let passiveState = this.$store.state.status.prevState
+            if (passiveState) {
+                this.classSwitch = 'passive-active'
+                this.$store.dispatch('status/prevForm', { prevState: false })
+            } else {
+                this.classSwitch = 'active'
             }
+            this.time = 0
         },
         methods: {
-            tellNumInput: function(item){
+            tellNumInput(item){
                 this.tellNum += item
             },
-            numClear: function(){
-                this.tellNum = ''
+            numClear(){
+                this.tellNum = this.tellNum.slice( 0, -1 ) ;
             },
-            nextStep: function(tobaccoType){
-                this.isActive = false
-                this.selectTobaccoType = tobaccoType
-                this.$emit('getSelectTobaccoType', tobaccoType)
-
-                let componentName = 'selectTobacco'
-                this.$emit('progressBarMove', componentName)
-                
-                setTimeout(() => {this.nextDelayTime++ }, 1000)
+            nextStep(tellNum){
+                this.classSwitch       = 'reactive'
+                this.selectTobaccoType = tellNum
+                this.$emit('getTellNum', tellNum)
+                this.$emit('progressBarMove', this.currentId)
+                this.$store.dispatch('status/nextStep', { currentId: this.currentId })
+                setTimeout(() => {this.time++ }, 1000)
 
             },
-            prevStep: function(){
-                this.prevTrigger = true
-                setTimeout(() => {this.prevDelayTime++ }, 1000)
+            prevStep(){
+                this.$store.dispatch('status/prevForm', { prevState: true })
+                this.classSwitch = 'prev-reactive'
+                this.$emit('progressBarMove', this.currentId)
+                this.$store.dispatch('status/prevStep', { currentId: this.currentId })
+                setTimeout(() => {this.time++ }, 1000)
             }
         },
         watch: {
-            prevDelayTime: function(){
-                let prevComponentName = 'selectSeat'
-                let prevStepState = true
-                let prevStepId = 2
-                this.$emit('prevStep', prevStepId, prevComponentName, prevStepState)
+            tellNum(value){
+                if(!value.match(/^[0-9]{3}-[0-9]{4}-[0-9]{4}$/)){
+                    this.nextBtnAppearrance = false
+                } else {
+                    this.nextBtnAppearrance = true
+                }
             },
-            nextDelayTime: function(){
-                let nextStepId = 4
-                this.$emit('nextStep', nextStepId)
+            time(){
+                let passiveState = this.$store.state.status.prevState
+                if (passiveState) {
+                    this.$emit('prevStep')
+                } else {
+                    this.$emit('nextStep')
+                }
             }
         }
 
@@ -124,8 +127,8 @@
             .input{
                 input{
                     width: 100%;
-                    height: 100px;
-                    font-size: 60px;
+                    height: 80px;
+                    font-size: 40px;
                 }
             }
         }
@@ -143,28 +146,38 @@
     }
 }
 .link-area{
-    .button-back{
+    display: flex;
+    justify-content: space-around;
+    .btn-container{
         width: 25%;
-        height: 90px;
-        left: 68.6%;
-    }
-    .next-btn{
-        width: 25%;
-        height: 90px;
-        line-height: 90px;
-    }
-    .skip-btn{
-        height: 90px;
-        width: 25%;
-        margin-right: 130px;
-        line-height: 90px;
-        background: #dcdcdc;
-        color: #232323;
-        border: 0.5px solid #808080;
-    }
-    .skip-button-back{
-        left: 31.4%;
-        background: #696969;
+        position: relative;
+        font-size: 35px;
+        .button-back{
+            width: 80%;
+            height: 90px;
+        }
+        .next-btn{
+            width: 80%;
+            height: 90px;
+            line-height: 90px;
+        }
+        .skip-btn{
+            height: 90px;
+            width: 80%;
+            line-height: 90px;
+            background: #dcdcdc;
+            color: #232323;
+            border: 0.5px solid #808080;
+        }
+        .skip-button-back{
+            background: #696969;
+        }
+        .waiting-btn{
+            width: 80%;
+            height: 90px;
+            line-height: 90px;
+        }
+
     }
 }
 .prev-btn-container{
@@ -177,76 +190,66 @@
         margin-top: 0;
         .flex-container{
             .input-container{
+                margin-right: 0;
                 p{
-                    font-size: 30px;
+                    margin-bottom: 5px;
+                    font-size: 28px;
                 }
                 .input-area{
                     .input{
                         input{
-                            width: 90%;
-                            height: 70px;
-                            font-size: 40px;
+                            width: 120%;
+                            height: 60px;
+                            font-size: 30px;
                         }
                     }
                 }
             }
             .num-button-container{
-                width: 70%;
                 .num-button-area{
-                    &:nth-child(n+1):nth-child(-n+9){
-                        margin-bottom: 10px;
-                    }
-                    .button-back{
-                        height: 75px;
-                        top: 13px;
-                    }
+                    .button-back{          
+                        height: 80px;
+                    }    
                     .input-btn{
-                        height: 75px;
+                        height: 80px;
                     }
                 }
             }
+
         }
     }
     .link-area{
-        .button-back{
-            width: 22%;
-            height: 70px;
-            top: 7px;
-            left: 67.3%;
-        }
-        .next-btn{
-            width: 22%;
-            height: 70px;
-            line-height: 70px;
-            font-size: 30px;
-        }
-        .skip-btn{
-            height: 70px;
-            width: 22%;
-            margin-right: 100px;
-            font-size: 30px;
-            line-height: 70px;
-            background: #f5f5f5;
-            color: #232323;
-            border: 0.5px solid #808080;
-        }
-        .skip-button-back{
-            left: 32.7%;
-            background: #696969;
+        .btn-container{
+            .button-back{
+                width: 100%;
+                height: 70px;
+                top: 7px;
+            }
+            .next-btn{
+                width: 100%;
+                height: 70px;
+                line-height: 70px;
+                font-size: 25px;
+            }
+            .waiting-btn{
+                width: 100%;
+                height: 70px;
+            }
+
+            .skip-btn{
+                height: 70px;
+                width: 100%;
+                line-height: 70px;
+                background: #f5f5f5;
+                color: #232323;
+                font-size: 25px;
+                border: 0.5px solid #808080;
+            }
+            .skip-button-back{
+                background: #696969;
+            }
         }
     }
-    // .prev-btn-container{
-    //     .prev-btn-area{
-    //         .prev-button-back{
-    //             height: 60px;
-    //         }
-    //         .prev-btn{
-    //             height: 60px;
-    //             font-size: 25px;
-    //         }
-    //     }
-    // }
-
 
 }
 </style>

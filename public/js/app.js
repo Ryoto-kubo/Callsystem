@@ -13363,7 +13363,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -13374,18 +13373,18 @@ __webpack_require__.r(__webpack_exports__);
       peopleNum: null,
       selectSeat: null,
       selectTobacco: null,
-      prevStepState: null
+      tellNum: null
     };
   },
   mounted: function mounted() {
-    this.nextStepId = 1;
+    this.nextStepId = 4;
   },
   methods: {
     nextStep: function nextStep() {
       this.nextStepId = this.$store.state.status.nextStepId;
     },
     prevStep: function prevStep() {
-      this.nextStepId = this.$store.state.status.nextStepId - 1;
+      this.nextStepId = this.$store.state.status.prevStepId;
     },
     progressBarMove: function progressBarMove(currentId) {
       var entiretyNum = -100;
@@ -13396,7 +13395,7 @@ __webpack_require__.r(__webpack_exports__);
       if (!passiveState) {
         this.moveBarPercent = entiretyNum - divisionNum * currentId;
       } else {
-        this.moveBarPercent = this.moveBarPercent + divisionNum * currentId;
+        this.moveBarPercent = this.moveBarPercent + divisionNum;
       }
     },
     progressBarMoveReset: function progressBarMoveReset() {
@@ -13410,6 +13409,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     getSelectTobaccoType: function getSelectTobaccoType(tobaccoType) {
       this.selectTobacco = tobaccoType;
+    },
+    getTellNum: function getTellNum(inputTellNum) {
+      this.tellNum = inputTellNum;
     }
   },
   watch: {
@@ -13579,9 +13581,7 @@ __webpack_require__.r(__webpack_exports__);
     return {
       peopleNum: '',
       time: 0,
-      isActive: null,
       classSwitch: null,
-      passiveState: null,
       nextBtnAppearrance: false,
       numBtnAppearrance: true,
       number: null,
@@ -13593,9 +13593,9 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {
     // 「受付へ進む」からの表示なのか、「前に戻る」からの表示なのかを判定しclassを切り替える
-    this.passiveState = this.$store.state.status.prevState;
+    var passiveState = this.$store.state.status.prevState;
 
-    if (this.passiveState) {
+    if (passiveState) {
       this.classSwitch = 'passive-active';
       this.$store.dispatch('status/prevForm', {
         prevState: false
@@ -13696,80 +13696,96 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       tellNum: '',
-      prevDelayTime: 0,
-      nextDelayTime: 0,
-      isActive: true,
-      active: 'active',
-      reActive: 'reactive',
-      prevActive: 'prev-active',
-      prevReActive: 'prev-reactive',
+      time: 0,
+      classSwitch: null,
       nextBtnAppearrance: true,
-      prevTrigger: false,
       selectTobaccoType: null,
       nums: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '-', '0']
     };
   },
-  mounted: function mounted() {
-    // this.isActive = true
-    this.prevDelayTime = 0;
-    this.nextDelayTime = 0;
+  props: {
+    currentId: Number
   },
-  computed: {
-    classSwitch: function classSwitch() {
-      if (this.prevTrigger) {
-        this.isActive = false;
-        return this.prevReActive;
-      } else if (!this.prevTrigger) {
-        if (this.isActive) {
-          return this.active;
-        } else {
-          return this.reActive;
-        }
-      }
+  mounted: function mounted() {
+    // 「受付へ進む」からの表示なのか、「前に戻る」からの表示なのかを判定しclassを切り替える
+    var passiveState = this.$store.state.status.prevState;
+
+    if (passiveState) {
+      this.classSwitch = 'passive-active';
+      this.$store.dispatch('status/prevForm', {
+        prevState: false
+      });
+    } else {
+      this.classSwitch = 'active';
     }
+
+    this.time = 0;
   },
   methods: {
     tellNumInput: function tellNumInput(item) {
       this.tellNum += item;
     },
     numClear: function numClear() {
-      this.tellNum = '';
+      this.tellNum = this.tellNum.slice(0, -1);
     },
-    nextStep: function nextStep(tobaccoType) {
+    nextStep: function nextStep(tellNum) {
       var _this = this;
 
-      this.isActive = false;
-      this.selectTobaccoType = tobaccoType;
-      this.$emit('getSelectTobaccoType', tobaccoType);
-      var componentName = 'selectTobacco';
-      this.$emit('progressBarMove', componentName);
+      this.classSwitch = 'reactive';
+      this.selectTobaccoType = tellNum;
+      this.$emit('getTellNum', tellNum);
+      this.$emit('progressBarMove', this.currentId);
+      this.$store.dispatch('status/nextStep', {
+        currentId: this.currentId
+      });
       setTimeout(function () {
-        _this.nextDelayTime++;
+        _this.time++;
       }, 1000);
     },
     prevStep: function prevStep() {
       var _this2 = this;
 
-      this.prevTrigger = true;
+      this.$store.dispatch('status/prevForm', {
+        prevState: true
+      });
+      this.classSwitch = 'prev-reactive';
+      this.$emit('progressBarMove', this.currentId);
+      this.$store.dispatch('status/prevStep', {
+        currentId: this.currentId
+      });
       setTimeout(function () {
-        _this2.prevDelayTime++;
+        _this2.time++;
       }, 1000);
     }
   },
   watch: {
-    prevDelayTime: function prevDelayTime() {
-      var prevComponentName = 'selectSeat';
-      var prevStepState = true;
-      var prevStepId = 2;
-      this.$emit('prevStep', prevStepId, prevComponentName, prevStepState);
+    tellNum: function tellNum(value) {
+      if (!value.match(/^[0-9]{3}-[0-9]{4}-[0-9]{4}$/)) {
+        this.nextBtnAppearrance = false;
+      } else {
+        this.nextBtnAppearrance = true;
+      }
     },
-    nextDelayTime: function nextDelayTime() {
-      var nextStepId = 4;
-      this.$emit('nextStep', nextStepId);
+    time: function time() {
+      var passiveState = this.$store.state.status.prevState;
+
+      if (passiveState) {
+        this.$emit('prevStep');
+      } else {
+        this.$emit('nextStep');
+      }
     }
   }
 });
@@ -13810,7 +13826,6 @@ __webpack_require__.r(__webpack_exports__);
     return {
       time: 0,
       classSwitch: null,
-      isActive: true,
       selectSeatType: null,
       seatTypes: ['テーブル席', 'ボックス席', 'カウンター席', 'どこでも可']
     };
@@ -13820,9 +13835,9 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {
     // 「受付へ進む」からの表示なのか、「前に戻る」からの表示なのかを判定しclassを切り替える
-    this.passiveState = this.$store.state.status.prevState;
+    var passiveState = this.$store.state.status.prevState;
 
-    if (this.passiveState) {
+    if (passiveState) {
       this.classSwitch = 'passive-active';
       this.$store.dispatch('status/prevForm', {
         prevState: false
@@ -13851,11 +13866,14 @@ __webpack_require__.r(__webpack_exports__);
     prevStep: function prevStep() {
       var _this2 = this;
 
-      this.classSwitch = 'prev-reactive';
       this.$store.dispatch('status/prevForm', {
         prevState: true
       });
+      this.classSwitch = 'prev-reactive';
       this.$emit('progressBarMove', this.currentId);
+      this.$store.dispatch('status/prevStep', {
+        currentId: this.currentId
+      });
       setTimeout(function () {
         _this2.time++;
       }, 1000);
@@ -13908,69 +13926,70 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      prevDelayTime: 0,
-      nextDelayTime: 0,
-      isActive: true,
-      active: 'active',
-      reActive: 'reactive',
-      prevActive: 'prev-active',
-      prevReActive: 'prev-reactive',
-      prevTrigger: false,
+      time: 0,
+      classSwitch: null,
       selectTobaccoType: null,
       tobaccoTypes: ['禁煙席', '喫煙席', 'どちらでも可']
     };
   },
-  mounted: function mounted() {
-    // this.isActive = true
-    this.prevDelayTime = 0;
-    this.nextDelayTime = 0;
+  props: {
+    currentId: Number
   },
-  computed: {
-    classSwitch: function classSwitch() {
-      if (this.prevTrigger) {
-        this.isActive = false;
-        return this.prevReActive;
-      } else if (!this.prevTrigger) {
-        if (this.isActive) {
-          return this.active;
-        } else {
-          return this.reActive;
-        }
-      }
+  mounted: function mounted() {
+    // 「受付へ進む」からの表示なのか、「前に戻る」からの表示なのかを判定しclassを切り替える
+    var passiveState = this.$store.state.status.prevState;
+
+    if (passiveState) {
+      this.classSwitch = 'passive-active';
+      this.$store.dispatch('status/prevForm', {
+        prevState: false
+      });
+    } else {
+      this.classSwitch = 'active';
     }
+
+    this.time = 0;
   },
   methods: {
     nextStep: function nextStep(tobaccoType) {
       var _this = this;
 
-      this.isActive = false;
+      this.classSwitch = 'reactive';
       this.selectTobaccoType = tobaccoType;
       this.$emit('getSelectTobaccoType', tobaccoType);
-      var componentName = 'selectTobacco';
-      this.$emit('progressBarMove', componentName);
+      this.$emit('progressBarMove', this.currentId);
+      this.$store.dispatch('status/nextStep', {
+        currentId: this.currentId
+      });
       setTimeout(function () {
-        _this.nextDelayTime++;
+        _this.time++;
       }, 1000);
     },
     prevStep: function prevStep() {
       var _this2 = this;
 
-      this.prevTrigger = true;
+      this.$store.dispatch('status/prevForm', {
+        prevState: true
+      });
+      this.classSwitch = 'prev-reactive';
+      this.$emit('progressBarMove', this.currentId);
+      this.$store.dispatch('status/prevStep', {
+        currentId: this.currentId
+      });
       setTimeout(function () {
-        _this2.prevDelayTime++;
+        _this2.time++;
       }, 1000);
     }
   },
   watch: {
-    prevDelayTime: function prevDelayTime() {
-      var prevComponentName = 'selectSeat';
-      var prevStepState = true;
-      var prevStepId = 2;
-      this.$emit('prevStep', prevStepId, prevComponentName, prevStepState);
-    },
-    nextDelayTime: function nextDelayTime() {
-      var nextStepId = 4;
-      this.$emit('nextStep', nextStepId);
+    time: function time() {
+      var passiveState = this.$store.state.status.prevState;
+
+      if (passiveState) {
+        this.$emit('prevStep');
+      } else {
+        this.$emit('nextStep');
+      }
     }
   }
 });
@@ -26413,7 +26432,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, ".input input[data-v-b55dcf02] {\n  width: 350px;\n  height: 170px;\n  text-align: center;\n  border: 5px solid #707070;\n  border-radius: 20px;\n  font-size: 70px;\n  color: #696969;\n}\n.group-text[data-v-b55dcf02] {\n  margin-left: 10px;\n  font-size: 30px;\n}\n.group-text p[data-v-b55dcf02] {\n  margin: 0;\n}\n.num-button-container[data-v-b55dcf02] {\n  width: 60%;\n}\n.num-button-container .num-button-area[data-v-b55dcf02]:nth-child(11) {\n  margin-right: 0;\n  width: 65%;\n}\n.num-button-container .num-button-area .clear-btn[data-v-b55dcf02] {\n  width: 92%;\n}\n.num-button-container .num-button-area .clear-button-back[data-v-b55dcf02] {\n  width: 92%;\n}\n@media screen and (max-width: 1024px) {\n.form-container .flex-container .num-button-container[data-v-b55dcf02] {\n    width: 70%;\n}\n.form-container .flex-container .num-button-container .num-button-area .button-back[data-v-b55dcf02] {\n    height: 80px;\n    top: 11px;\n}\n.form-container .flex-container .num-button-container .num-button-area .input-btn[data-v-b55dcf02] {\n    height: 80px;\n}\n}", ""]);
+exports.push([module.i, ".input input[data-v-b55dcf02] {\n  width: 350px;\n  height: 170px;\n  text-align: center;\n  border: 5px solid #707070;\n  border-radius: 20px;\n  font-size: 70px;\n  color: #696969;\n}\n.group-text[data-v-b55dcf02] {\n  margin-left: 10px;\n  font-size: 30px;\n}\n.group-text p[data-v-b55dcf02] {\n  margin: 0;\n}\n.num-button-container[data-v-b55dcf02] {\n  width: 50%;\n}\n.num-button-container .num-button-area[data-v-b55dcf02]:nth-child(11) {\n  margin-right: 0;\n}\n.num-button-container .num-button-area .clear-btn[data-v-b55dcf02] {\n  width: 186%;\n}\n.num-button-container .num-button-area .clear-button-back[data-v-b55dcf02] {\n  width: 186%;\n}\n@media screen and (max-width: 1024px) {\n.form-container .flex-container .input-container[data-v-b55dcf02] {\n    width: 111.55%;\n}\n}", ""]);
 
 // exports
 
@@ -26432,7 +26451,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, ".tell-container .input-container p[data-v-4a3d4254] {\n  font-size: 40px;\n}\n.tell-container .input-container .input-area .input input[data-v-4a3d4254] {\n  width: 100%;\n  height: 100px;\n  font-size: 60px;\n}\n.tell-container .num-button-container[data-v-4a3d4254] {\n  width: 50%;\n}\n.tell-container .num-button-container .num-button-area .button-back[data-v-4a3d4254] {\n  height: 100px;\n}\n.tell-container .num-button-container .num-button-area .input-btn[data-v-4a3d4254] {\n  height: 100px;\n}\n.link-area .button-back[data-v-4a3d4254] {\n  width: 25%;\n  height: 90px;\n  left: 68.6%;\n}\n.link-area .next-btn[data-v-4a3d4254] {\n  width: 25%;\n  height: 90px;\n  line-height: 90px;\n}\n.link-area .skip-btn[data-v-4a3d4254] {\n  height: 90px;\n  width: 25%;\n  margin-right: 130px;\n  line-height: 90px;\n  background: #dcdcdc;\n  color: #232323;\n  border: 0.5px solid #808080;\n}\n.link-area .skip-button-back[data-v-4a3d4254] {\n  left: 31.4%;\n  background: #696969;\n}\n.prev-btn-container[data-v-4a3d4254] {\n  top: 110%;\n  left: -8%;\n}\n@media screen and (max-width: 1024px) {\n.form-container[data-v-4a3d4254] {\n    margin-top: 0;\n}\n.form-container .flex-container .input-container p[data-v-4a3d4254] {\n    font-size: 30px;\n}\n.form-container .flex-container .input-container .input-area .input input[data-v-4a3d4254] {\n    width: 90%;\n    height: 70px;\n    font-size: 40px;\n}\n.form-container .flex-container .num-button-container[data-v-4a3d4254] {\n    width: 70%;\n}\n.form-container .flex-container .num-button-container .num-button-area[data-v-4a3d4254]:nth-child(n+1):nth-child(-n+9) {\n    margin-bottom: 10px;\n}\n.form-container .flex-container .num-button-container .num-button-area .button-back[data-v-4a3d4254] {\n    height: 75px;\n    top: 13px;\n}\n.form-container .flex-container .num-button-container .num-button-area .input-btn[data-v-4a3d4254] {\n    height: 75px;\n}\n.link-area .button-back[data-v-4a3d4254] {\n    width: 22%;\n    height: 70px;\n    top: 7px;\n    left: 67.3%;\n}\n.link-area .next-btn[data-v-4a3d4254] {\n    width: 22%;\n    height: 70px;\n    line-height: 70px;\n    font-size: 30px;\n}\n.link-area .skip-btn[data-v-4a3d4254] {\n    height: 70px;\n    width: 22%;\n    margin-right: 100px;\n    font-size: 30px;\n    line-height: 70px;\n    background: #f5f5f5;\n    color: #232323;\n    border: 0.5px solid #808080;\n}\n.link-area .skip-button-back[data-v-4a3d4254] {\n    left: 32.7%;\n    background: #696969;\n}\n}", ""]);
+exports.push([module.i, ".tell-container .input-container p[data-v-4a3d4254] {\n  font-size: 40px;\n}\n.tell-container .input-container .input-area .input input[data-v-4a3d4254] {\n  width: 100%;\n  height: 80px;\n  font-size: 40px;\n}\n.tell-container .num-button-container[data-v-4a3d4254] {\n  width: 50%;\n}\n.tell-container .num-button-container .num-button-area .button-back[data-v-4a3d4254] {\n  height: 100px;\n}\n.tell-container .num-button-container .num-button-area .input-btn[data-v-4a3d4254] {\n  height: 100px;\n}\n.link-area[data-v-4a3d4254] {\n  display: flex;\n  justify-content: space-around;\n}\n.link-area .btn-container[data-v-4a3d4254] {\n  width: 25%;\n  position: relative;\n  font-size: 35px;\n}\n.link-area .btn-container .button-back[data-v-4a3d4254] {\n  width: 80%;\n  height: 90px;\n}\n.link-area .btn-container .next-btn[data-v-4a3d4254] {\n  width: 80%;\n  height: 90px;\n  line-height: 90px;\n}\n.link-area .btn-container .skip-btn[data-v-4a3d4254] {\n  height: 90px;\n  width: 80%;\n  line-height: 90px;\n  background: #dcdcdc;\n  color: #232323;\n  border: 0.5px solid #808080;\n}\n.link-area .btn-container .skip-button-back[data-v-4a3d4254] {\n  background: #696969;\n}\n.link-area .btn-container .waiting-btn[data-v-4a3d4254] {\n  width: 80%;\n  height: 90px;\n  line-height: 90px;\n}\n.prev-btn-container[data-v-4a3d4254] {\n  top: 110%;\n  left: -8%;\n}\n@media screen and (max-width: 1024px) {\n.form-container[data-v-4a3d4254] {\n    margin-top: 0;\n}\n.form-container .flex-container .input-container[data-v-4a3d4254] {\n    margin-right: 0;\n}\n.form-container .flex-container .input-container p[data-v-4a3d4254] {\n    margin-bottom: 5px;\n    font-size: 28px;\n}\n.form-container .flex-container .input-container .input-area .input input[data-v-4a3d4254] {\n    width: 120%;\n    height: 60px;\n    font-size: 30px;\n}\n.form-container .flex-container .num-button-container .num-button-area .button-back[data-v-4a3d4254] {\n    height: 80px;\n}\n.form-container .flex-container .num-button-container .num-button-area .input-btn[data-v-4a3d4254] {\n    height: 80px;\n}\n.link-area .btn-container .button-back[data-v-4a3d4254] {\n    width: 100%;\n    height: 70px;\n    top: 7px;\n}\n.link-area .btn-container .next-btn[data-v-4a3d4254] {\n    width: 100%;\n    height: 70px;\n    line-height: 70px;\n    font-size: 25px;\n}\n.link-area .btn-container .waiting-btn[data-v-4a3d4254] {\n    width: 100%;\n    height: 70px;\n}\n.link-area .btn-container .skip-btn[data-v-4a3d4254] {\n    height: 70px;\n    width: 100%;\n    line-height: 70px;\n    background: #f5f5f5;\n    color: #232323;\n    font-size: 25px;\n    border: 0.5px solid #808080;\n}\n.link-area .btn-container .skip-button-back[data-v-4a3d4254] {\n    background: #696969;\n}\n}", ""]);
 
 // exports
 
@@ -73747,8 +73766,7 @@ var render = function() {
                   nextStep: _vm.nextStep,
                   prevStep: _vm.prevStep,
                   getSelectSeatType: _vm.getSelectSeatType,
-                  progressBarMove: _vm.progressBarMove,
-                  progressBarMoveReset: _vm.progressBarMoveReset
+                  progressBarMove: _vm.progressBarMove
                 }
               })
             ],
@@ -73759,12 +73777,12 @@ var render = function() {
             "div",
             [
               _c("form-tobacco-select-component", {
+                attrs: { currentId: _vm.nextStepId },
                 on: {
                   nextStep: _vm.nextStep,
                   prevStep: _vm.prevStep,
                   getSelectTobaccoType: _vm.getSelectTobaccoType,
-                  progressBarMove: _vm.progressBarMove,
-                  progressBarMoveReset: _vm.progressBarMoveReset
+                  progressBarMove: _vm.progressBarMove
                 }
               })
             ],
@@ -73775,12 +73793,12 @@ var render = function() {
             "div",
             [
               _c("form-input-tell-component", {
+                attrs: { currentId: _vm.nextStepId },
                 on: {
                   nextStep: _vm.nextStep,
                   prevStep: _vm.prevStep,
                   getSelectTobaccoType: _vm.getSelectTobaccoType,
-                  progressBarMove: _vm.progressBarMove,
-                  progressBarMoveReset: _vm.progressBarMoveReset
+                  progressBarMove: _vm.progressBarMove
                 }
               })
             ],
@@ -74026,7 +74044,12 @@ var render = function() {
                   expression: "tellNum"
                 }
               ],
-              attrs: { id: "num-input", type: "num", readonly: "readonly" },
+              attrs: {
+                id: "num-input",
+                type: "num",
+                readonly: "readonly",
+                placeholder: "090-1234-5678"
+              },
               domProps: { value: _vm.tellNum },
               on: {
                 input: function($event) {
@@ -74088,26 +74111,49 @@ var render = function() {
     ]),
     _vm._v(" "),
     _c("div", { staticClass: "link-area" }, [
-      _c("div", { staticClass: "button-back skip-button-back" }),
+      _vm._m(1),
       _vm._v(" "),
-      _c(
-        "button",
-        { staticClass: "btn skip-btn", attrs: { onfocus: "this.blur();" } },
-        [_vm._v("スキップ")]
-      ),
-      _vm._v(" "),
-      _c("div", { staticClass: "button-back background-blue" }),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          staticClass: "btn next-btn ripple",
-          staticStyle: { padding: "0" },
-          attrs: { id: "js-next-btn", onfocus: "this.blur();" },
-          on: { click: _vm.nextStep }
-        },
-        [_vm._v("確認")]
-      )
+      _vm.nextBtnAppearrance
+        ? _c(
+            "div",
+            {
+              staticClass: "btn-container",
+              staticStyle: { "margin-right": "80px" }
+            },
+            [
+              _c("div", { staticClass: "button-back background-blue" }),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "btn next-btn ripple",
+                  staticStyle: { padding: "0" },
+                  attrs: { id: "js-next-btn", onfocus: "this.blur();" },
+                  on: { click: _vm.nextStep }
+                },
+                [_vm._v("確認")]
+              )
+            ]
+          )
+        : _c(
+            "div",
+            {
+              staticClass: "btn-container",
+              staticStyle: { "margin-right": "80px" }
+            },
+            [
+              _c("div", {
+                staticClass: "button-back",
+                staticStyle: { background: "#8b0000" }
+              }),
+              _vm._v(" "),
+              _c("button", {
+                staticClass: "btn waiting-btn ripple",
+                staticStyle: { background: "#f08080" },
+                attrs: { onfocus: "this.blur();" }
+              })
+            ]
+          )
     ]),
     _vm._v(" "),
     _c("div", { staticClass: "prev-btn-container" }, [
@@ -74125,8 +74171,7 @@ var render = function() {
             _c("font-awesome-icon", {
               staticStyle: { width: "40px", height: "40px" },
               attrs: { icon: "angle-left" }
-            }),
-            _vm._v("前に戻る\n            ")
+            })
           ],
           1
         )
@@ -74139,7 +74184,25 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", [_c("p", [_vm._v("※任意")])])
+    return _c("div", [_c("p", [_vm._v("※任意（ハイフン有り）")])])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "btn-container", staticStyle: { "margin-left": "80px" } },
+      [
+        _c("div", { staticClass: "button-back skip-button-back" }),
+        _vm._v(" "),
+        _c(
+          "button",
+          { staticClass: "btn skip-btn", attrs: { onfocus: "this.blur();" } },
+          [_vm._v("スキップ")]
+        )
+      ]
+    )
   }
 ]
 render._withStripped = true
@@ -74209,8 +74272,7 @@ var render = function() {
               _c("font-awesome-icon", {
                 staticStyle: { width: "40px", height: "40px" },
                 attrs: { icon: "angle-left" }
-              }),
-              _vm._v("前に戻る\n                ")
+              })
             ],
             1
           )
@@ -74287,8 +74349,7 @@ var render = function() {
               _c("font-awesome-icon", {
                 staticStyle: { width: "40px", height: "40px" },
                 attrs: { icon: "angle-left" }
-              }),
-              _vm._v("前に戻る\n                ")
+              })
             ],
             1
           )
@@ -88539,8 +88600,9 @@ var actions = {};
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 var state = {
-  prevState: false,
-  nextStepId: 1
+  prevState: null,
+  nextStepId: 1,
+  prevStepId: null
 };
 var mutations = {
   PREV_FORM: function PREV_FORM(state, prevState) {
@@ -88548,6 +88610,9 @@ var mutations = {
   },
   NEXT_STEP: function NEXT_STEP(state, nextStepId) {
     state.nextStepId = nextStepId;
+  },
+  PREV_STEP: function PREV_STEP(state, prevStepId) {
+    state.prevStepId = prevStepId;
   }
 };
 var actions = {
@@ -88561,6 +88626,12 @@ var actions = {
     var currentId = _ref4.currentId;
     var nextStepId = ++currentId;
     commit('NEXT_STEP', nextStepId);
+  },
+  prevStep: function prevStep(_ref5, _ref6) {
+    var commit = _ref5.commit;
+    var currentId = _ref6.currentId;
+    var prevStepId = --currentId;
+    commit('PREV_STEP', prevStepId);
   }
 };
 /* harmony default export */ __webpack_exports__["default"] = ({

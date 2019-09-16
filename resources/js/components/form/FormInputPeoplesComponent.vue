@@ -43,9 +43,7 @@ import { mapGetters } from 'vuex'
             return {
                 peopleNum: '',
                 time: 0,
-                isActive: null,
                 classSwitch: null,
-                passiveState: null,
                 nextBtnAppearrance: false,
                 numBtnAppearrance: true,
                 number: null,
@@ -57,8 +55,8 @@ import { mapGetters } from 'vuex'
         },
         mounted() {
             // 「受付へ進む」からの表示なのか、「前に戻る」からの表示なのかを判定しclassを切り替える
-            this.passiveState = this.$store.state.status.prevState
-            if (this.passiveState) {
+            let passiveState = this.$store.state.status.prevState
+            if (passiveState) {
                 this.classSwitch = 'passive-active'
                 this.$store.dispatch('status/prevForm', { prevState: false })
             } else {
@@ -122,36 +120,26 @@ import { mapGetters } from 'vuex'
 }
 
 .num-button-container{
-    width: 60%;
+    width: 50%;
     .num-button-area{
         &:nth-child(11){
             margin-right: 0;
-            width: 65%;
         }
         .clear-btn{
-            width: 92%;
+            width: 186%;
         }
         .clear-button-back{
-            width: 92%;
+            width: 186%;
         }
     }
 }
 
 @media screen and (max-width: 1024px) {
-    
+
     .form-container{
         .flex-container{
-            .num-button-container{
-                width: 70%;
-                .num-button-area{
-                    .button-back{
-                        height: 80px;
-                        top: 11px;
-                    }    
-                    .input-btn{
-                        height: 80px;
-                    }
-                }
+            .input-container{
+                width: 111.55%;
             }
         }
     }
