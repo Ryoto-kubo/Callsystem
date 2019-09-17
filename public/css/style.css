@@ -57,6 +57,13 @@ a:hover {
   align-items: center;
 }
 
+.prev-btn-container .prev-btn-area .prev-button-back {
+  width: 85px;
+  height: 85px;
+  box-shadow: 0px 5px 4px 0px #4e5246;
+  border-radius: 50%;
+}
+
 .prev-btn-container .prev-btn-area .prev-btn {
   width: 85px;
   height: 85px;
@@ -68,10 +75,7 @@ a:hover {
   align-items: center;
   transition: .1s all ease;
   color: #232323;
-  font-size: 32px;
-  z-index: 1;
   border-radius: 50%;
-  box-shadow: 0px 5px 4px 0px #4e5246;
 }
 
 .prev-btn-container .prev-btn-area .prev-btn:active {
@@ -532,6 +536,7 @@ header .header-container .img-container img {
   .prev-btn-container .prev-btn-area .prev-button-back {
     width: 60px;
     height: 60px;
+    box-shadow: 0px 5px 4px 0px #4e5246;
   }
 
   .prev-btn-container .prev-btn-area .prev-btn {

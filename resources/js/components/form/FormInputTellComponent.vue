@@ -3,11 +3,11 @@
         <div class="flex-container tell-container">
             <div class="input-container">
                 <div>
-                    <p>※任意（ハイフン有り）</p>
+                    <p>※任意（ハイフンなし）</p>
                 </div>
                 <div class="input-area">
                     <div class="input">
-                        <input id="num-input" v-model="tellNum" type="num" readonly="readonly" placeholder="090-1234-5678">
+                        <input id="num-input" v-model="tellNum" type="num" readonly="readonly" placeholder="09012345678">
                     </div>
                 </div>
             </div>
@@ -17,8 +17,8 @@
                     <button class="btn input-btn" @click="tellNumInput(item)" onfocus="this.blur();">{{ item }}</button>
                 </div>
                 <div class="num-button-area">
-                    <div class="button-back"></div>
-                    <button class="btn input-btn" type="button" @click="numClear" onfocus="this.blur();">←</button>
+                    <div class="button-back clear-button-back"></div>
+                    <button class="btn input-btn clear-btn" type="button" @click="numClear" onfocus="this.blur();">←</button>
                 </div>
             </div>
         </div>
@@ -39,7 +39,7 @@
         <div class="prev-btn-container">
             <div class="prev-btn-area">
                 <div class="prev-button-back"></div>
-                <button class="prev-btn" type="button" onfocus="this.blur();" @click="prevStep">
+                <button class="btn prev-btn" type="button" onfocus="this.blur();" @click="prevStep">
                     <font-awesome-icon icon="angle-left" style="width: 40px; height: 40px;" />
                 </button>
             </div>
@@ -53,9 +53,9 @@
                 tellNum: '',
                 time: 0,
                 classSwitch: null,
-                nextBtnAppearrance: true,
+                nextBtnAppearrance: false,
                 selectTobaccoType: null,
-                nums: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '-', '0'],
+                nums: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'],
             }
         },
         props: {
@@ -98,8 +98,11 @@
         },
         watch: {
             tellNum(value){
-                if(!value.match(/^[0-9]{3}-[0-9]{4}-[0-9]{4}$/)){
-                    this.nextBtnAppearrance = false
+                // 「\d」は半角数字の0〜9を表します。
+                // 「\d{2,4}」は「\d」が2〜4個続く事を表します。
+                // 「\d{4}」は「\d」が4個続く事を表します。
+                if(!value.match(/^\d{3}\d{3,4}\d{4}$/)){
+                    this.nextBtnAppearrance = false   
                 } else {
                     this.nextBtnAppearrance = true
                 }
@@ -142,6 +145,13 @@
             .input-btn{
                 height: 100px;
             }
+            .clear-btn{
+                width: 186%;
+            }
+            .clear-button-back{
+                width: 186%;
+            }
+
         }
     }
 }

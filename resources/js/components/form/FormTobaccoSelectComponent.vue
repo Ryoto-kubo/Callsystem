@@ -7,10 +7,10 @@
                     <button class="btn tobacco-btn" onfocus="this.blur();" @click="nextStep(tobaccoType)">{{tobaccoType}}</button>
                 </div>
             </div>
-            <div class="prev-btn-container top-postion">
+            <div class="prev-btn-container">
                 <div class="prev-btn-area">
                     <div class="prev-button-back"></div>
-                    <button class="prev-btn" type="button" onfocus="this.blur();" @click="prevStep">
+                    <button class="btn prev-btn" type="button" onfocus="this.blur();" @click="prevStep">
                         <font-awesome-icon icon="angle-left" style="width: 40px; height: 40px;" />
                     </button>
                 </div>
@@ -46,9 +46,9 @@
             nextStep(tobaccoType){
                 this.classSwitch       = 'reactive'
                 this.selectTobaccoType = tobaccoType
-                this.$emit('getSelectTobaccoType', tobaccoType)
-                this.$emit('progressBarMove', this.currentId)
+                this.$store.dispatch('app/inputTobaccoType', { tobaccoType: tobaccoType })
                 this.$store.dispatch('status/nextStep', { currentId: this.currentId })
+                this.$emit('progressBarMove', this.currentId)
                 setTimeout(() => {this.time++ }, 1000)
             },
             prevStep(){

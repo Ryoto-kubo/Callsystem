@@ -10,7 +10,6 @@
         <form-input-peoples-component
             :currentId="nextStepId"
             @nextStep="nextStep"
-            @getPeopleNum="getPeopleNum"
             @progressBarMove="progressBarMove"
             @progressBarMoveReset="progressBarMoveReset"/>
     </div>
@@ -20,7 +19,6 @@
             :currentId="nextStepId"
             @nextStep="nextStep"
             @prevStep="prevStep"
-            @getSelectSeatType="getSelectSeatType"
             @progressBarMove="progressBarMove"
             />
     </div>
@@ -30,7 +28,6 @@
             :currentId="nextStepId"
             @nextStep="nextStep"
             @prevStep="prevStep"
-            @getSelectTobaccoType="getSelectTobaccoType"
             @progressBarMove="progressBarMove"
             />
     </div>
@@ -40,7 +37,6 @@
             :currentId="nextStepId"
             @nextStep="nextStep"
             @prevStep="prevStep"
-            @getSelectTobaccoType="getSelectTobaccoType"
             @progressBarMove="progressBarMove"
             />
     </div>
@@ -55,14 +51,10 @@ import { constants } from 'crypto';
                 moveBarPercent: '',
                 nextStepId: '',
                 title: '',
-                peopleNum: null,
-                selectSeat: null,
-                selectTobacco: null,
-                tellNum: null,
             }
         },
         mounted() {
-            this.nextStepId = 4
+            this.nextStepId = 1
         },
         methods: {
             nextStep(){
@@ -84,18 +76,6 @@ import { constants } from 'crypto';
             },
             progressBarMoveReset(){
                 this.moveBarPercent = -100
-            },
-            getPeopleNum(inputPeopleNum){
-                this.peopleNum = inputPeopleNum
-            },
-            getSelectSeatType(selectSeat){
-                this.selectSeat = selectSeat
-            },
-            getSelectTobaccoType(tobaccoType){
-                this.selectTobacco = tobaccoType
-            },
-            getTellNum(inputTellNum){
-                this.tellNum = inputTellNum
             },
         },
         watch: {

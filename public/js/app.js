@@ -13359,25 +13359,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       moveBarPercent: '',
       nextStepId: '',
-      title: '',
-      peopleNum: null,
-      selectSeat: null,
-      selectTobacco: null,
-      tellNum: null
+      title: ''
     };
   },
   mounted: function mounted() {
-    this.nextStepId = 4;
+    this.nextStepId = 1;
   },
   methods: {
     nextStep: function nextStep() {
@@ -13400,18 +13392,6 @@ __webpack_require__.r(__webpack_exports__);
     },
     progressBarMoveReset: function progressBarMoveReset() {
       this.moveBarPercent = -100;
-    },
-    getPeopleNum: function getPeopleNum(inputPeopleNum) {
-      this.peopleNum = inputPeopleNum;
-    },
-    getSelectSeatType: function getSelectSeatType(selectSeat) {
-      this.selectSeat = selectSeat;
-    },
-    getSelectTobaccoType: function getSelectTobaccoType(tobaccoType) {
-      this.selectTobacco = tobaccoType;
-    },
-    getTellNum: function getTellNum(inputTellNum) {
-      this.tellNum = inputTellNum;
     }
   },
   watch: {
@@ -13603,6 +13583,8 @@ __webpack_require__.r(__webpack_exports__);
     } else {
       this.classSwitch = 'active';
     }
+
+    console.log(this.$store.state.app.peopleNum);
   },
   methods: {
     numInput: function numInput(item) {
@@ -13617,6 +13599,9 @@ __webpack_require__.r(__webpack_exports__);
       this.classSwitch = 'reactive';
       this.$store.dispatch('status/nextStep', {
         currentId: this.currentId
+      });
+      this.$store.dispatch('app/inputPeopleNum', {
+        peopleNum: this.peopleNum
       });
       this.$emit('getPeopleNum', this.peopleNum);
       Object(timers__WEBPACK_IMPORTED_MODULE_1__["setTimeout"])(function () {
@@ -13710,9 +13695,9 @@ __webpack_require__.r(__webpack_exports__);
       tellNum: '',
       time: 0,
       classSwitch: null,
-      nextBtnAppearrance: true,
+      nextBtnAppearrance: false,
       selectTobaccoType: null,
-      nums: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '-', '0']
+      nums: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0']
     };
   },
   props: {
@@ -13772,7 +13757,10 @@ __webpack_require__.r(__webpack_exports__);
   },
   watch: {
     tellNum: function tellNum(value) {
-      if (!value.match(/^[0-9]{3}-[0-9]{4}-[0-9]{4}$/)) {
+      // 「\d」は半角数字の0〜9を表します。
+      // 「\d{2,4}」は「\d」が2〜4個続く事を表します。
+      // 「\d{4}」は「\d」が4個続く事を表します。
+      if (!value.match(/^\d{3}\d{3,4}\d{4}$/)) {
         this.nextBtnAppearrance = false;
       } else {
         this.nextBtnAppearrance = true;
@@ -13853,12 +13841,13 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       this.classSwitch = 'reactive';
-      this.selectSeatType = seatType;
-      this.$emit('getSelectSeatType', seatType);
-      this.$emit('progressBarMove', this.currentId);
+      this.$store.dispatch('app/inputSeatType', {
+        seatType: seatType
+      });
       this.$store.dispatch('status/nextStep', {
         currentId: this.currentId
       });
+      this.$emit('progressBarMove', this.currentId);
       setTimeout(function () {
         _this.time++;
       }, 1000);
@@ -13956,11 +13945,13 @@ __webpack_require__.r(__webpack_exports__);
 
       this.classSwitch = 'reactive';
       this.selectTobaccoType = tobaccoType;
-      this.$emit('getSelectTobaccoType', tobaccoType);
-      this.$emit('progressBarMove', this.currentId);
+      this.$store.dispatch('app/inputTobaccoType', {
+        tobaccoType: tobaccoType
+      });
       this.$store.dispatch('status/nextStep', {
         currentId: this.currentId
       });
+      this.$emit('progressBarMove', this.currentId);
       setTimeout(function () {
         _this.time++;
       }, 1000);
@@ -26451,7 +26442,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, ".tell-container .input-container p[data-v-4a3d4254] {\n  font-size: 40px;\n}\n.tell-container .input-container .input-area .input input[data-v-4a3d4254] {\n  width: 100%;\n  height: 80px;\n  font-size: 40px;\n}\n.tell-container .num-button-container[data-v-4a3d4254] {\n  width: 50%;\n}\n.tell-container .num-button-container .num-button-area .button-back[data-v-4a3d4254] {\n  height: 100px;\n}\n.tell-container .num-button-container .num-button-area .input-btn[data-v-4a3d4254] {\n  height: 100px;\n}\n.link-area[data-v-4a3d4254] {\n  display: flex;\n  justify-content: space-around;\n}\n.link-area .btn-container[data-v-4a3d4254] {\n  width: 25%;\n  position: relative;\n  font-size: 35px;\n}\n.link-area .btn-container .button-back[data-v-4a3d4254] {\n  width: 80%;\n  height: 90px;\n}\n.link-area .btn-container .next-btn[data-v-4a3d4254] {\n  width: 80%;\n  height: 90px;\n  line-height: 90px;\n}\n.link-area .btn-container .skip-btn[data-v-4a3d4254] {\n  height: 90px;\n  width: 80%;\n  line-height: 90px;\n  background: #dcdcdc;\n  color: #232323;\n  border: 0.5px solid #808080;\n}\n.link-area .btn-container .skip-button-back[data-v-4a3d4254] {\n  background: #696969;\n}\n.link-area .btn-container .waiting-btn[data-v-4a3d4254] {\n  width: 80%;\n  height: 90px;\n  line-height: 90px;\n}\n.prev-btn-container[data-v-4a3d4254] {\n  top: 110%;\n  left: -8%;\n}\n@media screen and (max-width: 1024px) {\n.form-container[data-v-4a3d4254] {\n    margin-top: 0;\n}\n.form-container .flex-container .input-container[data-v-4a3d4254] {\n    margin-right: 0;\n}\n.form-container .flex-container .input-container p[data-v-4a3d4254] {\n    margin-bottom: 5px;\n    font-size: 28px;\n}\n.form-container .flex-container .input-container .input-area .input input[data-v-4a3d4254] {\n    width: 120%;\n    height: 60px;\n    font-size: 30px;\n}\n.form-container .flex-container .num-button-container .num-button-area .button-back[data-v-4a3d4254] {\n    height: 80px;\n}\n.form-container .flex-container .num-button-container .num-button-area .input-btn[data-v-4a3d4254] {\n    height: 80px;\n}\n.link-area .btn-container .button-back[data-v-4a3d4254] {\n    width: 100%;\n    height: 70px;\n    top: 7px;\n}\n.link-area .btn-container .next-btn[data-v-4a3d4254] {\n    width: 100%;\n    height: 70px;\n    line-height: 70px;\n    font-size: 25px;\n}\n.link-area .btn-container .waiting-btn[data-v-4a3d4254] {\n    width: 100%;\n    height: 70px;\n}\n.link-area .btn-container .skip-btn[data-v-4a3d4254] {\n    height: 70px;\n    width: 100%;\n    line-height: 70px;\n    background: #f5f5f5;\n    color: #232323;\n    font-size: 25px;\n    border: 0.5px solid #808080;\n}\n.link-area .btn-container .skip-button-back[data-v-4a3d4254] {\n    background: #696969;\n}\n}", ""]);
+exports.push([module.i, ".tell-container .input-container p[data-v-4a3d4254] {\n  font-size: 40px;\n}\n.tell-container .input-container .input-area .input input[data-v-4a3d4254] {\n  width: 100%;\n  height: 80px;\n  font-size: 40px;\n}\n.tell-container .num-button-container[data-v-4a3d4254] {\n  width: 50%;\n}\n.tell-container .num-button-container .num-button-area .button-back[data-v-4a3d4254] {\n  height: 100px;\n}\n.tell-container .num-button-container .num-button-area .input-btn[data-v-4a3d4254] {\n  height: 100px;\n}\n.tell-container .num-button-container .num-button-area .clear-btn[data-v-4a3d4254] {\n  width: 186%;\n}\n.tell-container .num-button-container .num-button-area .clear-button-back[data-v-4a3d4254] {\n  width: 186%;\n}\n.link-area[data-v-4a3d4254] {\n  display: flex;\n  justify-content: space-around;\n}\n.link-area .btn-container[data-v-4a3d4254] {\n  width: 25%;\n  position: relative;\n  font-size: 35px;\n}\n.link-area .btn-container .button-back[data-v-4a3d4254] {\n  width: 80%;\n  height: 90px;\n}\n.link-area .btn-container .next-btn[data-v-4a3d4254] {\n  width: 80%;\n  height: 90px;\n  line-height: 90px;\n}\n.link-area .btn-container .skip-btn[data-v-4a3d4254] {\n  height: 90px;\n  width: 80%;\n  line-height: 90px;\n  background: #dcdcdc;\n  color: #232323;\n  border: 0.5px solid #808080;\n}\n.link-area .btn-container .skip-button-back[data-v-4a3d4254] {\n  background: #696969;\n}\n.link-area .btn-container .waiting-btn[data-v-4a3d4254] {\n  width: 80%;\n  height: 90px;\n  line-height: 90px;\n}\n.prev-btn-container[data-v-4a3d4254] {\n  top: 110%;\n  left: -8%;\n}\n@media screen and (max-width: 1024px) {\n.form-container[data-v-4a3d4254] {\n    margin-top: 0;\n}\n.form-container .flex-container .input-container[data-v-4a3d4254] {\n    margin-right: 0;\n}\n.form-container .flex-container .input-container p[data-v-4a3d4254] {\n    margin-bottom: 5px;\n    font-size: 28px;\n}\n.form-container .flex-container .input-container .input-area .input input[data-v-4a3d4254] {\n    width: 120%;\n    height: 60px;\n    font-size: 30px;\n}\n.form-container .flex-container .num-button-container .num-button-area .button-back[data-v-4a3d4254] {\n    height: 80px;\n}\n.form-container .flex-container .num-button-container .num-button-area .input-btn[data-v-4a3d4254] {\n    height: 80px;\n}\n.link-area .btn-container .button-back[data-v-4a3d4254] {\n    width: 100%;\n    height: 70px;\n    top: 7px;\n}\n.link-area .btn-container .next-btn[data-v-4a3d4254] {\n    width: 100%;\n    height: 70px;\n    line-height: 70px;\n    font-size: 25px;\n}\n.link-area .btn-container .waiting-btn[data-v-4a3d4254] {\n    width: 100%;\n    height: 70px;\n}\n.link-area .btn-container .skip-btn[data-v-4a3d4254] {\n    height: 70px;\n    width: 100%;\n    line-height: 70px;\n    background: #f5f5f5;\n    color: #232323;\n    font-size: 25px;\n    border: 0.5px solid #808080;\n}\n.link-area .btn-container .skip-button-back[data-v-4a3d4254] {\n    background: #696969;\n}\n}", ""]);
 
 // exports
 
@@ -73748,7 +73739,6 @@ var render = function() {
                 attrs: { currentId: _vm.nextStepId },
                 on: {
                   nextStep: _vm.nextStep,
-                  getPeopleNum: _vm.getPeopleNum,
                   progressBarMove: _vm.progressBarMove,
                   progressBarMoveReset: _vm.progressBarMoveReset
                 }
@@ -73765,7 +73755,6 @@ var render = function() {
                 on: {
                   nextStep: _vm.nextStep,
                   prevStep: _vm.prevStep,
-                  getSelectSeatType: _vm.getSelectSeatType,
                   progressBarMove: _vm.progressBarMove
                 }
               })
@@ -73781,7 +73770,6 @@ var render = function() {
                 on: {
                   nextStep: _vm.nextStep,
                   prevStep: _vm.prevStep,
-                  getSelectTobaccoType: _vm.getSelectTobaccoType,
                   progressBarMove: _vm.progressBarMove
                 }
               })
@@ -73797,7 +73785,6 @@ var render = function() {
                 on: {
                   nextStep: _vm.nextStep,
                   prevStep: _vm.prevStep,
-                  getSelectTobaccoType: _vm.getSelectTobaccoType,
                   progressBarMove: _vm.progressBarMove
                 }
               })
@@ -74048,7 +74035,7 @@ var render = function() {
                 id: "num-input",
                 type: "num",
                 readonly: "readonly",
-                placeholder: "090-1234-5678"
+                placeholder: "09012345678"
               },
               domProps: { value: _vm.tellNum },
               on: {
@@ -74093,12 +74080,12 @@ var render = function() {
           }),
           _vm._v(" "),
           _c("div", { staticClass: "num-button-area" }, [
-            _c("div", { staticClass: "button-back" }),
+            _c("div", { staticClass: "button-back clear-button-back" }),
             _vm._v(" "),
             _c(
               "button",
               {
-                staticClass: "btn input-btn",
+                staticClass: "btn input-btn clear-btn",
                 attrs: { type: "button", onfocus: "this.blur();" },
                 on: { click: _vm.numClear }
               },
@@ -74163,7 +74150,7 @@ var render = function() {
         _c(
           "button",
           {
-            staticClass: "prev-btn",
+            staticClass: "btn prev-btn",
             attrs: { type: "button", onfocus: "this.blur();" },
             on: { click: _vm.prevStep }
           },
@@ -74184,7 +74171,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", [_c("p", [_vm._v("※任意（ハイフン有り）")])])
+    return _c("div", [_c("p", [_vm._v("※任意（ハイフンなし）")])])
   },
   function() {
     var _vm = this
@@ -74334,14 +74321,14 @@ var render = function() {
         0
       ),
       _vm._v(" "),
-      _c("div", { staticClass: "prev-btn-container top-postion" }, [
+      _c("div", { staticClass: "prev-btn-container" }, [
         _c("div", { staticClass: "prev-btn-area" }, [
           _c("div", { staticClass: "prev-button-back" }),
           _vm._v(" "),
           _c(
             "button",
             {
-              staticClass: "prev-btn",
+              staticClass: "btn prev-btn",
               attrs: { type: "button", onfocus: "this.blur();" },
               on: { click: _vm.prevStep }
             },
@@ -88579,10 +88566,50 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-var state = {};
-var mutations = {};
-var actions = {};
+var state = {
+  peopleNum: null,
+  seatType: null,
+  tobaccoType: null,
+  tellNum: null
+};
+var mutations = {
+  PEOPLE_NUM: function PEOPLE_NUM(state, peopleNum) {
+    state.peopleNum = peopleNum;
+  },
+  SEAT_TYPE: function SEAT_TYPE(state, seatType) {
+    state.seatType = seatType;
+  },
+  TOBACCO_TYPE: function TOBACCO_TYPE(state, tobaccoType) {
+    state.tobaccoType = tobaccoType;
+  },
+  TELL_NUM: function TELL_NUM(state, tellNum) {
+    state.tellNum = tellNum;
+  }
+};
+var actions = {
+  inputPeopleNum: function inputPeopleNum(_ref, _ref2) {
+    var commit = _ref.commit;
+    var peopleNum = _ref2.peopleNum;
+    commit('PEOPLE_NUM', peopleNum);
+  },
+  inputSeatType: function inputSeatType(_ref3, _ref4) {
+    var commit = _ref3.commit;
+    var seatType = _ref4.seatType;
+    commit('SEAT_TYPE', seatType);
+  },
+  inputTobaccoType: function inputTobaccoType(_ref5, _ref6) {
+    var commit = _ref5.commit;
+    var tobaccoType = _ref6.tobaccoType;
+    commit('TOBACCO_TYPE', tobaccoType);
+  },
+  inputTellNum: function inputTellNum(_ref7, _ref8) {
+    var commit = _ref7.commit;
+    var tellNum = _ref8.tellNum;
+    commit('TELL_NUM', tellNum);
+  }
+};
 /* harmony default export */ __webpack_exports__["default"] = ({
+  namespaced: true,
   state: state,
   mutations: mutations,
   actions: actions

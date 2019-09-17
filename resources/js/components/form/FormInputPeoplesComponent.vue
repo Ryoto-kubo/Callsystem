@@ -62,6 +62,8 @@ import { mapGetters } from 'vuex'
             } else {
                 this.classSwitch = 'active'
             }
+
+            console.log(this.$store.state.app.peopleNum)
         },
         methods: {
             numInput(item){
@@ -73,6 +75,7 @@ import { mapGetters } from 'vuex'
             nextStep(){
                 this.classSwitch = 'reactive'
                 this.$store.dispatch('status/nextStep', { currentId: this.currentId })
+                this.$store.dispatch('app/inputPeopleNum', { peopleNum: this.peopleNum })
                 this.$emit('getPeopleNum', this.peopleNum)
                 setTimeout(() => {this.time++ }, 1000)
             }

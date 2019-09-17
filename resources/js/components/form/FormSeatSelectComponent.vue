@@ -45,10 +45,9 @@
         methods: {
             nextStep(seatType){
                 this.classSwitch    = 'reactive'
-                this.selectSeatType = seatType
-                this.$emit('getSelectSeatType', seatType)
-                this.$emit('progressBarMove', this.currentId)
+                this.$store.dispatch('app/inputSeatType', { seatType: seatType })
                 this.$store.dispatch('status/nextStep', { currentId: this.currentId })
+                this.$emit('progressBarMove', this.currentId)
                 setTimeout(() => {this.time++ }, 1000)
             },
             prevStep(){
