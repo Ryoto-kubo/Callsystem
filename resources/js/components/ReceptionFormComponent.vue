@@ -1,246 +1,123 @@
 <template>
-    <div>
-        <div class="form-container">
-            <form id="post_form">
-                <!-- @csrf -->
-                <input v-model="params.token" type="hidden" name="_token">
-                <div class="error-msg">
-                    <span v-show="errors.peoples">{{errors.peoples}}</span>
-                </div>
-                <div class="entry-area">
-                    <div class="title">人数<span style="color:red;">（必須）</span></div>
-                    <div>
-                        <div>
-                            <label for="peoples">
-                                <input v-model="params.peoples" id="peoples" type="number" name="peoples" placeholder="人数">
-                            </label>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="error-msg">
-                    <span class="js-error-msg-seat_id"></span>
-                </div>
-                <div class="entry-area">
-                    <div class="title">座席</div>
-                    <label for="seat">
-                        <select v-model="params.seat_id" id="seat" name="seat_id">
-                            <option value=1>テーブル席</option>
-                            <option value=2>ボックス席</option>
-                            <option value=3>カウンター席</option>
-                            <option value=4>どこでも可</option>
-                        </select>
-                    </label>
-                </div>
-
-                <div class="error-msg">
-                    <span class="js-error-msg-smoke_id"></span>
-                </div>
-                <div class="entry-area">
-                    <div class="title">タバコ</div>
-                    <div>
-                        <div>
-                            <label>
-                                <input v-model="params.smoke_id" id="smoke" name="smoke_id" type="radio" value=1>喫煙席
-                            </label>
-                        </div>
-                        <div>
-                            <label>
-                                <input v-model="params.smoke_id" id="smoke" name="smoke_id" type="radio" value=2>禁煙席
-                            </label>
-                        </div>
-                        <div>
-                            <label>
-                                <input v-model="params.smoke_id" id="smoke" name="smoke_id" type="radio" value=3>どちらでも可
-                            </label>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="error-msg">
-                    <span v-show="errors.tell_number">{{errors.tell_number}}</span>
-                </div>
-                <div class="entry-area">
-                    <div class="title">電話番号</div>
-                    <div>
-                        <div>
-                            <label for="tell">
-                                <input v-model="params.tell_number" id="tell" type="text" name="tell_number" placeholder="000-0000-0000（任意）">
-                            </label>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="btn-container">
-                    <button @click="validate" id="form-submit" type="button">確認</button>
-                </div>
-            </form>
-        </div>
-        <transition v-if="showModal" name="modal" appear>
-            <div id="overlay">
-                <div class="modal-container">
-                    <div class="post-confirm-container">
-                        <div class="confirm-contents">
-                            <div class="confirm-tiile">人数：</div><div class="confirm-content">{{display.peoples}}</div>
-                        </div>
-                        <div class="confirm-contents">
-                            <div class="confirm-tiile">座席：</div><div class="confirm-content">{{display.seat}}</div>
-                        </div>
-                        <div class="confirm-contents">
-                            <div class="confirm-tiile">タバコ：</div><div class="confirm-content">{{display.smoke}}</div>
-                        </div>
-                        <div class="confirm-contents">
-                            <div class="confirm-tiile">電話番号：</div><div class="confirm-content">{{display.tell_number}}</div>
-                        </div>
-                    </div>
-                    <div class="btn-container">
-                        <button @click="closeModal" form="post_form" id="form-submit" type="submit">送信</button>
-                    </div>
-                </div>
-            </div>
-        </transition>
+<div>
+    <header-component :propsTitle="title" />
+    <div class="progressbar-container">
+        <div class="progressbar" :style="{left: moveBarPercent + '%'}"></div>
+        <div class="progressbar-back js-progressbar"></div>
     </div>
-</template>
 
+    <div v-if="nextStepId === 1">
+        <form-input-peoples-component
+            :currentId="nextStepId"
+            @nextStep="nextStep"
+            @progressBarMove="progressBarMove"
+            @progressBarMoveReset="progressBarMoveReset"/>
+    </div>
+
+    <div v-else-if="nextStepId === 2">
+        <form-seat-select-component
+            :currentId="nextStepId"
+            @nextStep="nextStep"
+            @prevStep="prevStep"
+            @progressBarMove="progressBarMove"
+            />
+    </div>
+    
+    <div v-else-if="nextStepId === 3">
+        <form-tobacco-select-component
+            :currentId="nextStepId"
+            @nextStep="nextStep"
+            @prevStep="prevStep"
+            @progressBarMove="progressBarMove"
+            />
+    </div>
+
+    <div v-else-if="nextStepId === 4">
+        <form-input-tell-component
+            :currentId="nextStepId"
+            @nextStep="nextStep"
+            @prevStep="prevStep"
+            @progressBarMove="progressBarMove"
+            />
+    </div>
+</div>
+
+</template>
 <script>
 import { constants } from 'crypto';
     export default {
         data() {
-            const DEFAULT_ID = 1;
             return {
-                showModal: false,
-                params: {
-                    peoples: null,
-                    seat_id: DEFAULT_ID,
-                    smoke_id: DEFAULT_ID,
-                    tell_number: null,
-                    token: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                },
-                display: {
-                    peoples: null,
-                    seat: null,
-                    smoke: null,
-                    tell_number: null
-                },
-                errors: {
-                    peoples: '',
-                    tell_number: ''
-                }
+                moveBarPercent: '',
+                nextStepId: '',
+                title: '',
             }
         },
+        mounted() {
+            this.nextStepId = 1
+        },
         methods: {
-            openModal: function(){
-                this.pramsOnDisplayCast(this.params)
-                this.showModal = true;
+            nextStep(){
+                this.nextStepId = this.$store.state.status.nextStepId
             },
-            closeModal: function(){
-                event.preventDefault();
-                if(this.params.seat_id == 'テーブル席'){
-                    this.params.seat_id = 1
+            prevStep(){
+                this.nextStepId = this.$store.state.status.prevStepId
+            },
+            progressBarMove(currentId){
+                const entiretyNum          = -100
+                let entiretyComponentCount = 4
+                let divisionNum            = entiretyNum / entiretyComponentCount
+                let passiveState           = this.$store.state.status.prevState
+                if (!passiveState) {
+                    this.moveBarPercent = entiretyNum - divisionNum * currentId
+                } else {
+                    this.moveBarPercent = this.moveBarPercent + divisionNum
                 }
-
-                this.showModal = false;
-                axios.post('/reception/formpost', this.params)
-                .then(function(response){
-                    window.location.href = "/";
-                }).catch(function(error){
-                    console.log(error)
-                    console.log(error)
-                });
             },
-            validate: function(){
-                axios.post('/reception/validate', this.params)
-                .then(function(response){
-                    if(response.data.success){
-                        this.openModal()
-                    }else{
-                        // console.log(response.data)
-                        this.errors.peoples     = response.data.messages.peoples[0]
-                        this.errors.tell_number = response.data.messages.tell_number[0]
-                    }
-                }.bind(this))
-                .catch(function(error){
-                    console.log(error)
-                }.bind(this));
+            progressBarMoveReset(){
+                this.moveBarPercent = -100
             },
-            pramsOnDisplayCast: function(params){
-                this.display.peoples = params.peoples
-                this.display.tell_number = params.tell_number
-
-                let seat_id  = Number(params.seat_id)
-                    if(seat_id === 1){
-                        this.display.seat = 'テーブル席'
-                    }else if(seat_id === 2){
-                        this.display.seat = 'ボックス席'
-                    }else if(seat_id === 3){
-                        this.display.seat = 'カウンター席'
-                    }else if(seat_id === 4){
-                        this.display.seat = 'どこでも可'
-                    }
-
-                let smoke_id  = Number(params.smoke_id)
-                    if(smoke_id === 1){
-                        this.display.smoke = '喫煙席'
-                    }else if(smoke_id === 2){
-                        this.display.smoke = '禁煙席'
-                    }else if(smoke_id === 3){
-                        this.display.smoke = 'どちらでも可'
-                    }
+        },
+        watch: {
+            nextStepId(){
+                if (this.nextStepId === 1){
+                    this.title = '人数を入力してください'
+                } else if (this.nextStepId === 2){
+                    this.title = '希望の座席を選択してください'
+                } else if (this.nextStepId === 3){
+                    this.title = '喫煙席又は禁煙席を選択してください'
+                } else if (this.nextStepId === 4){
+                    this.title = '電話番号でのお呼び出しも可能です'
+                }
             }
         }
-
     }
+
 </script>
-
-<style>
-.modal-container{
-    width: 500px;
-    height: 300px;
-    z-index:2;
-    padding: 1em;
-    background:#fff;
-    border-radius: 20px;
-}
-
-.post-confirm-container{
-    width: 60%;
+<style lang="scss" scoped>
+@import '../../sass/variables';
+.progressbar-container{
+    width: 95%;
     margin: auto;
-    text-align: center;
-}
-
-.confirm-contents{
-    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
     display: flex;
-    border-bottom: 1px solid #000;
-}
-
-.confirm-tiile{
-    width: 100px;
-    margin-right: 30px;
-    font-size: 20px;
-    text-align: left;
-}
-
-.confirm-content{
-    font-size: 20px;
-}
-
-#overlay{
-    /*　要素を重ねた時の順番　*/
-    z-index:1;
-
-    /*　画面全体を覆う設定　*/
-    position:fixed;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-    background-color:rgba(0,0,0,0.5);
-
-    /*　画面の中央に要素を表示させる設定　*/
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
+    justify-content: space-between;
+    .progressbar{
+        width: 100%;
+        height: 15px;
+        left: -100%;
+        background: linear-gradient(-90deg, $btn_color, #1e90ff);
+        position: absolute;
+        transition: all .8s ease-in-out;
+    }
+    .move{
+        left: 0;
+        transition: all .8s ease-in-out;
+    }
+    .progressbar-back{
+        width: 100%;
+        background: #808080;
+    }
 }
 </style>
