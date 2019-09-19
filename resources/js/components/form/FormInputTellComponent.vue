@@ -1,4 +1,5 @@
 <template>
+<div>
     <div class="form-container" :class="classSwitch">
         <div class="flex-container tell-container">
             <div class="input-container">
@@ -25,7 +26,7 @@
         <div class="link-area">
             <div class="btn-container" style="margin-left: 80px;">
                 <div class="button-back skip-button-back"></div>
-                <button class="btn skip-btn" onfocus="this.blur();">スキップ</button>
+                <button class="btn skip-btn" onfocus="this.blur();" @click="skip">スキップ</button>
             </div>
             <div v-if="nextBtnAppearrance" class="btn-container" style="margin-right: 80px;">
                 <div class="button-back background-blue"></div>
@@ -45,9 +46,15 @@
             </div>
         </div>
     </div>
+    <ModalComponent v-if="modalActive" @close="closeModal"/>
+</div>
 </template>
 <script>
+import ModalComponent from '../modal/modal-component.vue'
     export default {
+        components: {
+            ModalComponent,
+        },
         data() {
             return {
                 tellNum: '',
@@ -55,6 +62,7 @@
                 classSwitch: null,
                 nextBtnAppearrance: false,
                 selectTobaccoType: null,
+                modalActive: false,
                 nums: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'],
             }
         },
@@ -73,18 +81,29 @@
             this.time = 0
         },
         methods: {
+            openModal(){
+                this.modalActive = true
+            },
+            closeModal(){
+
+                this.modalActive = false
+            },
             tellNumInput(item){
                 this.tellNum += item
             },
             numClear(){
                 this.tellNum = this.tellNum.slice( 0, -1 ) ;
             },
-            nextStep(tellNum){
-                this.classSwitch       = 'reactive'
-                this.selectTobaccoType = tellNum
-                this.$emit('getTellNum', tellNum)
+            skip(){
+                this.$store.dispatch('app/inputTellNum', { tellNum: '未入力です' })
+                this.openModal()
+            },
+            nextStep(){
+                // this.classSwitch       = 'reactive'
+                this.$store.dispatch('app/inputTellNum', { tellNum: this.tellNum })
                 this.$emit('progressBarMove', this.currentId)
-                this.$store.dispatch('status/nextStep', { currentId: this.currentId })
+                // this.$store.dispatch('status/nextStep', { currentId: this.currentId })
+                this.openModal()
                 setTimeout(() => {this.time++ }, 1000)
 
             },
@@ -194,6 +213,20 @@
     top: 110%;
     left: -8%;
 }
+.modal-overlay {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    z-index: 30;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+
 
 @media screen and (max-width: 1024px) {
     .form-container{
