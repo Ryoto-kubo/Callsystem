@@ -4,7 +4,7 @@
             <div class="input-container">
                 <div class="input-area">
                     <div class="input">
-                        <input id="num-input" v-model="peopleNum" type="num" readonly="readonly">
+                        <input id="num-input" v-model="inputPeopleObject.peopleNum" type="num" readonly="readonly">
                     </div>
                     <div class="group-text">
                         <p>名様</p>
@@ -41,7 +41,10 @@ import { mapGetters } from 'vuex'
     export default {
         data() {
             return {
-                peopleNum: '',
+                inputPeopleObject: {
+                    id: this.currentId,
+                    peopleNum: '',
+                },
                 time: 0,
                 classSwitch: null,
                 nextBtnAppearrance: false,
@@ -62,32 +65,30 @@ import { mapGetters } from 'vuex'
             } else {
                 this.classSwitch = 'active'
             }
-
-            console.log(this.$store.state.app.peopleNum)
         },
         methods: {
             numInput(item){
-                this.peopleNum += item
+                this.inputPeopleObject.peopleNum += item
             },
             numClear(){
-                this.peopleNum = ''
+                this.inputPeopleObject.peopleNum = ''
             },
             nextStep(){
                 this.classSwitch = 'reactive'
                 this.$store.dispatch('status/nextStep', { currentId: this.currentId })
-                this.$store.dispatch('app/inputPeopleNum', { peopleNum: this.peopleNum })
+                this.$store.dispatch('app/inputPeopleNum', { inputPeopleObject: this.inputPeopleObject})
                 this.$emit('getPeopleNum', this.peopleNum)
                 setTimeout(() => {this.time++ }, 1000)
             }
         },
         watch: {
-            peopleNum(){
-                if(this.peopleNum.length <= 2){
+            'inputPeopleObject.peopleNum'(){
+                if(this.inputPeopleObject.peopleNum.length <= 2){
                     this.nextBtnAppearrance = true
                     this.$emit('progressBarMove', this.currentId)
-                    if(this.peopleNum.length === 2){
+                    if(this.inputPeopleObject.peopleNum.length === 2){
                         this.numBtnAppearrance = false
-                    }else if(this.peopleNum.length === 0){
+                    }else if(this.inputPeopleObject.peopleNum.length === 0){
                         this.nextBtnAppearrance = false
                         this.numBtnAppearrance  = true
                         this.$emit('progressBarMoveReset')

@@ -27,7 +27,7 @@ library.add(fas)
 
 // global登録
 // 増やしすぎない
-Vue.component('font-awesome-icon', FontAwesomeIcon)
+Vue.component('font-awesome-icon'               , FontAwesomeIcon);
 Vue.component('example-component'               , require('./components/ExampleComponent.vue').default);
 Vue.component('header-component'                , require('./components/HeaderComponent.vue').default);
 Vue.component('reception-get-component'         , require('./components/ReceptionGetComponent.vue').default);
@@ -38,6 +38,7 @@ Vue.component('form-input-peoples-component'    , require('./components/form/For
 Vue.component('form-seat-select-component'      , require('./components/form/FormSeatSelectComponent.vue').default);
 Vue.component('form-tobacco-select-component'   , require('./components/form/FormTobaccoSelectComponent.vue').default);
 Vue.component('form-input-tell-component'       , require('./components/form/FormInputTellComponent.vue').default);
+Vue.component('modal-component'                 , require('./components/modal/Modalcomponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -85,15 +86,14 @@ $(function(){
 
 // btn波紋エフェクト
 (() => { 
-
-    const rippleEffect = (event) => { 
+    const rippleEffect = (event) => {
   
       let target = event.target; 
   
       if (!target) { 
         return; 
       } 
-  
+      console.log('ripple')
       const cover = document.createElement('span'); 
       const coverSize = target.offsetWidth; 
       const loc = target.getBoundingClientRect(); 

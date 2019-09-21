@@ -22,6 +22,10 @@
     export default {
         data() {
             return {
+                selectSeatOject: {
+                    id: this.currentId,
+                    selectSeatType: null,
+                },
                 time: 0,
                 classSwitch: null,
                 selectSeatType: null,
@@ -44,8 +48,9 @@
         },
         methods: {
             nextStep(seatType){
-                this.classSwitch    = 'reactive'
-                this.$store.dispatch('app/inputSeatType', { seatType: seatType })
+                this.classSwitch = 'reactive'
+                this.selectSeatOject.selectSeatType = seatType
+                this.$store.dispatch('app/inputSeatType', { selectSeatOject: this.selectSeatOject })
                 this.$store.dispatch('status/nextStep', { currentId: this.currentId })
                 this.$emit('progressBarMove', this.currentId)
                 setTimeout(() => {this.time++ }, 1000)

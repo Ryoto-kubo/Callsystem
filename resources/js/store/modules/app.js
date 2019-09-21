@@ -1,20 +1,32 @@
 
 const state = {
-    peopleNum: null,
-    seatType: null,
-    tobaccoType: null,
+    inputPeopleObject: {
+        id: null,
+        peopleNum: null,
+    },
+    selectSeatOject: {
+        id: null,
+        selectSeatType: null
+    },
+    selectTobaccoObject: {
+        id: null,
+        selectTobaccoType: null,
+    },
     tellNum: null,
 }
 
 const mutations = {
-    PEOPLE_NUM: (state, peopleNum) => {
-        state.peopleNum = peopleNum
+    PEOPLE_NUM: (state, inputPeopleObject) => {
+        state.inputPeopleObject.id        = inputPeopleObject.id
+        state.inputPeopleObject.peopleNum = inputPeopleObject.peopleNum
     },    
-    SEAT_TYPE: (state, seatType) => {
-        state.seatType = seatType
+    SEAT_TYPE: (state, selectSeatOject) => {
+        state.selectSeatOject.id             = selectSeatOject.id
+        state.selectSeatOject.selectSeatType = selectSeatOject.selectSeatType
     },    
-    TOBACCO_TYPE: (state, tobaccoType) => {
-        state.tobaccoType = tobaccoType
+    TOBACCO_TYPE: (state, selectTobaccoObject) => {
+        state.selectTobaccoObject.id                = selectTobaccoObject.id
+        state.selectTobaccoObject.selectTobaccoType = selectTobaccoObject.selectTobaccoType
     },    
     TELL_NUM: (state, tellNum) => {
         state.tellNum = tellNum
@@ -23,14 +35,14 @@ const mutations = {
 }
 
 const actions = {
-    inputPeopleNum({ commit }, { peopleNum }) {
-        commit('PEOPLE_NUM', peopleNum)
+    inputPeopleNum({ commit }, { inputPeopleObject }) {
+        commit('PEOPLE_NUM', inputPeopleObject)
     },
-    inputSeatType({ commit }, { seatType }) {
-        commit('SEAT_TYPE', seatType)
+    inputSeatType({ commit }, { selectSeatOject }) {
+        commit('SEAT_TYPE', selectSeatOject)
     },
-    inputTobaccoType({ commit }, { tobaccoType }) {
-        commit('TOBACCO_TYPE', tobaccoType)
+    inputTobaccoType({ commit }, { selectTobaccoObject }) {
+        commit('TOBACCO_TYPE', selectTobaccoObject)
     },
     inputTellNum({ commit }, { tellNum }) {
         commit('TELL_NUM', tellNum)

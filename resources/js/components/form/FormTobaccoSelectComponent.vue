@@ -22,9 +22,12 @@
     export default {
         data() {
             return {
+                selectTobaccoObject: {
+                    id: this.currentId,
+                    selectTobaccoType: null
+                },
                 time: 0,
                 classSwitch: null,
-                selectTobaccoType: null,
                 tobaccoTypes: ['禁煙席', '喫煙席', 'どちらでも可']
             }
         },
@@ -44,9 +47,9 @@
         },
         methods: {
             nextStep(tobaccoType){
-                this.classSwitch       = 'reactive'
-                this.selectTobaccoType = tobaccoType
-                this.$store.dispatch('app/inputTobaccoType', { tobaccoType: tobaccoType })
+                this.classSwitch                           = 'reactive'
+                this.selectTobaccoObject.selectTobaccoType = tobaccoType
+                this.$store.dispatch('app/inputTobaccoType', { selectTobaccoObject: this.selectTobaccoObject })
                 this.$store.dispatch('status/nextStep', { currentId: this.currentId })
                 this.$emit('progressBarMove', this.currentId)
                 setTimeout(() => {this.time++ }, 1000)

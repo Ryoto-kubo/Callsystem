@@ -46,17 +46,17 @@
             </div>
         </div>
     </div>
-    <ModalComponent v-if="modalActive" @close="closeModal"/>
+    <modal-component v-if="modalActive" @close="closeModal"/>
 </div>
 </template>
 <script>
-import ModalComponent from '../modal/modal-component.vue'
     export default {
-        components: {
-            ModalComponent,
-        },
         data() {
             return {
+                inputTellNumObject: {
+                    id: this.currentId,
+                    inputTellNum: null
+                },
                 tellNum: '',
                 time: 0,
                 classSwitch: null,
@@ -85,7 +85,6 @@ import ModalComponent from '../modal/modal-component.vue'
                 this.modalActive = true
             },
             closeModal(){
-
                 this.modalActive = false
             },
             tellNumInput(item){
@@ -104,7 +103,7 @@ import ModalComponent from '../modal/modal-component.vue'
                 this.$emit('progressBarMove', this.currentId)
                 // this.$store.dispatch('status/nextStep', { currentId: this.currentId })
                 this.openModal()
-                setTimeout(() => {this.time++ }, 1000)
+                // setTimeout(() => {this.time++ }, 1000)
 
             },
             prevStep(){
@@ -170,7 +169,6 @@ import ModalComponent from '../modal/modal-component.vue'
             .clear-button-back{
                 width: 186%;
             }
-
         }
     }
 }
@@ -189,6 +187,7 @@ import ModalComponent from '../modal/modal-component.vue'
             width: 80%;
             height: 90px;
             line-height: 90px;
+            font-size: 35px;
         }
         .skip-btn{
             height: 90px;
@@ -197,6 +196,7 @@ import ModalComponent from '../modal/modal-component.vue'
             background: #dcdcdc;
             color: #232323;
             border: 0.5px solid #808080;
+            font-size: 35px;
         }
         .skip-button-back{
             background: #696969;
@@ -258,7 +258,6 @@ import ModalComponent from '../modal/modal-component.vue'
                     }
                 }
             }
-
         }
     }
     .link-area{
@@ -278,7 +277,6 @@ import ModalComponent from '../modal/modal-component.vue'
                 width: 100%;
                 height: 70px;
             }
-
             .skip-btn{
                 height: 70px;
                 width: 100%;
@@ -293,6 +291,5 @@ import ModalComponent from '../modal/modal-component.vue'
             }
         }
     }
-
 }
 </style>
