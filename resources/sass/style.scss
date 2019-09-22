@@ -475,7 +475,7 @@ header{
 .ripple { 
     position: relative; 
     overflow: hidden; 
-  } 
+  }
   
   .ripple .ripple-active { 
     position: absolute; 
@@ -483,15 +483,15 @@ header{
     background: $white; 
     border-radius: 50%; 
     transform: scale(0); 
-    animation: ripple .8s; 
-    opacity: .2; 
+    animation: ripple .8s;
+    opacity: .2;
   }
   
-  @keyframes ripple { 
-    to { 
-      opacity: 0; 
-      transform: scale(2.0); 
-    } 
+  @keyframes ripple {
+    to {
+      opacity: 0;
+      transform: scale(2.0);
+    }
   }
 // =================================================
 

@@ -1,4 +1,5 @@
 <template>
+<div>
     <div class="form-container" :class="classSwitch">
         <div class="flex-container">
             <div class="input-container">
@@ -24,14 +25,22 @@
             </div>
         </div>
         <div v-if="nextBtnAppearrance" class="link-area">
-            <div class="button-back background-blue"></div>
-            <button id="js-next-btn" class="btn next-btn ripple" onfocus="this.blur();" @click="nextStep" style="padding: 0;">次へ</button>
+            <div v-if="propsEditStatus">
+                <div class="button-back background-blue"></div>
+                <button id="js-next-btn" class="btn next-btn ripple" onfocus="this.blur();" @click="openModal" style="padding: 0;">登録</button>
+            </div>
+            <div v-else>
+                <div class="button-back background-blue"></div>
+                <button id="js-next-btn" class="btn next-btn ripple" onfocus="this.blur();" @click="nextStep" style="padding: 0;">次へ</button>
+            </div>
         </div>
         <div v-else class="link-area">
             <div class="button-back" style="background: #8b0000;"></div>
             <button class="btn waiting-btn ripple" onfocus="this.blur();"></button>
         </div>
     </div>
+    <modal-component v-if="modalActive" @close="closeModal"/>
+</div>
 </template>
 
 <script>
@@ -46,6 +55,7 @@ import { mapGetters } from 'vuex'
                     peopleNum: '',
                 },
                 time: 0,
+                modalActive: false,
                 classSwitch: null,
                 nextBtnAppearrance: false,
                 numBtnAppearrance: true,
@@ -55,6 +65,7 @@ import { mapGetters } from 'vuex'
         },
         props: {
             currentId: Number,
+            propsEditStatus: Boolean,
         },
         mounted() {
             // 「受付へ進む」からの表示なのか、「前に戻る」からの表示なのかを判定しclassを切り替える
@@ -67,6 +78,13 @@ import { mapGetters } from 'vuex'
             }
         },
         methods: {
+            openModal(){
+                this.$store.dispatch('app/inputPeopleNum', { inputPeopleObject: this.inputPeopleObject})
+                this.modalActive = true
+            },
+            closeModal(){
+                this.modalActive = false
+            },
             numInput(item){
                 this.inputPeopleObject.peopleNum += item
             },

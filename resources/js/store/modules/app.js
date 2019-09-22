@@ -12,7 +12,11 @@ const state = {
         id: null,
         selectTobaccoType: null,
     },
-    tellNum: null,
+    inputTellNumObject: {
+        id: null,
+        tellNum: null,
+        inputState: true,
+    }
 }
 
 const mutations = {
@@ -28,8 +32,10 @@ const mutations = {
         state.selectTobaccoObject.id                = selectTobaccoObject.id
         state.selectTobaccoObject.selectTobaccoType = selectTobaccoObject.selectTobaccoType
     },    
-    TELL_NUM: (state, tellNum) => {
-        state.tellNum = tellNum
+    TELL_NUM: (state, inputTellNumObject) => {
+        state.inputTellNumObject.id         = inputTellNumObject.id
+        state.inputTellNumObject.tellNum    = inputTellNumObject.tellNum
+        state.inputTellNumObject.inputState = inputTellNumObject.inputState
     },    
   
 }
@@ -44,8 +50,8 @@ const actions = {
     inputTobaccoType({ commit }, { selectTobaccoObject }) {
         commit('TOBACCO_TYPE', selectTobaccoObject)
     },
-    inputTellNum({ commit }, { tellNum }) {
-        commit('TELL_NUM', tellNum)
+    inputTellNum({ commit }, { inputTellNumObject }) {
+        commit('TELL_NUM', inputTellNumObject)
     },
   
 }

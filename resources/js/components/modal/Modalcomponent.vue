@@ -5,31 +5,48 @@
                 <div class="modal-content">
                     <div class="confirm-container">
                         <div class="confirm-text-container">
-                            <div class="icon-container">
-                                <font-awesome-icon icon="edit" style="width: 50px; height: 50px; margin-bottom: 3px;" @click="editPrev(peopleObject.id)"/>
+                            <!-- <div class="confirm-text">人数:{{peopleObject.peopleNum}}名</div> -->
+                            <div class="confirm-text">
+                                <div class="content-text">
+                                    <font-awesome-icon class="title-icon" icon="users"/>
+                                    {{peopleObject.peopleNum}}名
+                                </div>
                             </div>
-                            <div class="confirm-text">{{peopleObject.peopleNum}}名</div>
+                            <div class="icon-container">
+                                <font-awesome-icon class="edit-icon" icon="edit" @click="editPrev(peopleObject.id)"/>
+                            </div>
                             <!-- <div class="confirm-text">2名</div> -->
                         </div>
                         <div class="confirm-text-container">
-                            <div class="icon-container">
-                                <font-awesome-icon icon="edit" style="width: 50px; height: 50px; margin-bottom: 3px;" @click="editPrev(seatTypeObject.id)"/>
+                            <div class="confirm-text">
+                                <div class="content-text">
+                                    <font-awesome-icon class="title-icon" icon="chair"/>
+                                    {{displaySeat}}
+                                </div>
                             </div>
-                            <div class="confirm-text">{{seatTypeObject.selectSeatType}}</div>
+                            <div class="icon-container">
+                                <font-awesome-icon class="edit-icon" icon="edit" @click="editPrev(seatTypeObject.id)"/>
+                            </div>
                             <!-- <div class="confirm-text">ボックス席</div> -->
                         </div>
                         <div class="confirm-text-container">
-                            <div class="icon-container">
-                                <font-awesome-icon icon="edit" style="width: 50px; height: 50px; margin-bottom: 3px;" @click="editPrev(3)"/>
+                            <div class="confirm-text">
+                                <font-awesome-icon class="title-icon" icon="smoking"/>
+                                {{displayTobacco}}
                             </div>
-                            <div class="confirm-text">{{selectTobaccoObject.selectTobaccoType}}</div>
+                            <div class="icon-container">
+                                <font-awesome-icon class="edit-icon" icon="edit" @click="editPrev(tobaccoTypeObject.id)"/>
+                            </div>
                             <!-- <div class="confirm-text">禁煙席</div> -->
                         </div>
                         <div class="confirm-text-container">
-                            <div class="icon-container">
-                                <font-awesome-icon icon="edit" style="width: 50px; height: 50px; margin-bottom: 3px;" @click="editPrev(4)"/>
+                            <div class="confirm-text">
+                                <font-awesome-icon class="title-icon" icon="phone"/>
+                                {{displayTell}}
                             </div>
-                            <div class="confirm-text">{{tellNum}}</div>
+                            <div class="icon-container">
+                                <font-awesome-icon class="edit-icon" icon="edit" @click="editPrev(inputTellNumObject.id)"/>
+                            </div>
                             <!-- <div class="confirm-text">09012345678</div> -->
                         </div>
                     </div>
@@ -40,7 +57,7 @@
                         </div>
                         <div class="btn-area">
                             <div class="button-back background-blue"></div>
-                            <button class="btn next-btn ripple" onfocus="this.blur();" @click="nextStep" style="padding: 0;">登録</button>
+                            <button class="btn next-btn ripple" onfocus="this.blur();" @click="postData" style="padding: 0;">登録</button>
                         </div>
                     </div>
                 </div>
@@ -53,29 +70,77 @@
 export default {
     data() {
         return {
+            editStatus: {
+                id: null,
+                editPrev: false
+            },
             peopleObject: null,
             seatTypeObject: null,
-            selectTobaccoObject: null,
-            tellNum: null,
+            tobaccoTypeObject: null,
+            inputTellNumObject: null,
+            displaySeat: null,
+            displayTobacco: null,
+            displayTell: '未入力です',
             time: 0,
         }
     },
     created() {
-        this.peopleObject        = this.$store.state.app.inputPeopleObject
-        this.seatTypeObject      = this.$store.state.app.selectSeatOject
-        this.selectTobaccoObject = this.$store.state.app.selectTobaccoObject
-        this.tellNum     = this.$store.state.app.tellNum
+        this.peopleObject       = this.$store.state.app.inputPeopleObject
+        this.seatTypeObject     = this.$store.state.app.selectSeatOject
+        this.tobaccoTypeObject  = this.$store.state.app.selectTobaccoObject
+        this.inputTellNumObject = this.$store.state.app.inputTellNumObject
+
+        this.idConvertSeatText(this.seatTypeObject.selectSeatType)
+        this.idConvertTobaccoText(this.tobaccoTypeObject.selectTobaccoType)
+        this.stateConvertTellText(this.inputTellNumObject.inputState)
     },
     methods: {
-        nextStep(){
-            console.log('hello')
+        postData(){
         },
         closeModal(){
             setTimeout(() => {this.time++ }, 100)
         },
         editPrev(value){
-            console.log(value)
+            this.editStatus.id       = value
+            this.editStatus.editPrev = true
+            this.$store.dispatch('status/editStatus', { editStatus: this.editStatus})
         },
+        idConvertSeatText(seatId){
+            switch (seatId) {
+                case 1:
+                    this.displaySeat = 'テーブル席'
+                    break;
+                case 2:
+                    this.displaySeat = 'ボックス席'
+                    break;
+                case 3:
+                    this.displaySeat = 'カウンター席'
+                    break;
+                case 4:
+                    this.displaySeat = 'どこでも可'
+                    break;
+                default:
+            }
+        },
+        idConvertTobaccoText(tobaccoId){
+            switch (tobaccoId) {
+                case 1:
+                    this.displayTobacco = '禁煙席'
+                    break;
+                case 2:
+                    this.displayTobacco = '喫煙席'
+                    break;
+                case 3:
+                    this.displayTobacco = 'どちらでも可'
+                    break;
+                default:
+            }
+        },
+        stateConvertTellText(boolean){
+            if (boolean){
+                this.displayTell = this.inputTellNumObject.tellNum
+            }
+        }
     },
     watch: {
         time(){
@@ -102,7 +167,7 @@ export default {
         background: rgba(0, 0, 0, 0.5);
     }
 
-    &-window {
+    .modal-window {
         width: 70%;
         height: 700px;
         border-radius: 10px;
@@ -111,7 +176,7 @@ export default {
         position: relative;
     }
 
-    &-content {
+    .modal-content {
         width: 70%;
         margin: auto;
         border: 0;
@@ -123,16 +188,28 @@ export default {
             margin-bottom: 30px;
             .confirm-text-container{
                 margin-bottom: 30px;
-                padding-left: 10px;
                 border-bottom: 2px solid #dcdcdc;
                 display: flex;
+                    justify-content: space-between;
                 align-items: flex-end;
                 .icon-container{
-                    margin-right: 30px;
+                    margin-right: 10px;
+                    .edit-icon{
+                        width: 50px;
+                        height: 35px;
+                        margin-bottom: 5px;
+                        color: #1e90ff;
+                    }
                 }
                 .confirm-text{
+                    margin-left: 10px;
                     font-size: 30px;
                     color: #232323;
+                    .title-icon{
+                        width: 50px;
+                        height: 35px;
+                        margin-right: 10px;
+                    }
                 }
             }
         }

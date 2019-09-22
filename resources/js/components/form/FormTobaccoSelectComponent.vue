@@ -4,7 +4,7 @@
             <div class="flex-container tobacco-flex">
                 <div class="tobacco-btn-container" v-for="tobaccoType in tobaccoTypes" :key="tobaccoType.index">
                     <div class="button-back tobacco-btn-back"></div>
-                    <button class="btn tobacco-btn" onfocus="this.blur();" @click="nextStep(tobaccoType)">{{tobaccoType}}</button>
+                    <button class="btn tobacco-btn" onfocus="this.blur();" @click="nextStep(tobaccoType.id)">{{tobaccoType.tobacco}}</button>
                 </div>
             </div>
             <div class="prev-btn-container">
@@ -16,6 +16,7 @@
                 </div>
             </div>
         </div>
+        <modal-component v-if="modalActive" @close="closeModal"/>
     </div>
 </template>
 <script>
@@ -27,12 +28,18 @@
                     selectTobaccoType: null
                 },
                 time: 0,
+                modalActive: false,
                 classSwitch: null,
-                tobaccoTypes: ['禁煙席', '喫煙席', 'どちらでも可']
+                tobaccoTypes: [
+                    {id: 1, tobacco: '禁煙席'},
+                    {id: 2, tobacco: '喫煙席'},
+                    {id: 3, tobacco: 'どちらでも可'},
+                ]
             }
         },
         props: {
             currentId: Number,
+            propsEditStatus: Boolean
         },
         mounted() {
             // 「受付へ進む」からの表示なのか、「前に戻る」からの表示なのかを判定しclassを切り替える
@@ -46,13 +53,17 @@
             this.time = 0
         },
         methods: {
-            nextStep(tobaccoType){
-                this.classSwitch                           = 'reactive'
-                this.selectTobaccoObject.selectTobaccoType = tobaccoType
+            nextStep(tobaccoTypeId){
+                this.selectTobaccoObject.selectTobaccoType = tobaccoTypeId
                 this.$store.dispatch('app/inputTobaccoType', { selectTobaccoObject: this.selectTobaccoObject })
-                this.$store.dispatch('status/nextStep', { currentId: this.currentId })
-                this.$emit('progressBarMove', this.currentId)
-                setTimeout(() => {this.time++ }, 1000)
+                if (this.propsEditStatus) {
+                    this.modalActive = true
+                } else {
+                    this.classSwitch                           = 'reactive'
+                    this.$store.dispatch('status/nextStep', { currentId: this.currentId })
+                    this.$emit('progressBarMove', this.currentId)
+                    setTimeout(() => {this.time++ }, 1000)
+                }
             },
             prevStep(){
                 this.$store.dispatch('status/prevForm', { prevState: true });
@@ -60,7 +71,10 @@
                 this.$emit('progressBarMove', this.currentId)
                 this.$store.dispatch('status/prevStep', { currentId: this.currentId });
                 setTimeout(() => {this.time++ }, 1000)
-            }
+            },
+            closeModal(){
+                this.modalActive = false
+            },
         },
         watch: {
             time(){

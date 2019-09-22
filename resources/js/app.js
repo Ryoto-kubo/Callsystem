@@ -89,10 +89,9 @@ $(function(){
     const rippleEffect = (event) => {
   
       let target = event.target; 
-  
       if (!target) { 
         return; 
-      } 
+      }
       console.log('ripple')
       const cover = document.createElement('span'); 
       const coverSize = target.offsetWidth; 
@@ -103,18 +102,18 @@ $(function(){
   
       const pos = `top: ${y}px; left: ${x}px; height: ${coverSize}px; width: ${coverSize}px;`; 
   
-      target.appendChild(cover); 
-      cover.setAttribute('style', pos); 
-      cover.setAttribute('class', 'ripple-active'); 
+      target.appendChild(cover);
+      cover.setAttribute('style', pos);
+      cover.setAttribute('class', 'ripple-active');
   
-      setTimeout(() => { 
-        cover.remove(); 
+      setTimeout(() => {
+        cover.remove();
       }, 2000); 
     }; 
   
     document.addEventListener('DOMContentLoaded', () => { 
       Array.from(document.querySelectorAll('.ripple')).forEach((elem) => { 
-        elem.addEventListener('click', rippleEffect) 
+        elem.addEventListener('click', rippleEffect)
       }); 
     }); 
   

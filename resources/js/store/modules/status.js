@@ -1,5 +1,9 @@
 
 const state = {
+  editStatus: {
+    id: null,
+    editPrev: false
+  },
   prevState: null,
   nextStepId: 1,
   prevStepId: null,
@@ -15,6 +19,10 @@ const mutations = {
   PREV_STEP: (state, prevStepId) => {
       state.prevStepId = prevStepId
   },    
+  EDIT_STATUS: (state, editStatus) => {
+      state.editStatus.id       = editStatus.id
+      state.editStatus.editPrev = editStatus.editPrev
+  },    
 }
 
 const actions = {
@@ -29,7 +37,9 @@ const actions = {
       let prevStepId = --currentId
       commit('PREV_STEP', prevStepId)
   },
-  
+  editStatus({ commit }, { editStatus }) {
+      commit('EDIT_STATUS', editStatus)
+  },
 }
 
 export default {

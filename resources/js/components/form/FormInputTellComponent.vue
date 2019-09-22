@@ -8,7 +8,7 @@
                 </div>
                 <div class="input-area">
                     <div class="input">
-                        <input id="num-input" v-model="tellNum" type="num" readonly="readonly" placeholder="09012345678">
+                        <input id="num-input" v-model="inputTellNumObject.tellNum" type="num" readonly="readonly" placeholder="09012345678">
                     </div>
                 </div>
             </div>
@@ -30,7 +30,7 @@
             </div>
             <div v-if="nextBtnAppearrance" class="btn-container" style="margin-right: 80px;">
                 <div class="button-back background-blue"></div>
-                <button id="js-next-btn" class="btn next-btn ripple" onfocus="this.blur();" @click="nextStep" style="padding: 0;">確認</button>
+                <button class="btn next-btn ripple" onfocus="this.blur();" @click="nextStep" style="padding: 0;">確認</button>
             </div>
             <div v-else class="btn-container" style="margin-right: 80px;">
                 <div class="button-back" style="background: #8b0000;"></div>
@@ -55,9 +55,9 @@
             return {
                 inputTellNumObject: {
                     id: this.currentId,
-                    inputTellNum: null
+                    tellNum: '',
+                    inputState: true,
                 },
-                tellNum: '',
                 time: 0,
                 classSwitch: null,
                 nextBtnAppearrance: false,
@@ -88,23 +88,25 @@
                 this.modalActive = false
             },
             tellNumInput(item){
-                this.tellNum += item
+                this.inputTellNumObject.tellNum += item
             },
             numClear(){
-                this.tellNum = this.tellNum.slice( 0, -1 ) ;
+                let tellNum = this.inputTellNumObject.tellNum
+                    this.inputTellNumObject.tellNum = tellNum.slice( 0, -1 ) ;
             },
             skip(){
-                this.$store.dispatch('app/inputTellNum', { tellNum: '未入力です' })
+                this.inputTellNumObject.inputState = false
+                this.$store.dispatch('app/inputTellNum', { inputTellNumObject: this.inputTellNumObject })
                 this.openModal()
             },
             nextStep(){
                 // this.classSwitch       = 'reactive'
-                this.$store.dispatch('app/inputTellNum', { tellNum: this.tellNum })
+                this.inputTellNumObject.inputState = true
+                this.$store.dispatch('app/inputTellNum', { inputTellNumObject: this.inputTellNumObject })
                 this.$emit('progressBarMove', this.currentId)
                 // this.$store.dispatch('status/nextStep', { currentId: this.currentId })
                 this.openModal()
                 // setTimeout(() => {this.time++ }, 1000)
-
             },
             prevStep(){
                 this.$store.dispatch('status/prevForm', { prevState: true })
@@ -115,7 +117,7 @@
             }
         },
         watch: {
-            tellNum(value){
+            'inputTellNumObject.tellNum'(value){
                 // 「\d」は半角数字の0〜9を表します。
                 // 「\d{2,4}」は「\d」が2〜4個続く事を表します。
                 // 「\d{4}」は「\d」が4個続く事を表します。
@@ -134,7 +136,6 @@
                 }
             }
         }
-
     }
 </script>
 <style lang="scss" scoped>
@@ -225,8 +226,6 @@
     height: 100%;
     background: rgba(0, 0, 0, 0.5);
 }
-
-
 
 @media screen and (max-width: 1024px) {
     .form-container{

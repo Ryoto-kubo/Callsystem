@@ -9,6 +9,7 @@
     <div v-if="nextStepId === 1">
         <form-input-peoples-component
             :currentId="nextStepId"
+            :propsEditStatus='editStatus'
             @nextStep="nextStep"
             @progressBarMove="progressBarMove"
             @progressBarMoveReset="progressBarMoveReset"/>
@@ -17,6 +18,7 @@
     <div v-else-if="nextStepId === 2">
         <form-seat-select-component
             :currentId="nextStepId"
+            :propsEditStatus='editStatus'
             @nextStep="nextStep"
             @prevStep="prevStep"
             @progressBarMove="progressBarMove"
@@ -26,6 +28,7 @@
     <div v-else-if="nextStepId === 3">
         <form-tobacco-select-component
             :currentId="nextStepId"
+            :propsEditStatus='editStatus'
             @nextStep="nextStep"
             @prevStep="prevStep"
             @progressBarMove="progressBarMove"
@@ -48,9 +51,15 @@ import { constants } from 'crypto';
     export default {
         data() {
             return {
+                editStatus: false,
                 moveBarPercent: '',
                 nextStepId: '',
                 title: '',
+            }
+        },
+        computed: {
+            getEditStatus() {
+                return this.$store.state.status.editStatus
             }
         },
         mounted() {
@@ -89,6 +98,13 @@ import { constants } from 'crypto';
                 } else if (this.nextStepId === 4){
                     this.title = '電話番号でのお呼び出しも可能です'
                 }
+            },
+            getEditStatus: {
+                handler: function (editObject) {
+                    this.nextStepId = editObject.id
+                    this.editStatus = editObject.editPrev
+                },
+                deep: true
             }
         }
     }

@@ -4,7 +4,7 @@
             <div class="flex-container seat-flex">
                 <div class="seat-btn-container" v-for="seatType in seatTypes" :key="seatType.index">
                     <div class="button-back seat-btn-back"></div>
-                    <button class="btn seat-btn" onfocus="this.blur();" @click="nextStep(seatType)">{{seatType}}</button>
+                    <button class="btn seat-btn" onfocus="this.blur();" @click="nextStep(seatType.id)">{{seatType.seat}}</button>
                 </div>
             </div>
             <div class="prev-btn-container">
@@ -16,9 +16,11 @@
                 </div>
             </div>
         </div>
+        <modal-component v-if="modalActive" @close="closeModal"/>
     </div>
 </template>
 <script>
+import { constants } from 'crypto';
     export default {
         data() {
             return {
@@ -27,13 +29,19 @@
                     selectSeatType: null,
                 },
                 time: 0,
+                modalActive: false,
                 classSwitch: null,
-                selectSeatType: null,
-                seatTypes: ['テーブル席', 'ボックス席', 'カウンター席', 'どこでも可']
+                seatTypes: [
+                    {id: 1, seat: 'テーブル席'},
+                    {id: 2, seat: 'ボックス席'},
+                    {id: 3, seat: 'カウンター席'},
+                    {id: 4, seat: 'どこでも可'},
+                ]
             }
         },
         props: {
             currentId: Number,
+            propsEditStatus: Boolean
         },
         mounted() {
             // 「受付へ進む」からの表示なのか、「前に戻る」からの表示なのかを判定しclassを切り替える
@@ -47,13 +55,17 @@
             this.time = 0
         },
         methods: {
-            nextStep(seatType){
-                this.classSwitch = 'reactive'
-                this.selectSeatOject.selectSeatType = seatType
+            nextStep(seatTypeId){
+                this.selectSeatOject.selectSeatType = seatTypeId
                 this.$store.dispatch('app/inputSeatType', { selectSeatOject: this.selectSeatOject })
-                this.$store.dispatch('status/nextStep', { currentId: this.currentId })
-                this.$emit('progressBarMove', this.currentId)
-                setTimeout(() => {this.time++ }, 1000)
+                if (this.propsEditStatus) {
+                    this.modalActive = true
+                } else {
+                    this.classSwitch = 'reactive'
+                    this.$store.dispatch('status/nextStep', { currentId: this.currentId })
+                    this.$emit('progressBarMove', this.currentId)
+                    setTimeout(() => {this.time++ }, 1000)
+                }
             },
             prevStep(){
                 this.$store.dispatch('status/prevForm', { prevState: true })
@@ -61,6 +73,9 @@
                 this.$emit('progressBarMove', this.currentId)
                 this.$store.dispatch('status/prevStep', { currentId: this.currentId })
                 setTimeout(() => {this.time++ }, 1000)
+            },
+            closeModal(){
+                this.modalActive = false
             },
         },
         watch: {

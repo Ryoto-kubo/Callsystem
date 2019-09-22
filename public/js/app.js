@@ -13359,14 +13359,23 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      editStatus: false,
       moveBarPercent: '',
       nextStepId: '',
       title: ''
     };
+  },
+  computed: {
+    getEditStatus: function getEditStatus() {
+      return this.$store.state.status.editStatus;
+    }
   },
   mounted: function mounted() {
     this.nextStepId = 1;
@@ -13405,6 +13414,13 @@ __webpack_require__.r(__webpack_exports__);
       } else if (this.nextStepId === 4) {
         this.title = '電話番号でのお呼び出しも可能です';
       }
+    },
+    getEditStatus: {
+      handler: function handler(editObject) {
+        this.nextStepId = editObject.id;
+        this.editStatus = editObject.editPrev;
+      },
+      deep: true
     }
   }
 });
@@ -13553,6 +13569,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -13564,6 +13589,7 @@ __webpack_require__.r(__webpack_exports__);
         peopleNum: ''
       },
       time: 0,
+      modalActive: false,
       classSwitch: null,
       nextBtnAppearrance: false,
       numBtnAppearrance: true,
@@ -13572,7 +13598,8 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   props: {
-    currentId: Number
+    currentId: Number,
+    propsEditStatus: Boolean
   },
   mounted: function mounted() {
     // 「受付へ進む」からの表示なのか、「前に戻る」からの表示なのかを判定しclassを切り替える
@@ -13588,6 +13615,15 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   methods: {
+    openModal: function openModal() {
+      this.$store.dispatch('app/inputPeopleNum', {
+        inputPeopleObject: this.inputPeopleObject
+      });
+      this.modalActive = true;
+    },
+    closeModal: function closeModal() {
+      this.modalActive = false;
+    },
     numInput: function numInput(item) {
       this.inputPeopleObject.peopleNum += item;
     },
@@ -13698,9 +13734,9 @@ __webpack_require__.r(__webpack_exports__);
     return {
       inputTellNumObject: {
         id: this.currentId,
-        inputTellNum: null
+        tellNum: '',
+        inputState: true
       },
-      tellNum: '',
       time: 0,
       classSwitch: null,
       nextBtnAppearrance: false,
@@ -13735,21 +13771,24 @@ __webpack_require__.r(__webpack_exports__);
       this.modalActive = false;
     },
     tellNumInput: function tellNumInput(item) {
-      this.tellNum += item;
+      this.inputTellNumObject.tellNum += item;
     },
     numClear: function numClear() {
-      this.tellNum = this.tellNum.slice(0, -1);
+      var tellNum = this.inputTellNumObject.tellNum;
+      this.inputTellNumObject.tellNum = tellNum.slice(0, -1);
     },
     skip: function skip() {
+      this.inputTellNumObject.inputState = false;
       this.$store.dispatch('app/inputTellNum', {
-        tellNum: '未入力です'
+        inputTellNumObject: this.inputTellNumObject
       });
       this.openModal();
     },
     nextStep: function nextStep() {
       // this.classSwitch       = 'reactive'
+      this.inputTellNumObject.inputState = true;
       this.$store.dispatch('app/inputTellNum', {
-        tellNum: this.tellNum
+        inputTellNumObject: this.inputTellNumObject
       });
       this.$emit('progressBarMove', this.currentId); // this.$store.dispatch('status/nextStep', { currentId: this.currentId })
 
@@ -13772,7 +13811,7 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   watch: {
-    tellNum: function tellNum(value) {
+    'inputTellNumObject.tellNum': function inputTellNumObjectTellNum(value) {
       // 「\d」は半角数字の0〜9を表します。
       // 「\d{2,4}」は「\d」が2〜4個続く事を表します。
       // 「\d{4}」は「\d」が4個続く事を表します。
@@ -13805,6 +13844,8 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var crypto__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! crypto */ "./node_modules/crypto-browserify/index.js");
+/* harmony import */ var crypto__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(crypto__WEBPACK_IMPORTED_MODULE_0__);
 //
 //
 //
@@ -13825,6 +13866,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -13833,13 +13876,26 @@ __webpack_require__.r(__webpack_exports__);
         selectSeatType: null
       },
       time: 0,
+      modalActive: false,
       classSwitch: null,
-      selectSeatType: null,
-      seatTypes: ['テーブル席', 'ボックス席', 'カウンター席', 'どこでも可']
+      seatTypes: [{
+        id: 1,
+        seat: 'テーブル席'
+      }, {
+        id: 2,
+        seat: 'ボックス席'
+      }, {
+        id: 3,
+        seat: 'カウンター席'
+      }, {
+        id: 4,
+        seat: 'どこでも可'
+      }]
     };
   },
   props: {
-    currentId: Number
+    currentId: Number,
+    propsEditStatus: Boolean
   },
   mounted: function mounted() {
     // 「受付へ進む」からの表示なのか、「前に戻る」からの表示なのかを判定しclassを切り替える
@@ -13857,21 +13913,26 @@ __webpack_require__.r(__webpack_exports__);
     this.time = 0;
   },
   methods: {
-    nextStep: function nextStep(seatType) {
+    nextStep: function nextStep(seatTypeId) {
       var _this = this;
 
-      this.classSwitch = 'reactive';
-      this.selectSeatOject.selectSeatType = seatType;
+      this.selectSeatOject.selectSeatType = seatTypeId;
       this.$store.dispatch('app/inputSeatType', {
         selectSeatOject: this.selectSeatOject
       });
-      this.$store.dispatch('status/nextStep', {
-        currentId: this.currentId
-      });
-      this.$emit('progressBarMove', this.currentId);
-      setTimeout(function () {
-        _this.time++;
-      }, 1000);
+
+      if (this.propsEditStatus) {
+        this.modalActive = true;
+      } else {
+        this.classSwitch = 'reactive';
+        this.$store.dispatch('status/nextStep', {
+          currentId: this.currentId
+        });
+        this.$emit('progressBarMove', this.currentId);
+        setTimeout(function () {
+          _this.time++;
+        }, 1000);
+      }
     },
     prevStep: function prevStep() {
       var _this2 = this;
@@ -13887,6 +13948,9 @@ __webpack_require__.r(__webpack_exports__);
       setTimeout(function () {
         _this2.time++;
       }, 1000);
+    },
+    closeModal: function closeModal() {
+      this.modalActive = false;
     }
   },
   watch: {
@@ -13933,6 +13997,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -13941,12 +14006,23 @@ __webpack_require__.r(__webpack_exports__);
         selectTobaccoType: null
       },
       time: 0,
+      modalActive: false,
       classSwitch: null,
-      tobaccoTypes: ['禁煙席', '喫煙席', 'どちらでも可']
+      tobaccoTypes: [{
+        id: 1,
+        tobacco: '禁煙席'
+      }, {
+        id: 2,
+        tobacco: '喫煙席'
+      }, {
+        id: 3,
+        tobacco: 'どちらでも可'
+      }]
     };
   },
   props: {
-    currentId: Number
+    currentId: Number,
+    propsEditStatus: Boolean
   },
   mounted: function mounted() {
     // 「受付へ進む」からの表示なのか、「前に戻る」からの表示なのかを判定しclassを切り替える
@@ -13964,21 +14040,26 @@ __webpack_require__.r(__webpack_exports__);
     this.time = 0;
   },
   methods: {
-    nextStep: function nextStep(tobaccoType) {
+    nextStep: function nextStep(tobaccoTypeId) {
       var _this = this;
 
-      this.classSwitch = 'reactive';
-      this.selectTobaccoObject.selectTobaccoType = tobaccoType;
+      this.selectTobaccoObject.selectTobaccoType = tobaccoTypeId;
       this.$store.dispatch('app/inputTobaccoType', {
         selectTobaccoObject: this.selectTobaccoObject
       });
-      this.$store.dispatch('status/nextStep', {
-        currentId: this.currentId
-      });
-      this.$emit('progressBarMove', this.currentId);
-      setTimeout(function () {
-        _this.time++;
-      }, 1000);
+
+      if (this.propsEditStatus) {
+        this.modalActive = true;
+      } else {
+        this.classSwitch = 'reactive';
+        this.$store.dispatch('status/nextStep', {
+          currentId: this.currentId
+        });
+        this.$emit('progressBarMove', this.currentId);
+        setTimeout(function () {
+          _this.time++;
+        }, 1000);
+      }
     },
     prevStep: function prevStep() {
       var _this2 = this;
@@ -13994,6 +14075,9 @@ __webpack_require__.r(__webpack_exports__);
       setTimeout(function () {
         _this2.time++;
       }, 1000);
+    },
+    closeModal: function closeModal() {
+      this.modalActive = false;
     }
   },
   watch: {
@@ -14071,26 +14155,51 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      editStatus: {
+        id: null,
+        editPrev: false
+      },
       peopleObject: null,
       seatTypeObject: null,
-      selectTobaccoObject: null,
-      tellNum: null,
+      tobaccoTypeObject: null,
+      inputTellNumObject: null,
+      displaySeat: null,
+      displayTobacco: null,
+      displayTell: '未入力です',
       time: 0
     };
   },
   created: function created() {
     this.peopleObject = this.$store.state.app.inputPeopleObject;
     this.seatTypeObject = this.$store.state.app.selectSeatOject;
-    this.selectTobaccoObject = this.$store.state.app.selectTobaccoObject;
-    this.tellNum = this.$store.state.app.tellNum;
+    this.tobaccoTypeObject = this.$store.state.app.selectTobaccoObject;
+    this.inputTellNumObject = this.$store.state.app.inputTellNumObject;
+    this.idConvertSeatText(this.seatTypeObject.selectSeatType);
+    this.idConvertTobaccoText(this.tobaccoTypeObject.selectTobaccoType);
+    this.stateConvertTellText(this.inputTellNumObject.inputState);
   },
   methods: {
-    nextStep: function nextStep() {
-      console.log('hello');
-    },
+    postData: function postData() {},
     closeModal: function closeModal() {
       var _this = this;
 
@@ -14099,7 +14208,54 @@ __webpack_require__.r(__webpack_exports__);
       }, 100);
     },
     editPrev: function editPrev(value) {
-      console.log(value);
+      this.editStatus.id = value;
+      this.editStatus.editPrev = true;
+      this.$store.dispatch('status/editStatus', {
+        editStatus: this.editStatus
+      });
+    },
+    idConvertSeatText: function idConvertSeatText(seatId) {
+      switch (seatId) {
+        case 1:
+          this.displaySeat = 'テーブル席';
+          break;
+
+        case 2:
+          this.displaySeat = 'ボックス席';
+          break;
+
+        case 3:
+          this.displaySeat = 'カウンター席';
+          break;
+
+        case 4:
+          this.displaySeat = 'どこでも可';
+          break;
+
+        default:
+      }
+    },
+    idConvertTobaccoText: function idConvertTobaccoText(tobaccoId) {
+      switch (tobaccoId) {
+        case 1:
+          this.displayTobacco = '禁煙席';
+          break;
+
+        case 2:
+          this.displayTobacco = '喫煙席';
+          break;
+
+        case 3:
+          this.displayTobacco = 'どちらでも可';
+          break;
+
+        default:
+      }
+    },
+    stateConvertTellText: function stateConvertTellText(_boolean) {
+      if (_boolean) {
+        this.displayTell = this.inputTellNumObject.tellNum;
+      }
     }
   },
   watch: {
@@ -26623,7 +26779,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, ".modal.modal-overlay[data-v-2fb57c7d] {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  position: fixed;\n  z-index: 30;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  background: rgba(0, 0, 0, 0.5);\n}\n.modal-window[data-v-2fb57c7d] {\n  width: 70%;\n  height: 700px;\n  border-radius: 10px;\n  background: #fff;\n  overflow: hidden;\n  position: relative;\n}\n.modal-content[data-v-2fb57c7d] {\n  width: 70%;\n  margin: auto;\n  border: 0;\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  transform: translate(-50%, -50%);\n}\n.modal-content .confirm-container[data-v-2fb57c7d] {\n  margin-bottom: 30px;\n}\n.modal-content .confirm-container .confirm-text-container[data-v-2fb57c7d] {\n  margin-bottom: 30px;\n  padding-left: 10px;\n  border-bottom: 2px solid #dcdcdc;\n  display: flex;\n  align-items: flex-end;\n}\n.modal-content .confirm-container .confirm-text-container .icon-container[data-v-2fb57c7d] {\n  margin-right: 30px;\n}\n.modal-content .confirm-container .confirm-text-container .confirm-text[data-v-2fb57c7d] {\n  font-size: 30px;\n  color: #232323;\n}\n.modal-content .btn-container[data-v-2fb57c7d] {\n  display: flex;\n  justify-content: space-between;\n}\n.modal-content .btn-container .btn-area[data-v-2fb57c7d] {\n  width: 100%;\n  position: relative;\n  text-align: center;\n}\n.modal-content .btn-container .btn-area .btn[data-v-2fb57c7d] {\n  position: relative;\n  height: 70px;\n  margin: auto;\n  line-height: 70px;\n  font-size: 30px;\n  color: #ffffff;\n}\n.modal-content .btn-container .btn-area .button-back[data-v-2fb57c7d] {\n  width: 69.9%;\n  height: 70px;\n  margin: auto;\n  position: absolute;\n  top: 8px;\n  left: 50%;\n  transform: translate(-50%, 0);\n  border-radius: 10px;\n}\n.modal-content .btn-container .btn-area .background-blue[data-v-2fb57c7d] {\n  background: #008b8b;\n}\n.modal-content .btn-container .btn-area .next-btn[data-v-2fb57c7d] {\n  width: 70%;\n  background: #53c9c5;\n}\n.modal-content .btn-container .btn-area .close-btn[data-v-2fb57c7d] {\n  width: 70%;\n  background: #f08080;\n}\n.modal-enter-active[data-v-2fb57c7d], .modal-leave-active[data-v-2fb57c7d] {\n  transition: opacity 0.6s;\n}\n.modal-enter-active .modal-window[data-v-2fb57c7d], .modal-leave-active .modal-window[data-v-2fb57c7d] {\n  transition: opacity 0.6s, transform 0.6s;\n}\n.modal-leave-active[data-v-2fb57c7d] {\n  transition: opacity 0.8s ease 0.6s;\n}\n.modal-enter[data-v-2fb57c7d], .modal-leave-to[data-v-2fb57c7d] {\n  opacity: 0;\n}\n.modal-enter .modal-window[data-v-2fb57c7d], .modal-leave-to .modal-window[data-v-2fb57c7d] {\n  opacity: 0;\n  transform: translateY(150px);\n}", ""]);
+exports.push([module.i, ".modal.modal-overlay[data-v-2fb57c7d] {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  position: fixed;\n  z-index: 30;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  background: rgba(0, 0, 0, 0.5);\n}\n.modal .modal-window[data-v-2fb57c7d] {\n  width: 70%;\n  height: 700px;\n  border-radius: 10px;\n  background: #fff;\n  overflow: hidden;\n  position: relative;\n}\n.modal .modal-content[data-v-2fb57c7d] {\n  width: 70%;\n  margin: auto;\n  border: 0;\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  transform: translate(-50%, -50%);\n}\n.modal .modal-content .confirm-container[data-v-2fb57c7d] {\n  margin-bottom: 30px;\n}\n.modal .modal-content .confirm-container .confirm-text-container[data-v-2fb57c7d] {\n  margin-bottom: 30px;\n  border-bottom: 2px solid #dcdcdc;\n  display: flex;\n  justify-content: space-between;\n  align-items: flex-end;\n}\n.modal .modal-content .confirm-container .confirm-text-container .icon-container[data-v-2fb57c7d] {\n  margin-right: 10px;\n}\n.modal .modal-content .confirm-container .confirm-text-container .icon-container .edit-icon[data-v-2fb57c7d] {\n  width: 50px;\n  height: 35px;\n  margin-bottom: 5px;\n  color: #1e90ff;\n}\n.modal .modal-content .confirm-container .confirm-text-container .confirm-text[data-v-2fb57c7d] {\n  margin-left: 10px;\n  font-size: 30px;\n  color: #232323;\n}\n.modal .modal-content .confirm-container .confirm-text-container .confirm-text .title-icon[data-v-2fb57c7d] {\n  width: 50px;\n  height: 35px;\n  margin-right: 10px;\n}\n.modal .modal-content .btn-container[data-v-2fb57c7d] {\n  display: flex;\n  justify-content: space-between;\n}\n.modal .modal-content .btn-container .btn-area[data-v-2fb57c7d] {\n  width: 100%;\n  position: relative;\n  text-align: center;\n}\n.modal .modal-content .btn-container .btn-area .btn[data-v-2fb57c7d] {\n  position: relative;\n  height: 70px;\n  margin: auto;\n  line-height: 70px;\n  font-size: 30px;\n  color: #ffffff;\n}\n.modal .modal-content .btn-container .btn-area .button-back[data-v-2fb57c7d] {\n  width: 69.9%;\n  height: 70px;\n  margin: auto;\n  position: absolute;\n  top: 8px;\n  left: 50%;\n  transform: translate(-50%, 0);\n  border-radius: 10px;\n}\n.modal .modal-content .btn-container .btn-area .background-blue[data-v-2fb57c7d] {\n  background: #008b8b;\n}\n.modal .modal-content .btn-container .btn-area .next-btn[data-v-2fb57c7d] {\n  width: 70%;\n  background: #53c9c5;\n}\n.modal .modal-content .btn-container .btn-area .close-btn[data-v-2fb57c7d] {\n  width: 70%;\n  background: #f08080;\n}\n.modal-enter-active[data-v-2fb57c7d], .modal-leave-active[data-v-2fb57c7d] {\n  transition: opacity 0.6s;\n}\n.modal-enter-active .modal-window[data-v-2fb57c7d], .modal-leave-active .modal-window[data-v-2fb57c7d] {\n  transition: opacity 0.6s, transform 0.6s;\n}\n.modal-leave-active[data-v-2fb57c7d] {\n  transition: opacity 0.8s ease 0.6s;\n}\n.modal-enter[data-v-2fb57c7d], .modal-leave-to[data-v-2fb57c7d] {\n  opacity: 0;\n}\n.modal-enter .modal-window[data-v-2fb57c7d], .modal-leave-to .modal-window[data-v-2fb57c7d] {\n  opacity: 0;\n  transform: translateY(150px);\n}", ""]);
 
 // exports
 
@@ -73909,7 +74065,10 @@ var render = function() {
             "div",
             [
               _c("form-input-peoples-component", {
-                attrs: { currentId: _vm.nextStepId },
+                attrs: {
+                  currentId: _vm.nextStepId,
+                  propsEditStatus: _vm.editStatus
+                },
                 on: {
                   nextStep: _vm.nextStep,
                   progressBarMove: _vm.progressBarMove,
@@ -73924,7 +74083,10 @@ var render = function() {
             "div",
             [
               _c("form-seat-select-component", {
-                attrs: { currentId: _vm.nextStepId },
+                attrs: {
+                  currentId: _vm.nextStepId,
+                  propsEditStatus: _vm.editStatus
+                },
                 on: {
                   nextStep: _vm.nextStep,
                   prevStep: _vm.prevStep,
@@ -73939,7 +74101,10 @@ var render = function() {
             "div",
             [
               _c("form-tobacco-select-component", {
-                attrs: { currentId: _vm.nextStepId },
+                attrs: {
+                  currentId: _vm.nextStepId,
+                  propsEditStatus: _vm.editStatus
+                },
                 on: {
                   nextStep: _vm.nextStep,
                   prevStep: _vm.prevStep,
@@ -74043,125 +74208,152 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "form-container", class: _vm.classSwitch }, [
-    _c("div", { staticClass: "flex-container" }, [
-      _c("div", { staticClass: "input-container" }, [
-        _c("div", { staticClass: "input-area" }, [
-          _c("div", { staticClass: "input" }, [
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.inputPeopleObject.peopleNum,
-                  expression: "inputPeopleObject.peopleNum"
-                }
-              ],
-              attrs: { id: "num-input", type: "num", readonly: "readonly" },
-              domProps: { value: _vm.inputPeopleObject.peopleNum },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
+  return _c(
+    "div",
+    [
+      _c("div", { staticClass: "form-container", class: _vm.classSwitch }, [
+        _c("div", { staticClass: "flex-container" }, [
+          _c("div", { staticClass: "input-container" }, [
+            _c("div", { staticClass: "input-area" }, [
+              _c("div", { staticClass: "input" }, [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.inputPeopleObject.peopleNum,
+                      expression: "inputPeopleObject.peopleNum"
+                    }
+                  ],
+                  attrs: { id: "num-input", type: "num", readonly: "readonly" },
+                  domProps: { value: _vm.inputPeopleObject.peopleNum },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(
+                        _vm.inputPeopleObject,
+                        "peopleNum",
+                        $event.target.value
+                      )
+                    }
                   }
-                  _vm.$set(
-                    _vm.inputPeopleObject,
-                    "peopleNum",
-                    $event.target.value
-                  )
-                }
-              }
-            })
+                })
+              ]),
+              _vm._v(" "),
+              _vm._m(0)
+            ])
           ]),
           _vm._v(" "),
-          _vm._m(0)
-        ])
+          _c(
+            "div",
+            { staticClass: "num-button-container" },
+            [
+              _vm._l(_vm.nums, function(item) {
+                return _c(
+                  "div",
+                  { key: item.index, staticClass: "num-button-area" },
+                  [
+                    _c("div", { staticClass: "button-back next-btn" }),
+                    _vm._v(" "),
+                    _vm.numBtnAppearrance
+                      ? _c(
+                          "button",
+                          {
+                            staticClass: "btn input-btn",
+                            attrs: { onfocus: "this.blur();" },
+                            on: {
+                              click: function($event) {
+                                return _vm.numInput(item)
+                              }
+                            }
+                          },
+                          [_vm._v(_vm._s(item))]
+                        )
+                      : _c(
+                          "button",
+                          {
+                            staticClass: "btn input-btn gray",
+                            attrs: { onfocus: "this.blur();" }
+                          },
+                          [_vm._v(_vm._s(item))]
+                        )
+                  ]
+                )
+              }),
+              _vm._v(" "),
+              _c("div", { staticClass: "num-button-area" }, [
+                _c("div", {
+                  staticClass: "button-back clear-button-back next-btn"
+                }),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn input-btn clear-btn",
+                    attrs: { type: "button", onfocus: "this.blur();" },
+                    on: { click: _vm.numClear }
+                  },
+                  [_vm._v("クリア")]
+                )
+              ])
+            ],
+            2
+          )
+        ]),
+        _vm._v(" "),
+        _vm.nextBtnAppearrance
+          ? _c("div", { staticClass: "link-area" }, [
+              _vm.propsEditStatus
+                ? _c("div", [
+                    _c("div", { staticClass: "button-back background-blue" }),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn next-btn ripple",
+                        staticStyle: { padding: "0" },
+                        attrs: { id: "js-next-btn", onfocus: "this.blur();" },
+                        on: { click: _vm.openModal }
+                      },
+                      [_vm._v("登録")]
+                    )
+                  ])
+                : _c("div", [
+                    _c("div", { staticClass: "button-back background-blue" }),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn next-btn ripple",
+                        staticStyle: { padding: "0" },
+                        attrs: { id: "js-next-btn", onfocus: "this.blur();" },
+                        on: { click: _vm.nextStep }
+                      },
+                      [_vm._v("次へ")]
+                    )
+                  ])
+            ])
+          : _c("div", { staticClass: "link-area" }, [
+              _c("div", {
+                staticClass: "button-back",
+                staticStyle: { background: "#8b0000" }
+              }),
+              _vm._v(" "),
+              _c("button", {
+                staticClass: "btn waiting-btn ripple",
+                attrs: { onfocus: "this.blur();" }
+              })
+            ])
       ]),
       _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "num-button-container" },
-        [
-          _vm._l(_vm.nums, function(item) {
-            return _c(
-              "div",
-              { key: item.index, staticClass: "num-button-area" },
-              [
-                _c("div", { staticClass: "button-back next-btn" }),
-                _vm._v(" "),
-                _vm.numBtnAppearrance
-                  ? _c(
-                      "button",
-                      {
-                        staticClass: "btn input-btn",
-                        attrs: { onfocus: "this.blur();" },
-                        on: {
-                          click: function($event) {
-                            return _vm.numInput(item)
-                          }
-                        }
-                      },
-                      [_vm._v(_vm._s(item))]
-                    )
-                  : _c(
-                      "button",
-                      {
-                        staticClass: "btn input-btn gray",
-                        attrs: { onfocus: "this.blur();" }
-                      },
-                      [_vm._v(_vm._s(item))]
-                    )
-              ]
-            )
-          }),
-          _vm._v(" "),
-          _c("div", { staticClass: "num-button-area" }, [
-            _c("div", {
-              staticClass: "button-back clear-button-back next-btn"
-            }),
-            _vm._v(" "),
-            _c(
-              "button",
-              {
-                staticClass: "btn input-btn clear-btn",
-                attrs: { type: "button", onfocus: "this.blur();" },
-                on: { click: _vm.numClear }
-              },
-              [_vm._v("クリア")]
-            )
-          ])
-        ],
-        2
-      )
-    ]),
-    _vm._v(" "),
-    _vm.nextBtnAppearrance
-      ? _c("div", { staticClass: "link-area" }, [
-          _c("div", { staticClass: "button-back background-blue" }),
-          _vm._v(" "),
-          _c(
-            "button",
-            {
-              staticClass: "btn next-btn ripple",
-              staticStyle: { padding: "0" },
-              attrs: { id: "js-next-btn", onfocus: "this.blur();" },
-              on: { click: _vm.nextStep }
-            },
-            [_vm._v("次へ")]
-          )
-        ])
-      : _c("div", { staticClass: "link-area" }, [
-          _c("div", {
-            staticClass: "button-back",
-            staticStyle: { background: "#8b0000" }
-          }),
-          _vm._v(" "),
-          _c("button", {
-            staticClass: "btn waiting-btn ripple",
-            attrs: { onfocus: "this.blur();" }
-          })
-        ])
-  ])
+      _vm.modalActive
+        ? _c("modal-component", { on: { close: _vm.closeModal } })
+        : _vm._e()
+    ],
+    1
+  )
 }
 var staticRenderFns = [
   function() {
@@ -74207,8 +74399,8 @@ var render = function() {
                     {
                       name: "model",
                       rawName: "v-model",
-                      value: _vm.tellNum,
-                      expression: "tellNum"
+                      value: _vm.inputTellNumObject.tellNum,
+                      expression: "inputTellNumObject.tellNum"
                     }
                   ],
                   attrs: {
@@ -74217,13 +74409,17 @@ var render = function() {
                     readonly: "readonly",
                     placeholder: "09012345678"
                   },
-                  domProps: { value: _vm.tellNum },
+                  domProps: { value: _vm.inputTellNumObject.tellNum },
                   on: {
                     input: function($event) {
                       if ($event.target.composing) {
                         return
                       }
-                      _vm.tellNum = $event.target.value
+                      _vm.$set(
+                        _vm.inputTellNumObject,
+                        "tellNum",
+                        $event.target.value
+                      )
                     }
                   }
                 })
@@ -74314,7 +74510,7 @@ var render = function() {
                     {
                       staticClass: "btn next-btn ripple",
                       staticStyle: { padding: "0" },
-                      attrs: { id: "js-next-btn", onfocus: "this.blur();" },
+                      attrs: { onfocus: "this.blur();" },
                       on: { click: _vm.nextStep }
                     },
                     [_vm._v("確認")]
@@ -74401,60 +74597,68 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _c("div", { staticClass: "form-container", class: _vm.classSwitch }, [
-      _c(
-        "div",
-        { staticClass: "flex-container seat-flex" },
-        _vm._l(_vm.seatTypes, function(seatType) {
-          return _c(
-            "div",
-            { key: seatType.index, staticClass: "seat-btn-container" },
-            [
-              _c("div", { staticClass: "button-back seat-btn-back" }),
-              _vm._v(" "),
-              _c(
-                "button",
-                {
-                  staticClass: "btn seat-btn",
-                  attrs: { onfocus: "this.blur();" },
-                  on: {
-                    click: function($event) {
-                      return _vm.nextStep(seatType)
+  return _c(
+    "div",
+    [
+      _c("div", { staticClass: "form-container", class: _vm.classSwitch }, [
+        _c(
+          "div",
+          { staticClass: "flex-container seat-flex" },
+          _vm._l(_vm.seatTypes, function(seatType) {
+            return _c(
+              "div",
+              { key: seatType.index, staticClass: "seat-btn-container" },
+              [
+                _c("div", { staticClass: "button-back seat-btn-back" }),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn seat-btn",
+                    attrs: { onfocus: "this.blur();" },
+                    on: {
+                      click: function($event) {
+                        return _vm.nextStep(seatType.id)
+                      }
                     }
-                  }
-                },
-                [_vm._v(_vm._s(seatType))]
-              )
-            ]
-          )
-        }),
-        0
-      ),
-      _vm._v(" "),
-      _c("div", { staticClass: "prev-btn-container" }, [
-        _c("div", { staticClass: "prev-btn-area" }, [
-          _c("div", { staticClass: "prev-button-back" }),
-          _vm._v(" "),
-          _c(
-            "button",
-            {
-              staticClass: "btn prev-btn",
-              attrs: { type: "button", onfocus: "this.blur();" },
-              on: { click: _vm.prevStep }
-            },
-            [
-              _c("font-awesome-icon", {
-                staticStyle: { width: "40px", height: "40px" },
-                attrs: { icon: "angle-left" }
-              })
-            ],
-            1
-          )
+                  },
+                  [_vm._v(_vm._s(seatType.seat))]
+                )
+              ]
+            )
+          }),
+          0
+        ),
+        _vm._v(" "),
+        _c("div", { staticClass: "prev-btn-container" }, [
+          _c("div", { staticClass: "prev-btn-area" }, [
+            _c("div", { staticClass: "prev-button-back" }),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn prev-btn",
+                attrs: { type: "button", onfocus: "this.blur();" },
+                on: { click: _vm.prevStep }
+              },
+              [
+                _c("font-awesome-icon", {
+                  staticStyle: { width: "40px", height: "40px" },
+                  attrs: { icon: "angle-left" }
+                })
+              ],
+              1
+            )
+          ])
         ])
-      ])
-    ])
-  ])
+      ]),
+      _vm._v(" "),
+      _vm.modalActive
+        ? _c("modal-component", { on: { close: _vm.closeModal } })
+        : _vm._e()
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -74478,60 +74682,68 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _c("div", { staticClass: "form-container", class: _vm.classSwitch }, [
-      _c(
-        "div",
-        { staticClass: "flex-container tobacco-flex" },
-        _vm._l(_vm.tobaccoTypes, function(tobaccoType) {
-          return _c(
-            "div",
-            { key: tobaccoType.index, staticClass: "tobacco-btn-container" },
-            [
-              _c("div", { staticClass: "button-back tobacco-btn-back" }),
-              _vm._v(" "),
-              _c(
-                "button",
-                {
-                  staticClass: "btn tobacco-btn",
-                  attrs: { onfocus: "this.blur();" },
-                  on: {
-                    click: function($event) {
-                      return _vm.nextStep(tobaccoType)
+  return _c(
+    "div",
+    [
+      _c("div", { staticClass: "form-container", class: _vm.classSwitch }, [
+        _c(
+          "div",
+          { staticClass: "flex-container tobacco-flex" },
+          _vm._l(_vm.tobaccoTypes, function(tobaccoType) {
+            return _c(
+              "div",
+              { key: tobaccoType.index, staticClass: "tobacco-btn-container" },
+              [
+                _c("div", { staticClass: "button-back tobacco-btn-back" }),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn tobacco-btn",
+                    attrs: { onfocus: "this.blur();" },
+                    on: {
+                      click: function($event) {
+                        return _vm.nextStep(tobaccoType.id)
+                      }
                     }
-                  }
-                },
-                [_vm._v(_vm._s(tobaccoType))]
-              )
-            ]
-          )
-        }),
-        0
-      ),
-      _vm._v(" "),
-      _c("div", { staticClass: "prev-btn-container" }, [
-        _c("div", { staticClass: "prev-btn-area" }, [
-          _c("div", { staticClass: "prev-button-back" }),
-          _vm._v(" "),
-          _c(
-            "button",
-            {
-              staticClass: "btn prev-btn",
-              attrs: { type: "button", onfocus: "this.blur();" },
-              on: { click: _vm.prevStep }
-            },
-            [
-              _c("font-awesome-icon", {
-                staticStyle: { width: "40px", height: "40px" },
-                attrs: { icon: "angle-left" }
-              })
-            ],
-            1
-          )
+                  },
+                  [_vm._v(_vm._s(tobaccoType.tobacco))]
+                )
+              ]
+            )
+          }),
+          0
+        ),
+        _vm._v(" "),
+        _c("div", { staticClass: "prev-btn-container" }, [
+          _c("div", { staticClass: "prev-btn-area" }, [
+            _c("div", { staticClass: "prev-button-back" }),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn prev-btn",
+                attrs: { type: "button", onfocus: "this.blur();" },
+                on: { click: _vm.prevStep }
+              },
+              [
+                _c("font-awesome-icon", {
+                  staticStyle: { width: "40px", height: "40px" },
+                  attrs: { icon: "angle-left" }
+                })
+              ],
+              1
+            )
+          ])
         ])
-      ])
-    ])
-  ])
+      ]),
+      _vm._v(" "),
+      _vm.modalActive
+        ? _c("modal-component", { on: { close: _vm.closeModal } })
+        : _vm._e()
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -74574,16 +74786,31 @@ var render = function() {
           _c("div", { staticClass: "modal-content" }, [
             _c("div", { staticClass: "confirm-container" }, [
               _c("div", { staticClass: "confirm-text-container" }, [
+                _c("div", { staticClass: "confirm-text" }, [
+                  _c(
+                    "div",
+                    { staticClass: "content-text" },
+                    [
+                      _c("font-awesome-icon", {
+                        staticClass: "title-icon",
+                        attrs: { icon: "users" }
+                      }),
+                      _vm._v(
+                        "\n                                " +
+                          _vm._s(_vm.peopleObject.peopleNum) +
+                          "名\n                            "
+                      )
+                    ],
+                    1
+                  )
+                ]),
+                _vm._v(" "),
                 _c(
                   "div",
                   { staticClass: "icon-container" },
                   [
                     _c("font-awesome-icon", {
-                      staticStyle: {
-                        width: "50px",
-                        height: "50px",
-                        "margin-bottom": "3px"
-                      },
+                      staticClass: "edit-icon",
                       attrs: { icon: "edit" },
                       on: {
                         click: function($event) {
@@ -74593,24 +74820,35 @@ var render = function() {
                     })
                   ],
                   1
-                ),
-                _vm._v(" "),
-                _c("div", { staticClass: "confirm-text" }, [
-                  _vm._v(_vm._s(_vm.peopleObject.peopleNum) + "名")
-                ])
+                )
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "confirm-text-container" }, [
+                _c("div", { staticClass: "confirm-text" }, [
+                  _c(
+                    "div",
+                    { staticClass: "content-text" },
+                    [
+                      _c("font-awesome-icon", {
+                        staticClass: "title-icon",
+                        attrs: { icon: "chair" }
+                      }),
+                      _vm._v(
+                        "\n                                " +
+                          _vm._s(_vm.displaySeat) +
+                          "\n                            "
+                      )
+                    ],
+                    1
+                  )
+                ]),
+                _vm._v(" "),
                 _c(
                   "div",
                   { staticClass: "icon-container" },
                   [
                     _c("font-awesome-icon", {
-                      staticStyle: {
-                        width: "50px",
-                        height: "50px",
-                        "margin-bottom": "3px"
-                      },
+                      staticClass: "edit-icon",
                       attrs: { icon: "edit" },
                       on: {
                         click: function($event) {
@@ -74620,65 +74858,79 @@ var render = function() {
                     })
                   ],
                   1
-                ),
-                _vm._v(" "),
-                _c("div", { staticClass: "confirm-text" }, [
-                  _vm._v(_vm._s(_vm.seatTypeObject.selectSeatType))
-                ])
+                )
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "confirm-text-container" }, [
                 _c(
                   "div",
-                  { staticClass: "icon-container" },
+                  { staticClass: "confirm-text" },
                   [
                     _c("font-awesome-icon", {
-                      staticStyle: {
-                        width: "50px",
-                        height: "50px",
-                        "margin-bottom": "3px"
-                      },
-                      attrs: { icon: "edit" },
-                      on: {
-                        click: function($event) {
-                          return _vm.editPrev(3)
-                        }
-                      }
-                    })
+                      staticClass: "title-icon",
+                      attrs: { icon: "smoking" }
+                    }),
+                    _vm._v(
+                      "\n                            " +
+                        _vm._s(_vm.displayTobacco) +
+                        "\n                        "
+                    )
                   ],
                   1
                 ),
                 _vm._v(" "),
-                _c("div", { staticClass: "confirm-text" }, [
-                  _vm._v(_vm._s(_vm.selectTobaccoObject.selectTobaccoType))
-                ])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "confirm-text-container" }, [
                 _c(
                   "div",
                   { staticClass: "icon-container" },
                   [
                     _c("font-awesome-icon", {
-                      staticStyle: {
-                        width: "50px",
-                        height: "50px",
-                        "margin-bottom": "3px"
-                      },
+                      staticClass: "edit-icon",
                       attrs: { icon: "edit" },
                       on: {
                         click: function($event) {
-                          return _vm.editPrev(4)
+                          return _vm.editPrev(_vm.tobaccoTypeObject.id)
                         }
                       }
                     })
                   ],
                   1
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "confirm-text-container" }, [
+                _c(
+                  "div",
+                  { staticClass: "confirm-text" },
+                  [
+                    _c("font-awesome-icon", {
+                      staticClass: "title-icon",
+                      attrs: { icon: "phone" }
+                    }),
+                    _vm._v(
+                      "\n                            " +
+                        _vm._s(_vm.displayTell) +
+                        "\n                        "
+                    )
+                  ],
+                  1
                 ),
                 _vm._v(" "),
-                _c("div", { staticClass: "confirm-text" }, [
-                  _vm._v(_vm._s(_vm.tellNum))
-                ])
+                _c(
+                  "div",
+                  { staticClass: "icon-container" },
+                  [
+                    _c("font-awesome-icon", {
+                      staticClass: "edit-icon",
+                      attrs: { icon: "edit" },
+                      on: {
+                        click: function($event) {
+                          return _vm.editPrev(_vm.inputTellNumObject.id)
+                        }
+                      }
+                    })
+                  ],
+                  1
+                )
               ])
             ]),
             _vm._v(" "),
@@ -74710,7 +74962,7 @@ var render = function() {
                     staticClass: "btn next-btn ripple",
                     staticStyle: { padding: "0" },
                     attrs: { onfocus: "this.blur();" },
-                    on: { click: _vm.nextStep }
+                    on: { click: _vm.postData }
                   },
                   [_vm._v("登録")]
                 )
@@ -89045,7 +89297,11 @@ var state = {
     id: null,
     selectTobaccoType: null
   },
-  tellNum: null
+  inputTellNumObject: {
+    id: null,
+    tellNum: null,
+    inputState: true
+  }
 };
 var mutations = {
   PEOPLE_NUM: function PEOPLE_NUM(state, inputPeopleObject) {
@@ -89060,8 +89316,10 @@ var mutations = {
     state.selectTobaccoObject.id = selectTobaccoObject.id;
     state.selectTobaccoObject.selectTobaccoType = selectTobaccoObject.selectTobaccoType;
   },
-  TELL_NUM: function TELL_NUM(state, tellNum) {
-    state.tellNum = tellNum;
+  TELL_NUM: function TELL_NUM(state, inputTellNumObject) {
+    state.inputTellNumObject.id = inputTellNumObject.id;
+    state.inputTellNumObject.tellNum = inputTellNumObject.tellNum;
+    state.inputTellNumObject.inputState = inputTellNumObject.inputState;
   }
 };
 var actions = {
@@ -89082,8 +89340,8 @@ var actions = {
   },
   inputTellNum: function inputTellNum(_ref7, _ref8) {
     var commit = _ref7.commit;
-    var tellNum = _ref8.tellNum;
-    commit('TELL_NUM', tellNum);
+    var inputTellNumObject = _ref8.inputTellNumObject;
+    commit('TELL_NUM', inputTellNumObject);
   }
 };
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -89105,6 +89363,10 @@ var actions = {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 var state = {
+  editStatus: {
+    id: null,
+    editPrev: false
+  },
   prevState: null,
   nextStepId: 1,
   prevStepId: null
@@ -89118,6 +89380,10 @@ var mutations = {
   },
   PREV_STEP: function PREV_STEP(state, prevStepId) {
     state.prevStepId = prevStepId;
+  },
+  EDIT_STATUS: function EDIT_STATUS(state, editStatus) {
+    state.editStatus.id = editStatus.id;
+    state.editStatus.editPrev = editStatus.editPrev;
   }
 };
 var actions = {
@@ -89137,6 +89403,11 @@ var actions = {
     var currentId = _ref6.currentId;
     var prevStepId = --currentId;
     commit('PREV_STEP', prevStepId);
+  },
+  editStatus: function editStatus(_ref7, _ref8) {
+    var commit = _ref7.commit;
+    var _editStatus = _ref8.editStatus;
+    commit('EDIT_STATUS', _editStatus);
   }
 };
 /* harmony default export */ __webpack_exports__["default"] = ({
