@@ -27,9 +27,7 @@ class ReceptionController extends AdminController
         $grid = new Grid(new Reception);
 
         $grid->column('id', __('Id'));
-        $grid->column('name', __('名前'));
-        $grid->column('adult', __('大人の人数'));
-        $grid->column('childlen', __('子供の人数'));
+        $grid->column('peoples', __('人数'));
         $grid->column('seat_id', __('希望席'))
              ->display(function($seat_id){
                  return Reception::getEatCaptionById($seat_id);
@@ -56,9 +54,7 @@ class ReceptionController extends AdminController
         $show = new Show(Reception::findOrFail($id));
 
         $show->field('id', __('Id'));
-        $show->field('name', __('名前'));
-        $show->field('adult', __('大人の人数'));
-        $show->field('childlen', __('子供の人数'));
+        $show->field('peoples', __('人数'));
         $show->field('seat_id', __('希望席'))
              ->as(function($seat_id){
                  return Reception::getEatCaptionById($seat_id);
@@ -83,9 +79,7 @@ class ReceptionController extends AdminController
     {
         $form = new Form(new Reception);
 
-        $form->text('name', __('名前'));
-        $form->number('adult', __('大人の人数'));
-        $form->number('childlen', __('子供の人数'));
+        $form->text('peoples', __('人数'));
         $form->number('seat_id', __('希望席'));
         $form->number('smoke_id', __('タバコ'));
         $form->text('tell_number', __('電話番号'));

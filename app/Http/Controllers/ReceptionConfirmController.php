@@ -9,6 +9,8 @@ class ReceptionConfirmController extends Controller
 {
     public function formPost(Request $request)
     {
+        // var_dump($request);
+        \Log::debug($request);
         $payload = array();
         $reception_object = new Reception();
 
@@ -21,13 +23,12 @@ class ReceptionConfirmController extends Controller
                 $reception_object->tell_number = $request->tell_number;
                 $reception_object->save();
                 $con->commit();
-                $payload['success'] = 'success';
+                $payload['success']            = 'success';
 
             } catch (\Exception $e){
                 $con->rollback();
                 throw $e;
             }
-
         return $payload;
     }
 

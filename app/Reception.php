@@ -25,7 +25,7 @@ class Reception extends Model
      */
     public static function getEatTypeIdOptions()
     {
-        $options                            = array();
+        $options                        = array();
         $options[self::SEAT_ID_TABLE]   = 'テーブル席';
         $options[self::SEAT_ID_BOX]     = 'ボックス席';
         $options[self::SEAT_ID_COUNTER] = 'カウンター席';
@@ -39,7 +39,7 @@ class Reception extends Model
      */
     public static function getSmokeTypeIdOptions()
     {
-        $options                                 = array();
+        $options                            = array();
         $options[self::SMOKE_ID_SMOKING]    = '喫煙席';
         $options[self::SMOKE_ID_NOTSMOKING] = '禁煙席';
         $options[self::SMOKE_ID_EITHER]     = 'どちらでも良い';

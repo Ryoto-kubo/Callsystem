@@ -1,46 +1,46 @@
 <template>
-<div>
-    <div class="form-container" :class="classSwitch">
-        <div class="flex-container">
-            <div class="input-container">
-                <div class="input-area">
-                    <div class="input">
-                        <input id="num-input" v-model="inputPeopleObject.peopleNum" type="num" readonly="readonly">
+    <div>
+        <div class="form-container" :class="classSwitch">
+            <div class="flex-container">
+                <div class="input-container">
+                    <div class="input-area">
+                        <div class="input">
+                            <input id="num-input" v-model="inputPeopleObject.peopleNum" type="num" readonly="readonly">
+                        </div>
+                        <div class="group-text">
+                            <p>名様</p>
+                        </div>
                     </div>
-                    <div class="group-text">
-                        <p>名様</p>
+                </div>
+                <div class="num-button-container">
+                    <div class="num-button-area" v-for="item in nums" :key="item.index">
+                        <div class="button-back next-btn"></div>
+                        <button v-if="numBtnAppearrance" class="btn input-btn" @click="numInput(item)" onfocus="this.blur();">{{ item }}</button>
+                        <button v-else class="btn input-btn gray" onfocus="this.blur();">{{ item }}</button>
+                    </div>
+                    <div class="num-button-area">
+                        <div class="button-back clear-button-back next-btn"></div>
+                        <button class="btn input-btn clear-btn" type="button" @click="numClear" onfocus="this.blur();">クリア</button>
                     </div>
                 </div>
             </div>
-            <div class="num-button-container">
-                <div class="num-button-area" v-for="item in nums" :key="item.index">
-                    <div class="button-back next-btn"></div>
-                    <button v-if="numBtnAppearrance" class="btn input-btn" @click="numInput(item)" onfocus="this.blur();">{{ item }}</button>
-                    <button v-else class="btn input-btn gray" onfocus="this.blur();">{{ item }}</button>
+            <div v-if="nextBtnAppearrance" class="link-area">
+                <div v-if="propsEditStatus">
+                    <div class="button-back background-blue"></div>
+                    <button id="js-next-btn" class="btn next-btn ripple" onfocus="this.blur();" @click="openModal" style="padding: 0;">登録</button>
                 </div>
-                <div class="num-button-area">
-                    <div class="button-back clear-button-back next-btn"></div>
-                    <button class="btn input-btn clear-btn" type="button" @click="numClear" onfocus="this.blur();">クリア</button>
+                <div v-else>
+                    <div class="button-back background-blue"></div>
+                    <button id="js-next-btn" class="btn next-btn ripple" onfocus="this.blur();" @click="nextStep" style="padding: 0;">次へ</button>
                 </div>
             </div>
-        </div>
-        <div v-if="nextBtnAppearrance" class="link-area">
-            <div v-if="propsEditStatus">
-                <div class="button-back background-blue"></div>
-                <button id="js-next-btn" class="btn next-btn ripple" onfocus="this.blur();" @click="openModal" style="padding: 0;">登録</button>
-            </div>
-            <div v-else>
-                <div class="button-back background-blue"></div>
-                <button id="js-next-btn" class="btn next-btn ripple" onfocus="this.blur();" @click="nextStep" style="padding: 0;">次へ</button>
+            <div v-else class="link-area">
+                <div class="button-back" style="background: #8b0000;"></div>
+                <button class="btn waiting-btn ripple" onfocus="this.blur();"></button>
             </div>
         </div>
-        <div v-else class="link-area">
-            <div class="button-back" style="background: #8b0000;"></div>
-            <button class="btn waiting-btn ripple" onfocus="this.blur();"></button>
-        </div>
+        <modal-component v-if="modalActive" @close="closeModal"/>
     </div>
-    <modal-component v-if="modalActive" @close="closeModal"/>
-</div>
 </template>
 
 <script>

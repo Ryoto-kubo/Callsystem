@@ -101,12 +101,12 @@
         .tobacco-btn{
             width: 90%;
             height: 200px;
-            color: #232323;
-            background: #f5f5f5;
+            color: #707070;
+            background: #fafafa;
             border-radius: 10px;
             font-size: 40px;
             outline: none;
-            border: 0.5px solid #808080;
+            border: 0.5px solid #c0c0c0;
         }
         .tobacco-btn-back{
             width: 90%;

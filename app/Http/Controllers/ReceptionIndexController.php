@@ -12,8 +12,7 @@ class ReceptionIndexController extends Controller
     {
         $payload = array();
         $payload['reception_data_count'] = Reception::get()->count();
-        
-        $payload['reception_data_min'] = $this->getWaitingMin($payload['reception_data_count']);
+        $payload['reception_data_min']   = $this->getWaitingMin($payload['reception_data_count']);
         
         return $payload;
     }

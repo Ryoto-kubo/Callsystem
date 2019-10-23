@@ -96,9 +96,29 @@ export default {
     },
     methods: {
         postData(){
+            let request_array = {}
+            request_array['peoples']     = this.peopleObject.peopleNum
+            request_array['seat_id']     = this.seatTypeObject.selectSeatType
+            request_array['smoke_id']    = this.tobaccoTypeObject.selectTobaccoType
+            request_array['tell_number'] = this.inputTellNumObject.tellNum
+
+            setTimeout(() => {
+                this.time++
+                axios.post('reception/formpost', request_array)
+                .then(function(response){
+                        console.log(response)
+                    }
+                )
+                .catch(function(error){
+                        console.log(erroe)
+                    }
+                )
+            }, 200)
         },
         closeModal(){
-            setTimeout(() => {this.time++ }, 100)
+            setTimeout(() => {
+                this.time++
+            }, 100)
         },
         editPrev(value){
             this.editStatus.id       = value
@@ -204,7 +224,7 @@ export default {
                 .confirm-text{
                     margin-left: 10px;
                     font-size: 30px;
-                    color: #232323;
+                    color: #707070;
                     .title-icon{
                         width: 50px;
                         height: 35px;

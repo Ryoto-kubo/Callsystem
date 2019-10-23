@@ -159,10 +159,10 @@
         width: 50%;
         .num-button-area{
             .button-back{
-                height: 100px;
+                height: 110px;
             }
             .input-btn{
-                height: 100px;
+                height: 110px;
             }
             .clear-btn{
                 width: 186%;
@@ -194,9 +194,9 @@
             height: 90px;
             width: 80%;
             line-height: 90px;
-            background: #dcdcdc;
-            color: #232323;
-            border: 0.5px solid #808080;
+            background: #fafafa;
+            color: #707070;
+            border: 0.5px solid #c0c0c0;
             font-size: 35px;
         }
         .skip-button-back{
@@ -280,10 +280,10 @@
                 height: 70px;
                 width: 100%;
                 line-height: 70px;
-                background: #f5f5f5;
-                color: #232323;
+                background: #fafafa;
+                color: #707070;
                 font-size: 25px;
-                border: 0.5px solid #808080;
+                border: 0.5px solid #c0c0c0;
             }
             .skip-button-back{
                 background: #696969;
