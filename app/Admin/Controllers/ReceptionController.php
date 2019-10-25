@@ -15,7 +15,7 @@ class ReceptionController extends AdminController
      *
      * @var string
      */
-    protected $title = 'App\Reception';
+    protected $title = '受付表';
 
     /**
      * Make a grid builder.
@@ -26,19 +26,19 @@ class ReceptionController extends AdminController
     {
         $grid = new Grid(new Reception);
 
-        $grid->column('id', __('Id'));
-        $grid->column('peoples', __('人数'));
-        $grid->column('seat_id', __('希望席'))
+        $grid->column('id', ('受付番号'));
+        $grid->column('peoples', ('人数'));
+        $grid->column('seat_id', ('希望席'))
              ->display(function($seat_id){
                  return Reception::getEatCaptionById($seat_id);
             });
-        $grid->column('smoke_id', __('タバコ'))
+        $grid->column('smoke_id', ('タバコ'))
              ->display(function($smoke_id){
                  return Reception::getSmokeCaptionById($smoke_id);
             });
-        $grid->column('tell_number', __('電話番号'));
-        $grid->column('created_at', __('Created at'));
-        $grid->column('updated_at', __('Updated at'));
+        $grid->column('tell_number', ('電話番号'));
+        $grid->column('created_at', ('Created at'));
+        $grid->column('updated_at', ('Updated at'));
 
         return $grid;
     }
@@ -53,19 +53,19 @@ class ReceptionController extends AdminController
     {
         $show = new Show(Reception::findOrFail($id));
 
-        $show->field('id', __('Id'));
-        $show->field('peoples', __('人数'));
-        $show->field('seat_id', __('希望席'))
+        $show->field('id', ('Id'));
+        $show->field('peoples', ('人数'));
+        $show->field('seat_id', ('希望席'))
              ->as(function($seat_id){
                  return Reception::getEatCaptionById($seat_id);
             });
-        $show->field('smoke_id', __('タバコ'))
+        $show->field('smoke_id', ('タバコ'))
              ->as(function($smoke_id){
                  return Reception::getSmokeCaptionById($smoke_id);
             });
-        $show->field('tell_number', __('電話番号'));
-        $show->field('created_at', __('Created at'));
-        $show->field('updated_at', __('Updated at'));
+        $show->field('tell_number', ('電話番号'));
+        $show->field('created_at', ('Created at'));
+        $show->field('updated_at', ('Updated at'));
 
         return $show;
     }
@@ -79,10 +79,10 @@ class ReceptionController extends AdminController
     {
         $form = new Form(new Reception);
 
-        $form->text('peoples', __('人数'));
-        $form->number('seat_id', __('希望席'));
-        $form->number('smoke_id', __('タバコ'));
-        $form->text('tell_number', __('電話番号'));
+        $form->text('peoples', ('人数'));
+        $form->number('seat_id', ('希望席'));
+        $form->number('smoke_id', ('タバコ'));
+        $form->text('tell_number', ('電話番号'));
 
         return $form;
     }

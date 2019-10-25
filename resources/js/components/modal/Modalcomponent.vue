@@ -57,7 +57,7 @@
                         </div>
                         <div class="btn-area">
                             <div class="button-back background-blue"></div>
-                            <button class="btn next-btn ripple" onfocus="this.blur();" @click="postData" style="padding: 0;">登録</button>
+                            <button class="btn next-btn ripple" onfocus="this.blur();" @click="postData" style="padding: 0;">受付する</button>
                         </div>
                     </div>
                 </div>
@@ -89,30 +89,28 @@ export default {
         this.seatTypeObject     = this.$store.state.app.selectSeatOject
         this.tobaccoTypeObject  = this.$store.state.app.selectTobaccoObject
         this.inputTellNumObject = this.$store.state.app.inputTellNumObject
-
         this.idConvertSeatText(this.seatTypeObject.selectSeatType)
         this.idConvertTobaccoText(this.tobaccoTypeObject.selectTobaccoType)
         this.stateConvertTellText(this.inputTellNumObject.inputState)
     },
     methods: {
         postData(){
-            let request_array = {}
-            request_array['peoples']     = this.peopleObject.peopleNum
-            request_array['seat_id']     = this.seatTypeObject.selectSeatType
-            request_array['smoke_id']    = this.tobaccoTypeObject.selectTobaccoType
-            request_array['tell_number'] = this.inputTellNumObject.tellNum
-
+            // const self = this
+            let request_object = {}
+            request_object['peoples']     = this.peopleObject.peopleNum
+            request_object['seat_id']     = this.seatTypeObject.selectSeatType
+            request_object['smoke_id']    = this.tobaccoTypeObject.selectTobaccoType
+            request_object['tell_number'] = this.inputTellNumObject.tellNum
             setTimeout(() => {
-                this.time++
-                axios.post('reception/formpost', request_array)
+                axios.post('reception/formpost', request_object)
                 .then(function(response){
-                        console.log(response)
-                    }
-                )
-                .catch(function(error){
-                        console.log(erroe)
-                    }
-                )
+                    this.$emit('progressBarMove', 4)
+                    this.$emit('close')
+                    console.log(response)
+                }.bind(this))
+                .catch(function(error) {
+                    console.log(error)
+                })
             }, 200)
         },
         closeModal(){
@@ -120,8 +118,8 @@ export default {
                 this.time++
             }, 100)
         },
-        editPrev(value){
-            this.editStatus.id       = value
+        editPrev(prevId){
+            this.editStatus.id       = prevId
             this.editStatus.editPrev = true
             this.$store.dispatch('status/editStatus', { editStatus: this.editStatus})
         },
@@ -242,15 +240,15 @@ export default {
                 text-align: center;
                 .btn{
                     position: relative;
-                    height: 70px;
+                    height: 80px;
                     margin: auto;
-                    line-height: 70px;
+                    line-height: 80px;
                     font-size: 30px;
                     color: #ffffff;
                 }
                 .button-back{
                     width: 69.9%;
-                    height: 70px;
+                    height: 80px;
                     margin: auto;
                     position: absolute;
                     top: 8px;
@@ -294,4 +292,18 @@ export default {
     transform: translateY(150px);
   }
 }
+
+@media screen and (max-width: 1024px) {
+    .modal {
+        .modal-window {
+            width: 70%;
+            height: 600px;
+            border-radius: 10px;
+            background: #fff;
+            overflow: hidden;
+            position: relative;
+        }
+    }
+}
+
 </style>

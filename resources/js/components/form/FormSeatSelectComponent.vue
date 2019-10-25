@@ -16,7 +16,7 @@
                 </div>
             </div>
         </div>
-        <modal-component v-if="modalActive" @close="closeModal"/>
+        <modal-component v-if="modalActive" @close="closeModal" @progressBarMove="progressBarMove" />
     </div>
 </template>
 <script>
@@ -77,6 +77,9 @@ import { constants } from 'crypto';
             closeModal(){
                 this.modalActive = false
             },
+            progressBarMove(lastId){
+                this.$emit('progressBarMove', lastId)
+            }
         },
         watch: {
             time(){

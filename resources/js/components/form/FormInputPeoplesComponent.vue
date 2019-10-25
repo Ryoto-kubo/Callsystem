@@ -39,7 +39,7 @@
                 <button class="btn waiting-btn ripple" onfocus="this.blur();"></button>
             </div>
         </div>
-        <modal-component v-if="modalActive" @close="closeModal"/>
+        <modal-component v-if="modalActive" @close="closeModal" @progressBarMove="progressBarMove" />
     </div>
 </template>
 
@@ -97,19 +97,27 @@ import { mapGetters } from 'vuex'
                 this.$store.dispatch('app/inputPeopleNum', { inputPeopleObject: this.inputPeopleObject})
                 this.$emit('getPeopleNum', this.peopleNum)
                 setTimeout(() => {this.time++ }, 1000)
+            },
+            progressBarMove(lastId){
+                this.$emit('progressBarMove', lastId)
             }
         },
         watch: {
             'inputPeopleObject.peopleNum'(){
+                let editStatusOblect = this.$store.state.status.editStatus
                 if(this.inputPeopleObject.peopleNum.length <= 2){
                     this.nextBtnAppearrance = true
-                    this.$emit('progressBarMove', this.currentId)
+                    if(!editStatusOblect.editPrev){
+                        this.$emit('progressBarMove', this.currentId)
+                    }
                     if(this.inputPeopleObject.peopleNum.length === 2){
                         this.numBtnAppearrance = false
                     }else if(this.inputPeopleObject.peopleNum.length === 0){
                         this.nextBtnAppearrance = false
                         this.numBtnAppearrance  = true
-                        this.$emit('progressBarMoveReset')
+                        if(!editStatusOblect.editPrev){
+                            this.$emit('progressBarMoveReset')
+                        }
                     }
                 }
             },

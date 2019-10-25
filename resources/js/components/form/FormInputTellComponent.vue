@@ -46,7 +46,14 @@
             </div>
         </div>
     </div>
-    <modal-component v-if="modalActive" @close="closeModal"/>
+    <template v-if="modalActive">
+        <modal-component @close="closeModal" @progressBarMove="progressBarMove" />
+    </template>
+
+    <template v-if="thanksModalActive">
+        <thanks-component />
+    </template>
+
 </div>
 </template>
 <script>
@@ -63,6 +70,7 @@
                 nextBtnAppearrance: false,
                 selectTobaccoType: null,
                 modalActive: false,
+                thanksModalActive: false,
                 nums: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'],
             }
         },
@@ -92,7 +100,7 @@
             },
             numClear(){
                 let tellNum = this.inputTellNumObject.tellNum
-                    this.inputTellNumObject.tellNum = tellNum.slice( 0, -1 ) ;
+                this.inputTellNumObject.tellNum = tellNum.slice( 0, -1 ) ;
             },
             skip(){
                 this.inputTellNumObject.inputState = false
@@ -100,13 +108,9 @@
                 this.openModal()
             },
             nextStep(){
-                // this.classSwitch       = 'reactive'
                 this.inputTellNumObject.inputState = true
                 this.$store.dispatch('app/inputTellNum', { inputTellNumObject: this.inputTellNumObject })
-                this.$emit('progressBarMove', this.currentId)
-                // this.$store.dispatch('status/nextStep', { currentId: this.currentId })
                 this.openModal()
-                // setTimeout(() => {this.time++ }, 1000)
             },
             prevStep(){
                 this.$store.dispatch('status/prevForm', { prevState: true })
@@ -114,6 +118,9 @@
                 this.$emit('progressBarMove', this.currentId)
                 this.$store.dispatch('status/prevStep', { currentId: this.currentId })
                 setTimeout(() => {this.time++ }, 1000)
+            },
+            progressBarMove(lastId){
+                this.$emit('progressBarMove', lastId)
             }
         },
         watch: {
