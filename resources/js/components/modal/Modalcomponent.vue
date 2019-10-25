@@ -1,6 +1,7 @@
 <template>
     <transition name="modal" appear>
-        <div class="modal modal-overlay" @click.self="$emit('close')">
+        <!-- <div class="modal" @click.self="$emit('close')"> -->
+        <div class="modal modal-overlay">
             <div class="modal-window">
                 <div class="modal-content">
                     <div class="confirm-container">
@@ -105,7 +106,7 @@ export default {
                 axios.post('reception/formpost', request_object)
                 .then(function(response){
                     this.$emit('progressBarMove', 4)
-                    this.$emit('close')
+                    this.$emit('thanksModalOpen')
                     console.log(response)
                 }.bind(this))
                 .catch(function(error) {
@@ -172,7 +173,6 @@ export default {
 @import '../../../sass/variables';
 
 .modal {
-    &.modal-overlay {
         display: flex;
         align-items: center;
         justify-content: center;
@@ -182,9 +182,7 @@ export default {
         left: 0;
         width: 100%;
         height: 100%;
-        background: rgba(0, 0, 0, 0.5);
-    }
-
+        // background: rgba(0, 0, 0, 0.5);
     .modal-window {
         width: 70%;
         height: 700px;
@@ -264,7 +262,7 @@ export default {
                     background: $btn_color;
                 }
                 .close-btn{
-                    width: 70%;
+                    width: 70.2%;
                     background: #f08080;
                 }
             }
@@ -296,12 +294,23 @@ export default {
 @media screen and (max-width: 1024px) {
     .modal {
         .modal-window {
-            width: 70%;
             height: 600px;
-            border-radius: 10px;
-            background: #fff;
-            overflow: hidden;
-            position: relative;
+        }
+        .modal-content {
+            .btn-container{
+                .btn-area{
+                    text-align: center;
+                    .btn{
+                        height: 70px;
+                        line-height: 70px;
+                        font-size: 24px;
+                    }
+                    .button-back{
+                        height: 70px;
+                        border-radius: 10px;
+                    }
+                }
+            }  
         }
     }
 }

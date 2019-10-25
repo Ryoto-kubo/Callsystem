@@ -13747,6 +13747,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -13782,12 +13787,23 @@ __webpack_require__.r(__webpack_exports__);
 
     this.time = 0;
   },
+  computed: {
+    toggleOverlay: function toggleOverlay() {
+      return {
+        'overlay': this.modalActive || this.thanksModalActive
+      };
+    }
+  },
   methods: {
     openModal: function openModal() {
       this.modalActive = true;
     },
     closeModal: function closeModal() {
       this.modalActive = false;
+    },
+    thanksModalOpen: function thanksModalOpen() {
+      this.modalActive = false;
+      this.thanksModalActive = true;
     },
     tellNumInput: function tellNumInput(item) {
       this.inputTellNumObject.tellNum += item;
@@ -14197,6 +14213,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -14236,7 +14253,7 @@ __webpack_require__.r(__webpack_exports__);
       setTimeout(function () {
         axios.post('reception/formpost', request_object).then(function (response) {
           this.$emit('progressBarMove', 4);
-          this.$emit('close');
+          this.$emit('thanksModalOpen');
           console.log(response);
         }.bind(_this))["catch"](function (error) {
           console.log(error);
@@ -26784,7 +26801,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, ".tell-container .input-container p[data-v-4a3d4254] {\n  font-size: 40px;\n}\n.tell-container .input-container .input-area .input input[data-v-4a3d4254] {\n  width: 100%;\n  height: 80px;\n  font-size: 40px;\n}\n.tell-container .num-button-container[data-v-4a3d4254] {\n  width: 50%;\n}\n.tell-container .num-button-container .num-button-area .button-back[data-v-4a3d4254] {\n  height: 110px;\n}\n.tell-container .num-button-container .num-button-area .input-btn[data-v-4a3d4254] {\n  height: 110px;\n}\n.tell-container .num-button-container .num-button-area .clear-btn[data-v-4a3d4254] {\n  width: 186%;\n}\n.tell-container .num-button-container .num-button-area .clear-button-back[data-v-4a3d4254] {\n  width: 186%;\n}\n.link-area[data-v-4a3d4254] {\n  display: flex;\n  justify-content: space-around;\n}\n.link-area .btn-container[data-v-4a3d4254] {\n  width: 25%;\n  position: relative;\n  font-size: 35px;\n}\n.link-area .btn-container .button-back[data-v-4a3d4254] {\n  width: 80%;\n  height: 90px;\n}\n.link-area .btn-container .next-btn[data-v-4a3d4254] {\n  width: 80%;\n  height: 90px;\n  line-height: 90px;\n  font-size: 35px;\n}\n.link-area .btn-container .skip-btn[data-v-4a3d4254] {\n  height: 90px;\n  width: 80%;\n  line-height: 90px;\n  background: #fafafa;\n  color: #707070;\n  border: 0.5px solid #c0c0c0;\n  font-size: 35px;\n}\n.link-area .btn-container .skip-button-back[data-v-4a3d4254] {\n  background: #696969;\n}\n.link-area .btn-container .waiting-btn[data-v-4a3d4254] {\n  width: 80%;\n  height: 90px;\n  line-height: 90px;\n}\n.prev-btn-container[data-v-4a3d4254] {\n  top: 110%;\n  left: -8%;\n}\n.modal-overlay[data-v-4a3d4254] {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  position: fixed;\n  z-index: 30;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  background: rgba(0, 0, 0, 0.5);\n}\n@media screen and (max-width: 1024px) {\n.form-container[data-v-4a3d4254] {\n    margin-top: 0;\n}\n.form-container .flex-container .input-container[data-v-4a3d4254] {\n    margin-right: 0;\n}\n.form-container .flex-container .input-container p[data-v-4a3d4254] {\n    margin-bottom: 5px;\n    font-size: 28px;\n}\n.form-container .flex-container .input-container .input-area .input input[data-v-4a3d4254] {\n    width: 120%;\n    height: 60px;\n    font-size: 30px;\n}\n.form-container .flex-container .num-button-container .num-button-area .button-back[data-v-4a3d4254] {\n    height: 80px;\n}\n.form-container .flex-container .num-button-container .num-button-area .input-btn[data-v-4a3d4254] {\n    height: 80px;\n}\n.link-area .btn-container .button-back[data-v-4a3d4254] {\n    width: 100%;\n    height: 70px;\n    top: 7px;\n}\n.link-area .btn-container .next-btn[data-v-4a3d4254] {\n    width: 100%;\n    height: 70px;\n    line-height: 70px;\n    font-size: 25px;\n}\n.link-area .btn-container .waiting-btn[data-v-4a3d4254] {\n    width: 100%;\n    height: 70px;\n}\n.link-area .btn-container .skip-btn[data-v-4a3d4254] {\n    height: 70px;\n    width: 100%;\n    line-height: 70px;\n    background: #fafafa;\n    color: #707070;\n    font-size: 25px;\n    border: 0.5px solid #c0c0c0;\n}\n.link-area .btn-container .skip-button-back[data-v-4a3d4254] {\n    background: #696969;\n}\n}", ""]);
+exports.push([module.i, ".overlay[data-v-4a3d4254] {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  position: fixed;\n  z-index: 30;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  background: rgba(0, 0, 0, 0.5);\n}\n.thanks-enter-active[data-v-4a3d4254], .thanks-leave-active[data-v-4a3d4254] {\n  transition: opacity 0.6s;\n}\n.thanks-enter-active .overlay[data-v-4a3d4254], .thanks-leave-active .overlay[data-v-4a3d4254] {\n  transition: opacity 0.6s, transform 0.6s;\n}\n.thanks-leave-active[data-v-4a3d4254] {\n  transition: opacity 0.8s ease 0.6s;\n}\n.thanks-enter[data-v-4a3d4254], .thanks-leave-to[data-v-4a3d4254] {\n  opacity: 0;\n}\n.thanks-enter .overlay[data-v-4a3d4254], .thanks-leave-to .overlay[data-v-4a3d4254] {\n  opacity: 0;\n  transform: translateY(150px);\n}\n.tell-container .input-container p[data-v-4a3d4254] {\n  font-size: 40px;\n}\n.tell-container .input-container .input-area .input input[data-v-4a3d4254] {\n  width: 100%;\n  height: 80px;\n  font-size: 40px;\n}\n.tell-container .num-button-container[data-v-4a3d4254] {\n  width: 50%;\n}\n.tell-container .num-button-container .num-button-area .button-back[data-v-4a3d4254] {\n  height: 110px;\n}\n.tell-container .num-button-container .num-button-area .input-btn[data-v-4a3d4254] {\n  height: 110px;\n}\n.tell-container .num-button-container .num-button-area .clear-btn[data-v-4a3d4254] {\n  width: 186%;\n}\n.tell-container .num-button-container .num-button-area .clear-button-back[data-v-4a3d4254] {\n  width: 186%;\n}\n.link-area[data-v-4a3d4254] {\n  display: flex;\n  justify-content: space-around;\n}\n.link-area .btn-container[data-v-4a3d4254] {\n  width: 25%;\n  position: relative;\n  font-size: 35px;\n}\n.link-area .btn-container .button-back[data-v-4a3d4254] {\n  width: 80%;\n  height: 90px;\n}\n.link-area .btn-container .next-btn[data-v-4a3d4254] {\n  width: 80%;\n  height: 90px;\n  line-height: 90px;\n  font-size: 35px;\n}\n.link-area .btn-container .skip-btn[data-v-4a3d4254] {\n  height: 90px;\n  width: 80%;\n  line-height: 90px;\n  background: #fafafa;\n  color: #707070;\n  border: 0.5px solid #c0c0c0;\n  font-size: 35px;\n}\n.link-area .btn-container .skip-button-back[data-v-4a3d4254] {\n  background: #696969;\n}\n.link-area .btn-container .waiting-btn[data-v-4a3d4254] {\n  width: 80%;\n  height: 90px;\n  line-height: 90px;\n}\n.prev-btn-container[data-v-4a3d4254] {\n  top: 110%;\n  left: -8%;\n}\n@media screen and (max-width: 1024px) {\n.form-container[data-v-4a3d4254] {\n    margin-top: 0;\n}\n.form-container .flex-container .input-container[data-v-4a3d4254] {\n    margin-right: 0;\n}\n.form-container .flex-container .input-container p[data-v-4a3d4254] {\n    margin-bottom: 5px;\n    font-size: 28px;\n}\n.form-container .flex-container .input-container .input-area .input input[data-v-4a3d4254] {\n    width: 120%;\n    height: 60px;\n    font-size: 30px;\n}\n.form-container .flex-container .num-button-container .num-button-area .button-back[data-v-4a3d4254] {\n    height: 80px;\n}\n.form-container .flex-container .num-button-container .num-button-area .input-btn[data-v-4a3d4254] {\n    height: 80px;\n}\n.link-area .btn-container .button-back[data-v-4a3d4254] {\n    width: 100%;\n    height: 70px;\n    top: 7px;\n}\n.link-area .btn-container .next-btn[data-v-4a3d4254] {\n    width: 100%;\n    height: 70px;\n    line-height: 70px;\n    font-size: 25px;\n}\n.link-area .btn-container .waiting-btn[data-v-4a3d4254] {\n    width: 100%;\n    height: 70px;\n}\n.link-area .btn-container .skip-btn[data-v-4a3d4254] {\n    height: 70px;\n    width: 100%;\n    line-height: 70px;\n    background: #fafafa;\n    color: #707070;\n    font-size: 25px;\n    border: 0.5px solid #c0c0c0;\n}\n.link-area .btn-container .skip-button-back[data-v-4a3d4254] {\n    background: #696969;\n}\n}", ""]);
 
 // exports
 
@@ -26841,7 +26858,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, ".modal.modal-overlay[data-v-5f54ac5d] {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  position: fixed;\n  z-index: 30;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  background: rgba(0, 0, 0, 0.5);\n}\n.modal .modal-window[data-v-5f54ac5d] {\n  width: 70%;\n  height: 700px;\n  border-radius: 10px;\n  background: #fff;\n  overflow: hidden;\n  position: relative;\n}\n.modal .modal-content[data-v-5f54ac5d] {\n  width: 70%;\n  margin: auto;\n  border: 0;\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  transform: translate(-50%, -50%);\n}\n.modal .modal-content .confirm-container[data-v-5f54ac5d] {\n  margin-bottom: 30px;\n}\n.modal .modal-content .confirm-container .confirm-text-container[data-v-5f54ac5d] {\n  margin-bottom: 30px;\n  border-bottom: 2px solid #dcdcdc;\n  display: flex;\n  justify-content: space-between;\n  align-items: flex-end;\n}\n.modal .modal-content .confirm-container .confirm-text-container .icon-container[data-v-5f54ac5d] {\n  margin-right: 10px;\n}\n.modal .modal-content .confirm-container .confirm-text-container .icon-container .edit-icon[data-v-5f54ac5d] {\n  width: 50px;\n  height: 35px;\n  margin-bottom: 5px;\n  color: #1e90ff;\n}\n.modal .modal-content .confirm-container .confirm-text-container .confirm-text[data-v-5f54ac5d] {\n  margin-left: 10px;\n  font-size: 30px;\n  color: #707070;\n}\n.modal .modal-content .confirm-container .confirm-text-container .confirm-text .title-icon[data-v-5f54ac5d] {\n  width: 50px;\n  height: 35px;\n  margin-right: 10px;\n}\n.modal .modal-content .btn-container[data-v-5f54ac5d] {\n  display: flex;\n  justify-content: space-between;\n}\n.modal .modal-content .btn-container .btn-area[data-v-5f54ac5d] {\n  width: 100%;\n  position: relative;\n  text-align: center;\n}\n.modal .modal-content .btn-container .btn-area .btn[data-v-5f54ac5d] {\n  position: relative;\n  height: 80px;\n  margin: auto;\n  line-height: 80px;\n  font-size: 30px;\n  color: #ffffff;\n}\n.modal .modal-content .btn-container .btn-area .button-back[data-v-5f54ac5d] {\n  width: 69.9%;\n  height: 80px;\n  margin: auto;\n  position: absolute;\n  top: 8px;\n  left: 50%;\n  transform: translate(-50%, 0);\n  border-radius: 10px;\n}\n.modal .modal-content .btn-container .btn-area .background-blue[data-v-5f54ac5d] {\n  background: #008b8b;\n}\n.modal .modal-content .btn-container .btn-area .next-btn[data-v-5f54ac5d] {\n  width: 70%;\n  background: #53c9c5;\n}\n.modal .modal-content .btn-container .btn-area .close-btn[data-v-5f54ac5d] {\n  width: 70%;\n  background: #f08080;\n}\n.modal-enter-active[data-v-5f54ac5d], .modal-leave-active[data-v-5f54ac5d] {\n  transition: opacity 0.6s;\n}\n.modal-enter-active .modal-window[data-v-5f54ac5d], .modal-leave-active .modal-window[data-v-5f54ac5d] {\n  transition: opacity 0.6s, transform 0.6s;\n}\n.modal-leave-active[data-v-5f54ac5d] {\n  transition: opacity 0.8s ease 0.6s;\n}\n.modal-enter[data-v-5f54ac5d], .modal-leave-to[data-v-5f54ac5d] {\n  opacity: 0;\n}\n.modal-enter .modal-window[data-v-5f54ac5d], .modal-leave-to .modal-window[data-v-5f54ac5d] {\n  opacity: 0;\n  transform: translateY(150px);\n}\n@media screen and (max-width: 1024px) {\n.modal .modal-window[data-v-5f54ac5d] {\n    width: 70%;\n    height: 600px;\n    border-radius: 10px;\n    background: #fff;\n    overflow: hidden;\n    position: relative;\n}\n}", ""]);
+exports.push([module.i, ".modal[data-v-5f54ac5d] {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  position: fixed;\n  z-index: 30;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n}\n.modal .modal-window[data-v-5f54ac5d] {\n  width: 70%;\n  height: 700px;\n  border-radius: 10px;\n  background: #fff;\n  overflow: hidden;\n  position: relative;\n}\n.modal .modal-content[data-v-5f54ac5d] {\n  width: 70%;\n  margin: auto;\n  border: 0;\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  transform: translate(-50%, -50%);\n}\n.modal .modal-content .confirm-container[data-v-5f54ac5d] {\n  margin-bottom: 30px;\n}\n.modal .modal-content .confirm-container .confirm-text-container[data-v-5f54ac5d] {\n  margin-bottom: 30px;\n  border-bottom: 2px solid #dcdcdc;\n  display: flex;\n  justify-content: space-between;\n  align-items: flex-end;\n}\n.modal .modal-content .confirm-container .confirm-text-container .icon-container[data-v-5f54ac5d] {\n  margin-right: 10px;\n}\n.modal .modal-content .confirm-container .confirm-text-container .icon-container .edit-icon[data-v-5f54ac5d] {\n  width: 50px;\n  height: 35px;\n  margin-bottom: 5px;\n  color: #1e90ff;\n}\n.modal .modal-content .confirm-container .confirm-text-container .confirm-text[data-v-5f54ac5d] {\n  margin-left: 10px;\n  font-size: 30px;\n  color: #707070;\n}\n.modal .modal-content .confirm-container .confirm-text-container .confirm-text .title-icon[data-v-5f54ac5d] {\n  width: 50px;\n  height: 35px;\n  margin-right: 10px;\n}\n.modal .modal-content .btn-container[data-v-5f54ac5d] {\n  display: flex;\n  justify-content: space-between;\n}\n.modal .modal-content .btn-container .btn-area[data-v-5f54ac5d] {\n  width: 100%;\n  position: relative;\n  text-align: center;\n}\n.modal .modal-content .btn-container .btn-area .btn[data-v-5f54ac5d] {\n  position: relative;\n  height: 80px;\n  margin: auto;\n  line-height: 80px;\n  font-size: 30px;\n  color: #ffffff;\n}\n.modal .modal-content .btn-container .btn-area .button-back[data-v-5f54ac5d] {\n  width: 69.9%;\n  height: 80px;\n  margin: auto;\n  position: absolute;\n  top: 8px;\n  left: 50%;\n  transform: translate(-50%, 0);\n  border-radius: 10px;\n}\n.modal .modal-content .btn-container .btn-area .background-blue[data-v-5f54ac5d] {\n  background: #008b8b;\n}\n.modal .modal-content .btn-container .btn-area .next-btn[data-v-5f54ac5d] {\n  width: 70%;\n  background: #53c9c5;\n}\n.modal .modal-content .btn-container .btn-area .close-btn[data-v-5f54ac5d] {\n  width: 70.2%;\n  background: #f08080;\n}\n.modal-enter-active[data-v-5f54ac5d], .modal-leave-active[data-v-5f54ac5d] {\n  transition: opacity 0.6s;\n}\n.modal-enter-active .modal-window[data-v-5f54ac5d], .modal-leave-active .modal-window[data-v-5f54ac5d] {\n  transition: opacity 0.6s, transform 0.6s;\n}\n.modal-leave-active[data-v-5f54ac5d] {\n  transition: opacity 0.8s ease 0.6s;\n}\n.modal-enter[data-v-5f54ac5d], .modal-leave-to[data-v-5f54ac5d] {\n  opacity: 0;\n}\n.modal-enter .modal-window[data-v-5f54ac5d], .modal-leave-to .modal-window[data-v-5f54ac5d] {\n  opacity: 0;\n  transform: translateY(150px);\n}\n@media screen and (max-width: 1024px) {\n.modal .modal-window[data-v-5f54ac5d] {\n    height: 600px;\n}\n.modal .modal-content .btn-container .btn-area[data-v-5f54ac5d] {\n    text-align: center;\n}\n.modal .modal-content .btn-container .btn-area .btn[data-v-5f54ac5d] {\n    height: 70px;\n    line-height: 70px;\n    font-size: 24px;\n}\n.modal .modal-content .btn-container .btn-area .button-back[data-v-5f54ac5d] {\n    height: 70px;\n    border-radius: 10px;\n}\n}", ""]);
 
 // exports
 
@@ -74625,12 +74642,24 @@ var render = function() {
         ])
       ]),
       _vm._v(" "),
+      _vm.modalActive || _vm.thanksModalActive
+        ? [
+            _c("transition", { attrs: { name: "thanks", appear: "" } }, [
+              _c("div", {
+                class: _vm.toggleOverlay,
+                on: { click: _vm.closeModal }
+              })
+            ])
+          ]
+        : _vm._e(),
+      _vm._v(" "),
       _vm.modalActive
         ? [
             _c("modal-component", {
               on: {
                 close: _vm.closeModal,
-                progressBarMove: _vm.progressBarMove
+                progressBarMove: _vm.progressBarMove,
+                thanksModalOpen: _vm.thanksModalOpen
               }
             })
           ]
@@ -74845,210 +74874,196 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("transition", { attrs: { name: "modal", appear: "" } }, [
-    _c(
-      "div",
-      {
-        staticClass: "modal modal-overlay",
-        on: {
-          click: function($event) {
-            if ($event.target !== $event.currentTarget) {
-              return null
-            }
-            return _vm.$emit("close")
-          }
-        }
-      },
-      [
-        _c("div", { staticClass: "modal-window" }, [
-          _c("div", { staticClass: "modal-content" }, [
-            _c("div", { staticClass: "confirm-container" }, [
-              _c("div", { staticClass: "confirm-text-container" }, [
-                _c("div", { staticClass: "confirm-text" }, [
-                  _c(
-                    "div",
-                    { staticClass: "content-text" },
-                    [
-                      _c("font-awesome-icon", {
-                        staticClass: "title-icon",
-                        attrs: { icon: "users" }
-                      }),
-                      _vm._v(
-                        "\n                                " +
-                          _vm._s(_vm.peopleObject.peopleNum) +
-                          "名\n                            "
-                      )
-                    ],
-                    1
-                  )
-                ]),
-                _vm._v(" "),
+    _c("div", { staticClass: "modal modal-overlay" }, [
+      _c("div", { staticClass: "modal-window" }, [
+        _c("div", { staticClass: "modal-content" }, [
+          _c("div", { staticClass: "confirm-container" }, [
+            _c("div", { staticClass: "confirm-text-container" }, [
+              _c("div", { staticClass: "confirm-text" }, [
                 _c(
                   "div",
-                  { staticClass: "icon-container" },
-                  [
-                    _c("font-awesome-icon", {
-                      staticClass: "edit-icon",
-                      attrs: { icon: "edit" },
-                      on: {
-                        click: function($event) {
-                          return _vm.editPrev(_vm.peopleObject.id)
-                        }
-                      }
-                    })
-                  ],
-                  1
-                )
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "confirm-text-container" }, [
-                _c("div", { staticClass: "confirm-text" }, [
-                  _c(
-                    "div",
-                    { staticClass: "content-text" },
-                    [
-                      _c("font-awesome-icon", {
-                        staticClass: "title-icon",
-                        attrs: { icon: "chair" }
-                      }),
-                      _vm._v(
-                        "\n                                " +
-                          _vm._s(_vm.displaySeat) +
-                          "\n                            "
-                      )
-                    ],
-                    1
-                  )
-                ]),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "icon-container" },
-                  [
-                    _c("font-awesome-icon", {
-                      staticClass: "edit-icon",
-                      attrs: { icon: "edit" },
-                      on: {
-                        click: function($event) {
-                          return _vm.editPrev(_vm.seatTypeObject.id)
-                        }
-                      }
-                    })
-                  ],
-                  1
-                )
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "confirm-text-container" }, [
-                _c(
-                  "div",
-                  { staticClass: "confirm-text" },
+                  { staticClass: "content-text" },
                   [
                     _c("font-awesome-icon", {
                       staticClass: "title-icon",
-                      attrs: { icon: "smoking" }
+                      attrs: { icon: "users" }
                     }),
                     _vm._v(
-                      "\n                            " +
-                        _vm._s(_vm.displayTobacco) +
-                        "\n                        "
+                      "\n                                " +
+                        _vm._s(_vm.peopleObject.peopleNum) +
+                        "名\n                            "
                     )
-                  ],
-                  1
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "icon-container" },
-                  [
-                    _c("font-awesome-icon", {
-                      staticClass: "edit-icon",
-                      attrs: { icon: "edit" },
-                      on: {
-                        click: function($event) {
-                          return _vm.editPrev(_vm.tobaccoTypeObject.id)
-                        }
-                      }
-                    })
                   ],
                   1
                 )
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "confirm-text-container" }, [
-                _c(
-                  "div",
-                  { staticClass: "confirm-text" },
-                  [
-                    _c("font-awesome-icon", {
-                      staticClass: "title-icon",
-                      attrs: { icon: "phone" }
-                    }),
-                    _vm._v(
-                      "\n                            " +
-                        _vm._s(_vm.displayTell) +
-                        "\n                        "
-                    )
-                  ],
-                  1
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "icon-container" },
-                  [
-                    _c("font-awesome-icon", {
-                      staticClass: "edit-icon",
-                      attrs: { icon: "edit" },
-                      on: {
-                        click: function($event) {
-                          return _vm.editPrev(_vm.inputTellNumObject.id)
-                        }
+              _c(
+                "div",
+                { staticClass: "icon-container" },
+                [
+                  _c("font-awesome-icon", {
+                    staticClass: "edit-icon",
+                    attrs: { icon: "edit" },
+                    on: {
+                      click: function($event) {
+                        return _vm.editPrev(_vm.peopleObject.id)
                       }
-                    })
-                  ],
-                  1
-                )
-              ])
+                    }
+                  })
+                ],
+                1
+              )
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "btn-container" }, [
-              _c("div", { staticClass: "btn-area" }, [
-                _c("div", {
-                  staticClass: "button-back",
-                  staticStyle: { background: "#8b0000" }
-                }),
-                _vm._v(" "),
+            _c("div", { staticClass: "confirm-text-container" }, [
+              _c("div", { staticClass: "confirm-text" }, [
                 _c(
-                  "button",
-                  {
-                    staticClass: "btn close-btn ripple",
-                    staticStyle: { padding: "0" },
-                    attrs: { onfocus: "this.blur();" },
-                    on: { click: _vm.closeModal }
-                  },
-                  [_vm._v("とじる")]
+                  "div",
+                  { staticClass: "content-text" },
+                  [
+                    _c("font-awesome-icon", {
+                      staticClass: "title-icon",
+                      attrs: { icon: "chair" }
+                    }),
+                    _vm._v(
+                      "\n                                " +
+                        _vm._s(_vm.displaySeat) +
+                        "\n                            "
+                    )
+                  ],
+                  1
                 )
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "btn-area" }, [
-                _c("div", { staticClass: "button-back background-blue" }),
-                _vm._v(" "),
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn next-btn ripple",
-                    staticStyle: { padding: "0" },
-                    attrs: { onfocus: "this.blur();" },
-                    on: { click: _vm.postData }
-                  },
-                  [_vm._v("受付する")]
-                )
-              ])
+              _c(
+                "div",
+                { staticClass: "icon-container" },
+                [
+                  _c("font-awesome-icon", {
+                    staticClass: "edit-icon",
+                    attrs: { icon: "edit" },
+                    on: {
+                      click: function($event) {
+                        return _vm.editPrev(_vm.seatTypeObject.id)
+                      }
+                    }
+                  })
+                ],
+                1
+              )
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "confirm-text-container" }, [
+              _c(
+                "div",
+                { staticClass: "confirm-text" },
+                [
+                  _c("font-awesome-icon", {
+                    staticClass: "title-icon",
+                    attrs: { icon: "smoking" }
+                  }),
+                  _vm._v(
+                    "\n                            " +
+                      _vm._s(_vm.displayTobacco) +
+                      "\n                        "
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "icon-container" },
+                [
+                  _c("font-awesome-icon", {
+                    staticClass: "edit-icon",
+                    attrs: { icon: "edit" },
+                    on: {
+                      click: function($event) {
+                        return _vm.editPrev(_vm.tobaccoTypeObject.id)
+                      }
+                    }
+                  })
+                ],
+                1
+              )
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "confirm-text-container" }, [
+              _c(
+                "div",
+                { staticClass: "confirm-text" },
+                [
+                  _c("font-awesome-icon", {
+                    staticClass: "title-icon",
+                    attrs: { icon: "phone" }
+                  }),
+                  _vm._v(
+                    "\n                            " +
+                      _vm._s(_vm.displayTell) +
+                      "\n                        "
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "icon-container" },
+                [
+                  _c("font-awesome-icon", {
+                    staticClass: "edit-icon",
+                    attrs: { icon: "edit" },
+                    on: {
+                      click: function($event) {
+                        return _vm.editPrev(_vm.inputTellNumObject.id)
+                      }
+                    }
+                  })
+                ],
+                1
+              )
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "btn-container" }, [
+            _c("div", { staticClass: "btn-area" }, [
+              _c("div", {
+                staticClass: "button-back",
+                staticStyle: { background: "#8b0000" }
+              }),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "btn close-btn ripple",
+                  staticStyle: { padding: "0" },
+                  attrs: { onfocus: "this.blur();" },
+                  on: { click: _vm.closeModal }
+                },
+                [_vm._v("とじる")]
+              )
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "btn-area" }, [
+              _c("div", { staticClass: "button-back background-blue" }),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "btn next-btn ripple",
+                  staticStyle: { padding: "0" },
+                  attrs: { onfocus: "this.blur();" },
+                  on: { click: _vm.postData }
+                },
+                [_vm._v("受付する")]
+              )
             ])
           ])
         ])
-      ]
-    )
+      ])
+    ])
   ])
 }
 var staticRenderFns = []

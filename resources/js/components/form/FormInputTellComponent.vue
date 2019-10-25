@@ -46,14 +46,19 @@
             </div>
         </div>
     </div>
+    <template v-if="modalActive || thanksModalActive">
+        <transition name="thanks" appear>
+            <div :class="toggleOverlay" @click="closeModal"></div>
+        </transition>
+    </template>
+
     <template v-if="modalActive">
-        <modal-component @close="closeModal" @progressBarMove="progressBarMove" />
+        <modal-component @close="closeModal" @progressBarMove="progressBarMove" @thanksModalOpen="thanksModalOpen" />
     </template>
 
     <template v-if="thanksModalActive">
         <thanks-component />
     </template>
-
 </div>
 </template>
 <script>
@@ -88,12 +93,23 @@
             }
             this.time = 0
         },
+        computed: {
+            toggleOverlay:function(){
+                return{
+                    'overlay' : this.modalActive || this.thanksModalActive,
+                }
+            }
+        },
         methods: {
             openModal(){
                 this.modalActive = true
             },
             closeModal(){
                 this.modalActive = false
+            },
+            thanksModalOpen(){
+                this.modalActive       = false
+                this.thanksModalActive = true
             },
             tellNumInput(item){
                 this.inputTellNumObject.tellNum += item
@@ -141,12 +157,46 @@
                 } else {
                     this.$emit('nextStep')
                 }
-            }
+            },
         }
     }
 </script>
 <style lang="scss" scoped>
 @import '../../../sass/variables';
+.overlay {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    z-index: 30;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.thanks-enter-active, .thanks-leave-active {
+  transition: opacity 0.6s;
+
+  .overlay {
+    transition: opacity 0.6s, transform 0.6s;
+  }
+}
+
+.thanks-leave-active {
+  transition: opacity 0.8s ease 0.6s;
+}
+
+.thanks-enter, .thanks-leave-to {
+  opacity: 0;
+
+  .overlay {
+    opacity: 0;
+    transform: translateY(150px);
+  }
+}
+
 .tell-container{
     .input-container{
         p{
@@ -221,19 +271,6 @@
     top: 110%;
     left: -8%;
 }
-.modal-overlay {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: fixed;
-    z-index: 30;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-}
-
 @media screen and (max-width: 1024px) {
     .form-container{
         margin-top: 0;
