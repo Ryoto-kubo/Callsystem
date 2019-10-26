@@ -5,7 +5,7 @@
                 {{ propsTitle }}
             </div>
             <div class="img-container">
-                <a href="/"><img src="/images/home.png" width="75px" height="75px" alt=""></a>
+                <a href="/"><img src="/images/home.png" width="75px" height="75px" alt="home"></a>
             </div>
         </div>
     </header>
