@@ -18,6 +18,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::namespace('Api')->group(function () {
-    Route::get('/reception/number', 'ReceptionNumberController@getReceptionNumber');
+    Route::get('/reception/number',    'ReceptionController@getReceptionNumber');
+    Route::get('/reception/count',     'ReceptionController@getReceptionCount');
+    Route::post('/reception/formpost', 'ReceptionController@postReceptionForm');
 });
 

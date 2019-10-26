@@ -103,7 +103,8 @@ export default {
             request_object['smoke_id']    = this.tobaccoTypeObject.selectTobaccoType
             request_object['tell_number'] = this.inputTellNumObject.tellNum
             setTimeout(() => {
-                axios.post('reception/formpost', request_object)
+                // axios.post('/reception/formpost', request_object)
+                axios.post('/api/reception/formpost', request_object)
                 .then(function(response){
                     this.$emit('progressBarMove', 4)
                     this.$emit('thanksModalOpen')

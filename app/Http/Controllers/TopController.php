@@ -10,10 +10,7 @@ class TopController extends Controller
     //
     public function getIndex()
     {
-        $payload = array();
-        $payload['reception_data_count'] = Reception::get()->count();
-        $payload['reception_data_min'] = $this->getWaitingMin($payload['reception_data_count']);
-        return view('front/top')->with($payload);
+        return view('front/top');
     }
 
     public function getWaitingMin($count)

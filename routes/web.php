@@ -22,7 +22,7 @@ Route::prefix('reception')->group(function () {
     Route::get('/min'       ,'ReceptionIndexController@getWaitingMin');
     Route::get('/form'      ,'ReceptionFormController@index');
     Route::post('/validate' ,'ReceptionConfirmController@formValidate');
-    // Route::post('/formpost' ,'ReceptionConfirmController@formpost');
+    Route::post('/formpost' ,'ReceptionConfirmController@formpost');
 });
 
 Route::prefix('form')->group(function () {

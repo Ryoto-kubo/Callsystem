@@ -30,7 +30,7 @@ library.add(fas)
 Vue.component('font-awesome-icon'             , FontAwesomeIcon);
 Vue.component('example-component'             , require('./components/ExampleComponent.vue').default);
 Vue.component('header-component'              , require('./components/HeaderComponent.vue').default);
-Vue.component('reception-get-component'       , require('./components/ReceptionGetComponent.vue').default);
+Vue.component('reception-number-component'    , require('./components/ReceptionNumberComponent.vue').default);
 Vue.component('reception-get-min-component'   , require('./components/ReceptionGetMinComponent.vue').default);
 Vue.component('reception-form-component'      , require('./components/ReceptionFormComponent.vue').default);
 Vue.component('reception-confirm-component'   , require('./components/ReceptionConfirmComponent.vue').default);

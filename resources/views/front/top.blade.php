@@ -15,7 +15,7 @@
                 </div>
                 <div class="peoples-group-container">
                     <span class="peoples-group">
-                        <reception-get-component></reception-get-component>
+                        <reception-number-component />
                     </span>
                     <div class="text-area">
                         <div class="group">
