@@ -11,7 +11,7 @@
                         </div>
                         <div class="reception-number-container">
                              <div class="reception-number-text">
-                                 {{receptionNumber.reception_data_count}}
+                                 {{receptionNumber}}
                             </div>
                             <div class="reception-after-text">番です</div>
                         </div>
@@ -39,11 +39,18 @@ import { setTimeout } from 'timers';
 export default {
     data() {
         return {
-            receptionNumber: {}
+            receptionNumber: null
         }
     },
     created() {
-        axios.get('/reception/count').then(response => this.receptionNumber = response.data);
+        axios.get('/api/reception/number')
+        .then(response => {
+            console.log(response)
+            this.receptionNumber = response.data.reception_number_object.id
+        })
+        .catch(error => {
+            console.log(error)
+        })
     },
     methods: {
         prevHome(){

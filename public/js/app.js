@@ -13578,6 +13578,21 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -13590,6 +13605,7 @@ __webpack_require__.r(__webpack_exports__);
       },
       time: 0,
       modalActive: false,
+      thanksModalActive: false,
       classSwitch: null,
       nextBtnAppearrance: false,
       numBtnAppearrance: true,
@@ -13600,6 +13616,13 @@ __webpack_require__.r(__webpack_exports__);
   props: {
     currentId: Number,
     propsEditStatus: Boolean
+  },
+  computed: {
+    toggleOverlay: function toggleOverlay() {
+      return {
+        'overlay': this.modalActive || this.thanksModalActive
+      };
+    }
   },
   mounted: function mounted() {
     // 「受付へ進む」からの表示なのか、「前に戻る」からの表示なのかを判定しclassを切り替える
@@ -13623,6 +13646,10 @@ __webpack_require__.r(__webpack_exports__);
     },
     closeModal: function closeModal() {
       this.modalActive = false;
+    },
+    thanksModalOpen: function thanksModalOpen() {
+      this.modalActive = false;
+      this.thanksModalActive = true;
     },
     numInput: function numInput(item) {
       this.inputPeopleObject.peopleNum += item;
@@ -13902,6 +13929,21 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -13912,6 +13954,7 @@ __webpack_require__.r(__webpack_exports__);
       },
       time: 0,
       modalActive: false,
+      thanksModalActive: false,
       classSwitch: null,
       seatTypes: [{
         id: 1,
@@ -13931,6 +13974,13 @@ __webpack_require__.r(__webpack_exports__);
   props: {
     currentId: Number,
     propsEditStatus: Boolean
+  },
+  computed: {
+    toggleOverlay: function toggleOverlay() {
+      return {
+        'overlay': this.modalActive || this.thanksModalActive
+      };
+    }
   },
   mounted: function mounted() {
     // 「受付へ進む」からの表示なのか、「前に戻る」からの表示なのかを判定しclassを切り替える
@@ -13987,6 +14037,10 @@ __webpack_require__.r(__webpack_exports__);
     closeModal: function closeModal() {
       this.modalActive = false;
     },
+    thanksModalOpen: function thanksModalOpen() {
+      this.modalActive = false;
+      this.thanksModalActive = true;
+    },
     progressBarMove: function progressBarMove(lastId) {
       this.$emit('progressBarMove', lastId);
     }
@@ -14036,6 +14090,21 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -14045,6 +14114,7 @@ __webpack_require__.r(__webpack_exports__);
       },
       time: 0,
       modalActive: false,
+      thanksModalActive: false,
       classSwitch: null,
       tobaccoTypes: [{
         id: 1,
@@ -14061,6 +14131,13 @@ __webpack_require__.r(__webpack_exports__);
   props: {
     currentId: Number,
     propsEditStatus: Boolean
+  },
+  computed: {
+    toggleOverlay: function toggleOverlay() {
+      return {
+        'overlay': this.modalActive || this.thanksModalActive
+      };
+    }
   },
   mounted: function mounted() {
     // 「受付へ進む」からの表示なのか、「前に戻る」からの表示なのかを判定しclassを切り替える
@@ -14116,6 +14193,10 @@ __webpack_require__.r(__webpack_exports__);
     },
     closeModal: function closeModal() {
       this.modalActive = false;
+    },
+    thanksModalOpen: function thanksModalOpen() {
+      this.modalActive = false;
+      this.thanksModalActive = true;
     },
     progressBarMove: function progressBarMove(lastId) {
       this.$emit('progressBarMove', lastId);
@@ -14378,14 +14459,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      receptionNumber: {}
+      receptionNumber: null
     };
   },
   created: function created() {
     var _this = this;
 
-    axios.get('/reception/count').then(function (response) {
-      return _this.receptionNumber = response.data;
+    axios.get('/api/reception/number').then(function (response) {
+      console.log(response);
+      _this.receptionNumber = response.data.reception_number_object.id;
+    })["catch"](function (error) {
+      console.log(error);
     });
   },
   methods: {
@@ -26836,7 +26920,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, ".input input[data-v-b55dcf02] {\n  width: 350px;\n  height: 170px;\n  text-align: center;\n  border: 5px solid #707070;\n  border-radius: 20px;\n  font-size: 70px;\n  color: #696969;\n}\n.group-text[data-v-b55dcf02] {\n  margin-left: 10px;\n  font-size: 30px;\n}\n.group-text p[data-v-b55dcf02] {\n  margin: 0;\n}\n.num-button-container[data-v-b55dcf02] {\n  width: 50%;\n}\n.num-button-container .num-button-area[data-v-b55dcf02]:nth-child(11) {\n  margin-right: 0;\n}\n.num-button-container .num-button-area .clear-btn[data-v-b55dcf02] {\n  width: 186%;\n}\n.num-button-container .num-button-area .clear-button-back[data-v-b55dcf02] {\n  width: 186%;\n}\n@media screen and (max-width: 1024px) {\n.form-container .flex-container .input-container[data-v-b55dcf02] {\n    width: 111.55%;\n}\n}", ""]);
+exports.push([module.i, ".overlay[data-v-b55dcf02] {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  position: fixed;\n  z-index: 30;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  background: rgba(0, 0, 0, 0.5);\n}\n.thanks-enter-active[data-v-b55dcf02], .thanks-leave-active[data-v-b55dcf02] {\n  transition: opacity 0.6s;\n}\n.thanks-enter-active .overlay[data-v-b55dcf02], .thanks-leave-active .overlay[data-v-b55dcf02] {\n  transition: opacity 0.6s, transform 0.6s;\n}\n.thanks-leave-active[data-v-b55dcf02] {\n  transition: opacity 0.8s ease 0.6s;\n}\n.thanks-enter[data-v-b55dcf02], .thanks-leave-to[data-v-b55dcf02] {\n  opacity: 0;\n}\n.thanks-enter .overlay[data-v-b55dcf02], .thanks-leave-to .overlay[data-v-b55dcf02] {\n  opacity: 0;\n  transform: translateY(150px);\n}\n.input input[data-v-b55dcf02] {\n  width: 350px;\n  height: 170px;\n  text-align: center;\n  border: 5px solid #707070;\n  border-radius: 20px;\n  font-size: 70px;\n  color: #696969;\n}\n.group-text[data-v-b55dcf02] {\n  margin-left: 10px;\n  font-size: 30px;\n}\n.group-text p[data-v-b55dcf02] {\n  margin: 0;\n}\n.num-button-container[data-v-b55dcf02] {\n  width: 50%;\n}\n.num-button-container .num-button-area[data-v-b55dcf02]:nth-child(11) {\n  margin-right: 0;\n}\n.num-button-container .num-button-area .clear-btn[data-v-b55dcf02] {\n  width: 186%;\n}\n.num-button-container .num-button-area .clear-button-back[data-v-b55dcf02] {\n  width: 186%;\n}\n@media screen and (max-width: 1024px) {\n.form-container .flex-container .input-container[data-v-b55dcf02] {\n    width: 111.55%;\n}\n}", ""]);
 
 // exports
 
@@ -26874,7 +26958,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, ".seat-flex[data-v-4e1a0e18] {\n  flex-wrap: wrap;\n}\n.seat-flex .seat-btn-container[data-v-4e1a0e18] {\n  width: 48%;\n  margin-bottom: 60px;\n  text-align: center;\n  position: relative;\n}\n.seat-flex .seat-btn-container .seat-btn[data-v-4e1a0e18] {\n  width: 80%;\n  height: 200px;\n  color: #707070;\n  background: #fafafa;\n  border-radius: 10px;\n  font-size: 40px;\n  outline: none;\n  border: 0.5px solid #c0c0c0;\n}\n.seat-flex .seat-btn-container .seat-btn-back[data-v-4e1a0e18] {\n  width: 80%;\n  height: 200px;\n  position: absolute;\n  top: 8px;\n  left: 50%;\n  transform: translate(-50%, 0);\n  z-index: -1;\n  border-radius: 10px;\n  background: #696969;\n}\n.prev-btn-container[data-v-4e1a0e18] {\n  left: -6%;\n}\n@media screen and (max-width: 1024px) {\n.seat-flex .seat-btn-container .seat-btn[data-v-4e1a0e18] {\n    width: 80%;\n    height: 150px;\n    font-size: 32px;\n}\n.seat-flex .seat-btn-container .seat-btn-back[data-v-4e1a0e18] {\n    width: 80%;\n    height: 150px;\n}\n.prev-btn-container[data-v-4e1a0e18] {\n    left: -7%;\n}\n}", ""]);
+exports.push([module.i, ".overlay[data-v-4e1a0e18] {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  position: fixed;\n  z-index: 30;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  background: rgba(0, 0, 0, 0.5);\n}\n.thanks-enter-active[data-v-4e1a0e18], .thanks-leave-active[data-v-4e1a0e18] {\n  transition: opacity 0.6s;\n}\n.thanks-enter-active .overlay[data-v-4e1a0e18], .thanks-leave-active .overlay[data-v-4e1a0e18] {\n  transition: opacity 0.6s, transform 0.6s;\n}\n.thanks-leave-active[data-v-4e1a0e18] {\n  transition: opacity 0.8s ease 0.6s;\n}\n.thanks-enter[data-v-4e1a0e18], .thanks-leave-to[data-v-4e1a0e18] {\n  opacity: 0;\n}\n.thanks-enter .overlay[data-v-4e1a0e18], .thanks-leave-to .overlay[data-v-4e1a0e18] {\n  opacity: 0;\n  transform: translateY(150px);\n}\n.seat-flex[data-v-4e1a0e18] {\n  flex-wrap: wrap;\n}\n.seat-flex .seat-btn-container[data-v-4e1a0e18] {\n  width: 48%;\n  margin-bottom: 60px;\n  text-align: center;\n  position: relative;\n}\n.seat-flex .seat-btn-container .seat-btn[data-v-4e1a0e18] {\n  width: 80%;\n  height: 200px;\n  color: #707070;\n  background: #fafafa;\n  border-radius: 10px;\n  font-size: 40px;\n  outline: none;\n  border: 0.5px solid #c0c0c0;\n}\n.seat-flex .seat-btn-container .seat-btn-back[data-v-4e1a0e18] {\n  width: 80%;\n  height: 200px;\n  position: absolute;\n  top: 8px;\n  left: 50%;\n  transform: translate(-50%, 0);\n  z-index: -1;\n  border-radius: 10px;\n  background: #696969;\n}\n.prev-btn-container[data-v-4e1a0e18] {\n  left: -6%;\n}\n@media screen and (max-width: 1024px) {\n.seat-flex .seat-btn-container .seat-btn[data-v-4e1a0e18] {\n    width: 80%;\n    height: 150px;\n    font-size: 32px;\n}\n.seat-flex .seat-btn-container .seat-btn-back[data-v-4e1a0e18] {\n    width: 80%;\n    height: 150px;\n}\n.prev-btn-container[data-v-4e1a0e18] {\n    left: -7%;\n}\n}", ""]);
 
 // exports
 
@@ -26893,7 +26977,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, ".tobacco-flex[data-v-6210e400] {\n  flex-wrap: wrap;\n}\n.tobacco-flex .tobacco-btn-container[data-v-6210e400] {\n  width: 33%;\n  margin-bottom: 60px;\n  text-align: center;\n  position: relative;\n}\n.tobacco-flex .tobacco-btn-container .tobacco-btn[data-v-6210e400] {\n  width: 90%;\n  height: 200px;\n  color: #707070;\n  background: #fafafa;\n  border-radius: 10px;\n  font-size: 40px;\n  outline: none;\n  border: 0.5px solid #c0c0c0;\n}\n.tobacco-flex .tobacco-btn-container .tobacco-btn-back[data-v-6210e400] {\n  width: 90%;\n  height: 200px;\n  position: absolute;\n  top: 8px;\n  left: 50%;\n  transform: translate(-50%, 0);\n  z-index: -1;\n  border-radius: 10px;\n  background: #696969;\n}\n.prev-btn-container[data-v-6210e400] {\n  top: 190%;\n  left: -6%;\n}\n@media screen and (max-width: 1024px) {\n.tobacco-flex .tobacco-btn-container .tobacco-btn[data-v-6210e400] {\n    width: 80%;\n    height: 150px;\n    font-size: 30px;\n}\n.tobacco-flex .tobacco-btn-container .button-back[data-v-6210e400] {\n    width: 80%;\n    height: 150px;\n}\n.prev-btn-container[data-v-6210e400] {\n    top: 160%;\n    left: -7%;\n}\n}", ""]);
+exports.push([module.i, ".overlay[data-v-6210e400] {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  position: fixed;\n  z-index: 30;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  background: rgba(0, 0, 0, 0.5);\n}\n.thanks-enter-active[data-v-6210e400], .thanks-leave-active[data-v-6210e400] {\n  transition: opacity 0.6s;\n}\n.thanks-enter-active .overlay[data-v-6210e400], .thanks-leave-active .overlay[data-v-6210e400] {\n  transition: opacity 0.6s, transform 0.6s;\n}\n.thanks-leave-active[data-v-6210e400] {\n  transition: opacity 0.8s ease 0.6s;\n}\n.thanks-enter[data-v-6210e400], .thanks-leave-to[data-v-6210e400] {\n  opacity: 0;\n}\n.thanks-enter .overlay[data-v-6210e400], .thanks-leave-to .overlay[data-v-6210e400] {\n  opacity: 0;\n  transform: translateY(150px);\n}\n.tobacco-flex[data-v-6210e400] {\n  flex-wrap: wrap;\n}\n.tobacco-flex .tobacco-btn-container[data-v-6210e400] {\n  width: 33%;\n  margin-bottom: 60px;\n  text-align: center;\n  position: relative;\n}\n.tobacco-flex .tobacco-btn-container .tobacco-btn[data-v-6210e400] {\n  width: 90%;\n  height: 200px;\n  color: #707070;\n  background: #fafafa;\n  border-radius: 10px;\n  font-size: 40px;\n  outline: none;\n  border: 0.5px solid #c0c0c0;\n}\n.tobacco-flex .tobacco-btn-container .tobacco-btn-back[data-v-6210e400] {\n  width: 90%;\n  height: 200px;\n  position: absolute;\n  top: 8px;\n  left: 50%;\n  transform: translate(-50%, 0);\n  z-index: -1;\n  border-radius: 10px;\n  background: #696969;\n}\n.prev-btn-container[data-v-6210e400] {\n  top: 190%;\n  left: -6%;\n}\n@media screen and (max-width: 1024px) {\n.tobacco-flex .tobacco-btn-container .tobacco-btn[data-v-6210e400] {\n    width: 80%;\n    height: 150px;\n    font-size: 30px;\n}\n.tobacco-flex .tobacco-btn-container .button-back[data-v-6210e400] {\n    width: 80%;\n    height: 150px;\n}\n.prev-btn-container[data-v-6210e400] {\n    top: 160%;\n    left: -7%;\n}\n}", ""]);
 
 // exports
 
@@ -74530,13 +74614,32 @@ var render = function() {
             ])
       ]),
       _vm._v(" "),
+      _vm.modalActive || _vm.thanksModalActive
+        ? [
+            _c("transition", { attrs: { name: "thanks", appear: "" } }, [
+              _c("div", {
+                class: _vm.toggleOverlay,
+                on: { click: _vm.closeModal }
+              })
+            ])
+          ]
+        : _vm._e(),
+      _vm._v(" "),
       _vm.modalActive
-        ? _c("modal-component", {
-            on: { close: _vm.closeModal, progressBarMove: _vm.progressBarMove }
-          })
-        : _vm._e()
+        ? [
+            _c("modal-component", {
+              on: {
+                close: _vm.closeModal,
+                progressBarMove: _vm.progressBarMove,
+                thanksModalOpen: _vm.thanksModalOpen
+              }
+            })
+          ]
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.thanksModalActive ? [_c("thanks-component")] : _vm._e()
     ],
-    1
+    2
   )
 }
 var staticRenderFns = [
@@ -74858,13 +74961,32 @@ var render = function() {
         ])
       ]),
       _vm._v(" "),
+      _vm.modalActive || _vm.thanksModalActive
+        ? [
+            _c("transition", { attrs: { name: "thanks", appear: "" } }, [
+              _c("div", {
+                class: _vm.toggleOverlay,
+                on: { click: _vm.closeModal }
+              })
+            ])
+          ]
+        : _vm._e(),
+      _vm._v(" "),
       _vm.modalActive
-        ? _c("modal-component", {
-            on: { close: _vm.closeModal, progressBarMove: _vm.progressBarMove }
-          })
-        : _vm._e()
+        ? [
+            _c("modal-component", {
+              on: {
+                close: _vm.closeModal,
+                progressBarMove: _vm.progressBarMove,
+                thanksModalOpen: _vm.thanksModalOpen
+              }
+            })
+          ]
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.thanksModalActive ? [_c("thanks-component")] : _vm._e()
     ],
-    1
+    2
   )
 }
 var staticRenderFns = []
@@ -74945,13 +75067,32 @@ var render = function() {
         ])
       ]),
       _vm._v(" "),
+      _vm.modalActive || _vm.thanksModalActive
+        ? [
+            _c("transition", { attrs: { name: "thanks", appear: "" } }, [
+              _c("div", {
+                class: _vm.toggleOverlay,
+                on: { click: _vm.closeModal }
+              })
+            ])
+          ]
+        : _vm._e(),
+      _vm._v(" "),
       _vm.modalActive
-        ? _c("modal-component", {
-            on: { close: _vm.closeModal, progressBarMove: _vm.progressBarMove }
-          })
-        : _vm._e()
+        ? [
+            _c("modal-component", {
+              on: {
+                close: _vm.closeModal,
+                progressBarMove: _vm.progressBarMove,
+                thanksModalOpen: _vm.thanksModalOpen
+              }
+            })
+          ]
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.thanksModalActive ? [_c("thanks-component")] : _vm._e()
     ],
-    1
+    2
   )
 }
 var staticRenderFns = []
@@ -74977,53 +75118,65 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("transition", { attrs: { name: "modal", appear: "" } }, [
-    _c("div", { staticClass: "modal modal-overlay" }, [
-      _c("div", { staticClass: "modal-window" }, [
-        _c("div", { staticClass: "modal-content" }, [
-          _c("div", { staticClass: "confirm-container" }, [
-            _c("div", { staticClass: "confirm-text-container" }, [
-              _c("div", { staticClass: "confirm-text" }, [
+    _c(
+      "div",
+      {
+        staticClass: "modal modal-overlay",
+        on: {
+          click: function($event) {
+            if ($event.target !== $event.currentTarget) {
+              return null
+            }
+            return _vm.$emit("close")
+          }
+        }
+      },
+      [
+        _c("div", { staticClass: "modal-window" }, [
+          _c("div", { staticClass: "modal-content" }, [
+            _c("div", { staticClass: "confirm-container" }, [
+              _c("div", { staticClass: "confirm-text-container" }, [
+                _c("div", { staticClass: "confirm-text" }, [
+                  _c(
+                    "div",
+                    { staticClass: "content-text" },
+                    [
+                      _c("font-awesome-icon", {
+                        staticClass: "title-icon",
+                        attrs: { icon: "users" }
+                      }),
+                      _vm._v(
+                        "\n                                " +
+                          _vm._s(_vm.peopleObject.peopleNum) +
+                          "名\n                            "
+                      )
+                    ],
+                    1
+                  )
+                ]),
+                _vm._v(" "),
                 _c(
                   "div",
-                  { staticClass: "content-text" },
+                  { staticClass: "icon-container" },
                   [
                     _c("font-awesome-icon", {
-                      staticClass: "title-icon",
-                      attrs: { icon: "users" }
-                    }),
-                    _vm._v(
-                      "\n                                " +
-                        _vm._s(_vm.peopleObject.peopleNum) +
-                        "名\n                            "
-                    )
+                      staticClass: "edit-icon",
+                      attrs: { icon: "edit" },
+                      on: {
+                        click: function($event) {
+                          return _vm.editPrev(_vm.peopleObject.id)
+                        }
+                      }
+                    })
                   ],
                   1
                 )
               ]),
               _vm._v(" "),
-              _c(
-                "div",
-                { staticClass: "icon-container" },
-                [
-                  _c("font-awesome-icon", {
-                    staticClass: "edit-icon",
-                    attrs: { icon: "edit" },
-                    on: {
-                      click: function($event) {
-                        return _vm.editPrev(_vm.peopleObject.id)
-                      }
-                    }
-                  })
-                ],
-                1
-              )
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "confirm-text-container" }, [
-              _c("div", { staticClass: "confirm-text" }, [
+              _c("div", { staticClass: "confirm-text-container" }, [
                 _c(
                   "div",
-                  { staticClass: "content-text" },
+                  { staticClass: "confirm-text" },
                   [
                     _c("font-awesome-icon", {
                       staticClass: "title-icon",
@@ -75036,137 +75189,137 @@ var render = function() {
                     )
                   ],
                   1
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "icon-container" },
+                  [
+                    _c("font-awesome-icon", {
+                      staticClass: "edit-icon",
+                      attrs: { icon: "edit" },
+                      on: {
+                        click: function($event) {
+                          return _vm.editPrev(_vm.seatTypeObject.id)
+                        }
+                      }
+                    })
+                  ],
+                  1
                 )
               ]),
               _vm._v(" "),
-              _c(
-                "div",
-                { staticClass: "icon-container" },
-                [
-                  _c("font-awesome-icon", {
-                    staticClass: "edit-icon",
-                    attrs: { icon: "edit" },
-                    on: {
-                      click: function($event) {
-                        return _vm.editPrev(_vm.seatTypeObject.id)
+              _c("div", { staticClass: "confirm-text-container" }, [
+                _c(
+                  "div",
+                  { staticClass: "confirm-text" },
+                  [
+                    _c("font-awesome-icon", {
+                      staticClass: "title-icon",
+                      attrs: { icon: "smoking" }
+                    }),
+                    _vm._v(
+                      "\n                            " +
+                        _vm._s(_vm.displayTobacco) +
+                        "\n                        "
+                    )
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "icon-container" },
+                  [
+                    _c("font-awesome-icon", {
+                      staticClass: "edit-icon",
+                      attrs: { icon: "edit" },
+                      on: {
+                        click: function($event) {
+                          return _vm.editPrev(_vm.tobaccoTypeObject.id)
+                        }
                       }
-                    }
-                  })
-                ],
-                1
-              )
+                    })
+                  ],
+                  1
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "confirm-text-container" }, [
+                _c(
+                  "div",
+                  { staticClass: "confirm-text" },
+                  [
+                    _c("font-awesome-icon", {
+                      staticClass: "title-icon",
+                      attrs: { icon: "phone" }
+                    }),
+                    _vm._v(
+                      "\n                            " +
+                        _vm._s(_vm.displayTell) +
+                        "\n                        "
+                    )
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "icon-container" },
+                  [
+                    _c("font-awesome-icon", {
+                      staticClass: "edit-icon",
+                      attrs: { icon: "edit" },
+                      on: {
+                        click: function($event) {
+                          return _vm.editPrev(_vm.inputTellNumObject.id)
+                        }
+                      }
+                    })
+                  ],
+                  1
+                )
+              ])
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "confirm-text-container" }, [
-              _c(
-                "div",
-                { staticClass: "confirm-text" },
-                [
-                  _c("font-awesome-icon", {
-                    staticClass: "title-icon",
-                    attrs: { icon: "smoking" }
-                  }),
-                  _vm._v(
-                    "\n                            " +
-                      _vm._s(_vm.displayTobacco) +
-                      "\n                        "
-                  )
-                ],
-                1
-              ),
+            _c("div", { staticClass: "btn-container" }, [
+              _c("div", { staticClass: "btn-area" }, [
+                _c("div", {
+                  staticClass: "button-back",
+                  staticStyle: { background: "#8b0000" }
+                }),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn close-btn ripple",
+                    staticStyle: { padding: "0" },
+                    attrs: { onfocus: "this.blur();" },
+                    on: { click: _vm.closeModal }
+                  },
+                  [_vm._v("とじる")]
+                )
+              ]),
               _vm._v(" "),
-              _c(
-                "div",
-                { staticClass: "icon-container" },
-                [
-                  _c("font-awesome-icon", {
-                    staticClass: "edit-icon",
-                    attrs: { icon: "edit" },
-                    on: {
-                      click: function($event) {
-                        return _vm.editPrev(_vm.tobaccoTypeObject.id)
-                      }
-                    }
-                  })
-                ],
-                1
-              )
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "confirm-text-container" }, [
-              _c(
-                "div",
-                { staticClass: "confirm-text" },
-                [
-                  _c("font-awesome-icon", {
-                    staticClass: "title-icon",
-                    attrs: { icon: "phone" }
-                  }),
-                  _vm._v(
-                    "\n                            " +
-                      _vm._s(_vm.displayTell) +
-                      "\n                        "
-                  )
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c(
-                "div",
-                { staticClass: "icon-container" },
-                [
-                  _c("font-awesome-icon", {
-                    staticClass: "edit-icon",
-                    attrs: { icon: "edit" },
-                    on: {
-                      click: function($event) {
-                        return _vm.editPrev(_vm.inputTellNumObject.id)
-                      }
-                    }
-                  })
-                ],
-                1
-              )
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "btn-container" }, [
-            _c("div", { staticClass: "btn-area" }, [
-              _c("div", {
-                staticClass: "button-back",
-                staticStyle: { background: "#8b0000" }
-              }),
-              _vm._v(" "),
-              _c(
-                "button",
-                {
-                  staticClass: "btn close-btn ripple",
-                  staticStyle: { padding: "0" },
-                  attrs: { onfocus: "this.blur();" },
-                  on: { click: _vm.closeModal }
-                },
-                [_vm._v("とじる")]
-              )
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "btn-area" }, [
-              _c("div", { staticClass: "button-back background-blue" }),
-              _vm._v(" "),
-              _c(
-                "button",
-                {
-                  staticClass: "btn next-btn ripple",
-                  staticStyle: { padding: "0" },
-                  attrs: { onfocus: "this.blur();" },
-                  on: { click: _vm.postData }
-                },
-                [_vm._v("受付する")]
-              )
+              _c("div", { staticClass: "btn-area" }, [
+                _c("div", { staticClass: "button-back background-blue" }),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn next-btn ripple",
+                    staticStyle: { padding: "0" },
+                    attrs: { onfocus: "this.blur();" },
+                    on: { click: _vm.postData }
+                  },
+                  [_vm._v("受付する")]
+                )
+              ])
             ])
           ])
         ])
-      ])
-    ])
+      ]
+    )
   ])
 }
 var staticRenderFns = []
@@ -75208,7 +75361,7 @@ var render = function() {
               _c("div", { staticClass: "reception-number-text" }, [
                 _vm._v(
                   "\n                             " +
-                    _vm._s(_vm.receptionNumber.reception_data_count) +
+                    _vm._s(_vm.receptionNumber) +
                     "\n                        "
                 )
               ]),

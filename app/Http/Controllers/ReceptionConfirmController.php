@@ -9,8 +9,6 @@ class ReceptionConfirmController extends Controller
 {
     public function formPost(Request $request)
     {
-        // var_dump($request);
-        \Log::debug($request);
         $payload = array();
         $reception_object = new Reception();
 

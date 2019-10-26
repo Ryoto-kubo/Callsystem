@@ -1,7 +1,7 @@
 <template>
     <transition name="modal" appear>
         <!-- <div class="modal" @click.self="$emit('close')"> -->
-        <div class="modal modal-overlay">
+        <div class="modal modal-overlay" @click.self="$emit('close')">
             <div class="modal-window">
                 <div class="modal-content">
                     <div class="confirm-container">
@@ -20,10 +20,10 @@
                         </div>
                         <div class="confirm-text-container">
                             <div class="confirm-text">
-                                <div class="content-text">
+                                <!-- <div class="content-text"> -->
                                     <font-awesome-icon class="title-icon" icon="chair"/>
                                     {{displaySeat}}
-                                </div>
+                                <!-- </div> -->
                             </div>
                             <div class="icon-container">
                                 <font-awesome-icon class="edit-icon" icon="edit" @click="editPrev(seatTypeObject.id)"/>

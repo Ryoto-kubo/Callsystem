@@ -39,7 +39,22 @@
                 <button class="btn waiting-btn ripple" onfocus="this.blur();"></button>
             </div>
         </div>
-        <modal-component v-if="modalActive" @close="closeModal" @progressBarMove="progressBarMove" />
+        <template v-if="modalActive || thanksModalActive">
+            <transition name="thanks" appear>
+                <div :class="toggleOverlay" @click="closeModal"></div>
+            </transition>
+        </template>
+
+        <template v-if="modalActive">
+            <modal-component 
+                @close="closeModal"
+                @progressBarMove="progressBarMove"
+                @thanksModalOpen="thanksModalOpen" />
+        </template>
+
+        <template v-if="thanksModalActive">
+            <thanks-component />
+        </template>
     </div>
 </template>
 
@@ -56,6 +71,7 @@ import { mapGetters } from 'vuex'
                 },
                 time: 0,
                 modalActive: false,
+                thanksModalActive: false,
                 classSwitch: null,
                 nextBtnAppearrance: false,
                 numBtnAppearrance: true,
@@ -66,6 +82,13 @@ import { mapGetters } from 'vuex'
         props: {
             currentId: Number,
             propsEditStatus: Boolean,
+        },
+        computed: {
+            toggleOverlay:function(){
+                return{
+                    'overlay' : this.modalActive || this.thanksModalActive,
+                }
+            }
         },
         mounted() {
             // 「受付へ進む」からの表示なのか、「前に戻る」からの表示なのかを判定しclassを切り替える
@@ -84,6 +107,10 @@ import { mapGetters } from 'vuex'
             },
             closeModal(){
                 this.modalActive = false
+            },
+            thanksModalOpen(){
+                this.modalActive       = false
+                this.thanksModalActive = true
             },
             numInput(item){
                 this.inputPeopleObject.peopleNum += item
@@ -129,6 +156,39 @@ import { mapGetters } from 'vuex'
 </script>
 <style lang="scss" scoped>
 @import '../../../sass/variables';
+.overlay {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    z-index: 30;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.thanks-enter-active, .thanks-leave-active {
+  transition: opacity 0.6s;
+
+  .overlay {
+    transition: opacity 0.6s, transform 0.6s;
+  }
+}
+
+.thanks-leave-active {
+  transition: opacity 0.8s ease 0.6s;
+}
+
+.thanks-enter, .thanks-leave-to {
+  opacity: 0;
+
+  .overlay {
+    opacity: 0;
+    transform: translateY(150px);
+  }
+}
 
 .input{
     input{
